@@ -101,13 +101,20 @@ async function handlePaymentFailure(
 		} else {
 			// PRODUCTION MODE: Get real member data from Whop API
 			// Requires: member:basic:read and member:email:read permissions
-			const member = await whopSdk.companies.getMember({
+			const memberResponse = await whopSdk.companies.getMember({
 				companyId: resolvedCompanyId,
 				companyMemberId: `${userId}_${resolvedCompanyId}`,
 			});
 
-			userEmail = member.user.email;
-			userName = member.user.name || member.user.username || "there";
+			// Handle the response structure - member data is nested
+			if (!memberResponse?.member) {
+				console.error("❌ Unable to get member data from API response");
+				return;
+			}
+
+			const member = memberResponse.member;
+			userEmail = member.user?.email || "";
+			userName = member.user?.name || member.user?.username || "there";
 
 			if (!userEmail) {
 				console.error(
