@@ -13,6 +13,14 @@
 # testing
 /coverage
 
+test-dev-mode.js
+test-payment-failed.js
+test-payment-recovery-dev.js
+test-payment-recovery.js
+test-webhook-real.js
+test-webhook-simple.js
+test-with-real-company.js
+
 # next.js
 /.next/
 /out/
