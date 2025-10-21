@@ -9,12 +9,16 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@react-email/components": "^0.5.7",
+		"@react-email/render": "^1.4.0",
+		"@supabase/supabase-js": "^2.76.0",
 		"@vercel/functions": "^2.0.3",
 		"@whop/api": "^0.0.50",
 		"@whop/react": "0.2.36",
 		"next": "15.3.2",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"resend": "^6.2.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
