@@ -43,5 +43,11 @@ yarn-error.log*
 next-env.d.ts
 
 # development docs
-*.md
+MVP-COMPLETE.md
 test-webhook.js
+DEPLOYMENT-GUIDE.md
+PERMISSIONS-SETUP.md
+PRODUCTION-CHECKLIST.md
+SETUP-GUIDE.node_modules
+TEST-RESULTS.md
+TESTING-GUIDE.md
