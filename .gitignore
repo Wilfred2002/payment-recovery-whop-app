@@ -20,6 +20,7 @@ test-payment-recovery.js
 test-webhook-real.js
 test-webhook-simple.js
 test-with-real-company.js
+test-webhook.js
 
 # next.js
 /.next/
@@ -41,7 +42,7 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env
 .env*.local
-
+.env.development
 
 # vercel
 .vercel
@@ -56,6 +57,7 @@ test-webhook.js
 DEPLOYMENT-GUIDE.md
 PERMISSIONS-SETUP.md
 PRODUCTION-CHECKLIST.md
-SETUP-GUIDE.node_modules
+SETUP-GUIDE.md
 TEST-RESULTS.md
 TESTING-GUIDE.md
+WEBHOOK-TESTING.md
