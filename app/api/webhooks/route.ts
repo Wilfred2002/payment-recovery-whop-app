@@ -67,21 +67,11 @@ async function handlePaymentFailure(
 	}
 
 	try {
-		// Get company_id: from webhook payload or fetch from membership
+		// Get company_id from webhook payload
 		let resolvedCompanyId = companyId;
-		let membership;
 
 		if (!resolvedCompanyId) {
-			console.log("🔍 company_id not in payload, fetching from membership...");
-			membership = await whopSdk.memberships.getMembership({
-				id: membershipId,
-			});
-			resolvedCompanyId = membership.plan?.company_id || membership.product?.company_id;
-			console.log(`✅ Fetched company_id from membership: ${resolvedCompanyId}`);
-		}
-
-		if (!resolvedCompanyId) {
-			console.error("❌ Unable to determine company_id - aborting");
+			console.error("❌ No company_id in webhook payload - this is required");
 			return;
 		}
 
@@ -113,8 +103,7 @@ async function handlePaymentFailure(
 			// Requires: member:basic:read and member:email:read permissions
 			const member = await whopSdk.companies.getMember({
 				companyId: resolvedCompanyId,
-				companyMemberId:
-					membership?.company_member_id || `${userId}_${resolvedCompanyId}`,
+				companyMemberId: `${userId}_${resolvedCompanyId}`,
 			});
 
 			userEmail = member.user.email;
@@ -202,15 +191,12 @@ async function handlePaymentSuccess(
 	}
 
 	try {
-		// Get company_id if not provided
+		// Get company_id from webhook payload
 		let resolvedCompanyId = companyId;
 
 		if (!resolvedCompanyId) {
-			console.log("🔍 company_id not in payload, fetching from membership...");
-			const membership = await whopSdk.memberships.getMembership({
-				id: membershipId,
-			});
-			resolvedCompanyId = membership.plan?.company_id || membership.product?.company_id;
+			console.error("❌ No company_id in webhook payload - this is required");
+			return;
 		}
 
 		const { data: failedPayments, error } = await supabaseAdmin
