@@ -58,7 +58,7 @@ export default async function DashboardPage({
 				<div className="max-w-7xl mx-auto px-6 py-8">
 				<div className="flex flex-col lg:flex-row gap-8">
 					{/* Sidebar - Stats */}
-					<aside className="lg:w-64 flex-shrink-0">
+					<aside className="lg:w-64 shrink-0">
 						<div className="space-y-4">
 							<StatCard
 								title="Failed Payments"
@@ -91,7 +91,7 @@ export default async function DashboardPage({
 					<main className="flex-1 min-w-0">
 						<div className="bg-white border border-mint-200 rounded-lg overflow-hidden shadow-sm">
 							<div className="px-6 py-4 border-b border-mint-200 bg-mint-50">
-								<h2 className="text-sm font-bold text-mint-800 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+								<h2 className="text-sm font-bold text-mint-800 font-(family-name:--font-space-mono) uppercase tracking-wider">
 									Recent Failed Payments
 								</h2>
 							</div>
@@ -99,22 +99,22 @@ export default async function DashboardPage({
 								<table className="min-w-full">
 									<thead>
 										<tr className="border-b border-mint-100 bg-mint-50">
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-[family-name:var(--font-space-mono)]">
+											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Member
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-[family-name:var(--font-space-mono)]">
+											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Email
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-[family-name:var(--font-space-mono)]">
+											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Amount
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-[family-name:var(--font-space-mono)]">
+											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Status
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-[family-name:var(--font-space-mono)]">
+											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Failed At
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-[family-name:var(--font-space-mono)]">
+											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Recovery Time
 											</th>
 										</tr>
@@ -127,7 +127,7 @@ export default async function DashboardPage({
 													className="px-6 py-16 text-center text-mint-600"
 												>
 													<div className="text-4xl mb-2">✓</div>
-													<div className="text-sm font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+													<div className="text-sm font-(family-name:--font-space-mono) uppercase tracking-wider">
 														No failed payments yet. This is good news!
 													</div>
 												</td>
@@ -191,7 +191,7 @@ function StatCard({
 }) {
 	return (
 		<div className={`${bgColor} rounded-lg p-5 border border-mint-200 shadow-sm`}>
-			<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-2 font-[family-name:var(--font-space-mono)]">
+			<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-2 font-(family-name:--font-space-mono)">
 				{title}
 			</p>
 			<p className={`text-2xl font-bold ${textColor}`}>{value}</p>
@@ -209,7 +209,7 @@ function StatusBadge({ status }: { status: string }) {
 
 	return (
 		<span
-			className={`px-2.5 py-0.5 inline-flex text-xs font-semibold rounded border font-[family-name:var(--font-space-mono)] uppercase ${styles[status as keyof typeof styles] || "bg-gray-50 text-gray-700 border-gray-200"}`}
+			className={`px-2.5 py-0.5 inline-flex text-xs font-semibold rounded border font-(family-name:--font-space-mono) uppercase ${styles[status as keyof typeof styles] || "bg-gray-50 text-gray-700 border-gray-200"}`}
 		>
 			{status}
 		</span>

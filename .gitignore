@@ -42,9 +42,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# development docs and test files
-MVP-COMPLETE.md
+# development docs
+*.md
 test-webhook.js
-test-*.js
-*DEV*.md
-DEV-MODE-README.md
