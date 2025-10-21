@@ -9,15 +9,9 @@ export const whopSdk = WhopServerSdk({
 	// You can get this from the Whop dashboard after creating an app section.
 	appApiKey: process.env.WHOP_API_KEY ?? "fallback",
 
-	// This will make api requests on behalf of this user.
-	// This is optional, however most api requests need to be made on behalf of a user.
-	// You can create an agent user for your app, and use their userId here.
-	// You can also apply a different userId later with the `withUser` function.
-	onBehalfOfUserId: process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID,
-
-	// This is the companyId that will be used for the api requests.
-	// When making api requests that query or mutate data about a company, you need to specify the companyId.
-	// This is optional, however if not specified certain requests will fail.
-	// This can also be applied later with the `withCompany` function.
-	companyId: process.env.NEXT_PUBLIC_WHOP_COMPANY_ID,
+	// REMOVED for multi-tenant support:
+	// - onBehalfOfUserId: Use .withUser() instead when needed
+	// - companyId: Use .withCompany() instead when needed
+	//
+	// This allows the app to work with multiple companies dynamically
 });

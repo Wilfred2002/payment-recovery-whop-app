@@ -1,6 +1,6 @@
 import { WhopApp } from "@whop/react/components";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +10,12 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
 	variable: "--font-geist-mono",
+	subsets: ["latin"],
+});
+
+const spaceMono = Space_Mono({
+	weight: ["400", "700"],
+	variable: "--font-space-mono",
 	subsets: ["latin"],
 });
 
@@ -26,7 +32,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} ${spaceMono.variable} antialiased`}
 			>
 				<WhopApp>{children}</WhopApp>
 			</body>

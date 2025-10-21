@@ -7,6 +7,8 @@ interface SendRecoveryEmailParams {
 	userName: string;
 	amount: number;
 	membershipId: string;
+	customSubject?: string;
+	customBody?: string;
 }
 
 export async function sendRecoveryEmail({
@@ -14,10 +16,75 @@ export async function sendRecoveryEmail({
 	userName,
 	amount,
 	membershipId,
+	customSubject,
+	customBody,
 }: SendRecoveryEmailParams) {
 	const updatePaymentUrl = `https://whop.com/hub/settings/billing`;
 
-	const subject = "⚠️ Your payment failed - Update needed";
+	// Use custom subject or default
+	const subject = customSubject || "⚠️ Your payment failed - Update needed";
+
+	// If custom body is provided, use it
+	if (customBody) {
+		// Replace variables in custom body
+		const processedBody = customBody
+			.replace(/{name}/g, userName || "there")
+			.replace(/{amount}/g, `$${amount.toFixed(2)}`)
+			.replace(
+				/{updateLink}/g,
+				`<a href="${updatePaymentUrl}" style="display: inline-block; background-color: #28a745; color: white; text-decoration: none; padding: 15px 40px; border-radius: 6px; font-size: 16px; font-weight: bold; margin: 20px 0;">Update Payment Method</a>`,
+			);
+
+		// Simple HTML wrapper for custom template
+		const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background-color: #f8f9fa; border-radius: 8px; padding: 30px; margin-bottom: 20px; white-space: pre-wrap;">
+${processedBody}
+  </div>
+  <div style="text-align: center; padding: 20px; font-size: 12px; color: #6c757d;">
+    <p style="margin: 0;">
+      This is an automated message from your membership provider.
+    </p>
+  </div>
+</body>
+</html>
+`;
+
+		const textContent = customBody
+			.replace(/{name}/g, userName || "there")
+			.replace(/{amount}/g, `$${amount.toFixed(2)}`)
+			.replace(/{updateLink}/g, updatePaymentUrl);
+
+		try {
+			const { data, error } = await resend.emails.send({
+				from: "Payment Recovery <onboarding@resend.dev>",
+				to,
+				subject,
+				html: htmlContent,
+				text: textContent,
+			});
+
+			if (error) {
+				console.error("Failed to send email:", error);
+				throw new Error(`Email send failed: ${error.message}`);
+			}
+
+			console.log("Recovery email sent successfully:", data);
+			return data;
+		} catch (error) {
+			console.error("Error sending recovery email:", error);
+			throw error;
+		}
+	}
+
+	// Default template (original code)
+	const defaultSubject = subject;
 
 	const htmlContent = `
 <!DOCTYPE html>

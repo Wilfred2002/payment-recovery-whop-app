@@ -24,24 +24,31 @@ export async function POST(request: NextRequest): Promise<Response> {
 		}
 	}
 
+	// Log full payload to see what's available
+	console.log("📦 Full webhook payload:", JSON.stringify(webhookData, null, 2));
+
 	if (webhookData.action === "payment.failed") {
-		const { id, final_amount, user_id, membership_id } = webhookData.data;
+		const { id, final_amount, user_id, membership_id, company_id } = webhookData.data;
 
 		console.log(
-			`💥 Payment failed: ${id} for user ${user_id}, amount: $${final_amount}`,
+			`💥 Payment failed: ${id} for user ${user_id}, company: ${company_id}, amount: $${final_amount}`,
 		);
 
-		waitUntil(handlePaymentFailure(id, final_amount, user_id, membership_id));
+		if (!company_id) {
+			console.error("❌ No company_id in webhook payload - will fetch from membership");
+		}
+
+		waitUntil(handlePaymentFailure(id, final_amount, user_id, membership_id, company_id));
 	}
 
 	if (webhookData.action === "payment.succeeded") {
-		const { id, final_amount, user_id, membership_id } = webhookData.data;
+		const { id, final_amount, user_id, membership_id, company_id } = webhookData.data;
 
 		console.log(
-			`✅ Payment succeeded: ${id} for user ${user_id}, amount: $${final_amount}`,
+			`✅ Payment succeeded: ${id} for user ${user_id}, company: ${company_id}, amount: $${final_amount}`,
 		);
 
-		waitUntil(handlePaymentSuccess(id, user_id, membership_id));
+		waitUntil(handlePaymentSuccess(id, user_id, membership_id, company_id));
 	}
 
 	return new Response("OK", { status: 200 });
@@ -52,6 +59,7 @@ async function handlePaymentFailure(
 	amount: number,
 	userId: string | null | undefined,
 	membershipId: string | null | undefined,
+	companyId: string | null | undefined,
 ) {
 	if (!userId || !membershipId) {
 		console.error("Missing userId or membershipId in payment.failed webhook");
@@ -59,10 +67,66 @@ async function handlePaymentFailure(
 	}
 
 	try {
-		const user = await whopSdk.users.getUser({ userId });
-		const companyId =
-			process.env.NEXT_PUBLIC_WHOP_COMPANY_ID || "unknown_company";
-		const userEmail = "wfnaraga@gmail.com";
+		// Get company_id: from webhook payload or fetch from membership
+		let resolvedCompanyId = companyId;
+		let membership;
+
+		if (!resolvedCompanyId) {
+			console.log("🔍 company_id not in payload, fetching from membership...");
+			membership = await whopSdk.memberships.getMembership({
+				id: membershipId,
+			});
+			resolvedCompanyId = membership.plan?.company_id || membership.product?.company_id;
+			console.log(`✅ Fetched company_id from membership: ${resolvedCompanyId}`);
+		}
+
+		if (!resolvedCompanyId) {
+			console.error("❌ Unable to determine company_id - aborting");
+			return;
+		}
+
+		// ========================================
+		// 🔧 DEVELOPMENT MODE BYPASS
+		// ========================================
+		// Allows testing without real Whop members
+		// Automatically disabled in production (checks NODE_ENV)
+		// Safe: Falls back to real API if env vars missing
+		// ========================================
+		const isDevBypass =
+			process.env.NODE_ENV === "development" &&
+			process.env.DEV_MODE_BYPASS_WHOP_API === "true";
+
+		let userEmail: string;
+		let userName: string;
+
+		if (isDevBypass) {
+			// DEV MODE: Use test data from environment
+			console.warn("⚠️  DEV MODE ACTIVE: Using test email (not real Whop API)");
+			console.warn("⚠️  This will be automatically disabled in production");
+
+			userEmail = process.env.DEV_MODE_TEST_EMAIL || "test@example.com";
+			userName = process.env.DEV_MODE_TEST_NAME || "Test User";
+
+			console.log(`📧 Dev mode: Sending to ${userEmail}`);
+		} else {
+			// PRODUCTION MODE: Get real member data from Whop API
+			// Requires: member:basic:read and member:email:read permissions
+			const member = await whopSdk.companies.getMember({
+				companyId: resolvedCompanyId,
+				companyMemberId:
+					membership?.company_member_id || `${userId}_${resolvedCompanyId}`,
+			});
+
+			userEmail = member.user.email;
+			userName = member.user.name || member.user.username || "there";
+
+			if (!userEmail) {
+				console.error(
+					"❌ Unable to get user email - check app permissions (member:email:read required)",
+				);
+				return;
+			}
+		}
 
 		const { data, error } = await supabaseAdmin
 			.from("failed_payments")
@@ -71,9 +135,9 @@ async function handlePaymentFailure(
 				whop_membership_id: membershipId,
 				whop_user_id: userId,
 				user_email: userEmail,
-				user_name: user.name || user.username,
+				user_name: userName,
 				amount: amount,
-				company_id: companyId,
+				company_id: resolvedCompanyId,
 				status: "pending",
 			})
 			.select()
@@ -86,12 +150,28 @@ async function handlePaymentFailure(
 
 		console.log("💾 Failed payment saved to database:", data.id);
 
+		// Check if recovery emails are enabled
+		const { data: settings } = await supabaseAdmin
+			.from("creator_settings")
+			.select("*")
+			.eq("company_id", resolvedCompanyId)
+			.single();
+
+		const emailEnabled = settings?.email_enabled ?? true; // Default to enabled if no settings
+
+		if (!emailEnabled) {
+			console.log("⏸️  Recovery emails are disabled. Skipping email.");
+			return;
+		}
+
 		try {
 			await sendRecoveryEmail({
 				to: userEmail,
-				userName: user.name || user.username || "there",
+				userName: userName,
 				amount: amount,
 				membershipId: membershipId,
+				customSubject: settings?.email_subject,
+				customBody: settings?.email_body,
 			});
 
 			await supabaseAdmin
@@ -115,17 +195,30 @@ async function handlePaymentSuccess(
 	paymentId: string,
 	userId: string | null | undefined,
 	membershipId: string | null | undefined,
+	companyId: string | null | undefined,
 ) {
 	if (!userId || !membershipId) {
 		return;
 	}
 
 	try {
+		// Get company_id if not provided
+		let resolvedCompanyId = companyId;
+
+		if (!resolvedCompanyId) {
+			console.log("🔍 company_id not in payload, fetching from membership...");
+			const membership = await whopSdk.memberships.getMembership({
+				id: membershipId,
+			});
+			resolvedCompanyId = membership.plan?.company_id || membership.product?.company_id;
+		}
+
 		const { data: failedPayments, error } = await supabaseAdmin
 			.from("failed_payments")
 			.select("*")
 			.eq("whop_membership_id", membershipId)
 			.eq("whop_user_id", userId)
+			.eq("company_id", resolvedCompanyId)
 			.is("recovered_at", null)
 			.order("failed_at", { ascending: false })
 			.limit(1);

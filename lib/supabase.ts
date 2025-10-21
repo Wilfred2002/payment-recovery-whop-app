@@ -25,3 +25,13 @@ export type FailedPayment = {
 	status: "pending" | "sent" | "recovered" | "lost";
 	created_at: string;
 };
+
+export type CreatorSettings = {
+	id: string;
+	company_id: string;
+	email_enabled: boolean;
+	email_subject: string;
+	email_body: string;
+	created_at: string;
+	updated_at: string;
+};
