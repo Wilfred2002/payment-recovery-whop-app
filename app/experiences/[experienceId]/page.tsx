@@ -1,5 +1,8 @@
 import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 export default async function ExperiencePage({
 	params,
@@ -15,33 +18,79 @@ export default async function ExperiencePage({
 	// The user token is in the headers
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
+	// Check if user has access to this experience
 	const result = await whopSdk.access.checkIfUserHasAccessToExperience({
 		userId,
 		experienceId,
 	});
 
-	const user = await whopSdk.users.getUser({ userId });
+	// Get experience details to find the company_id
 	const experience = await whopSdk.experiences.getExperience({ experienceId });
+	const companyId = experience.company.id;
 
-	// Either: 'admin' | 'customer' | 'no_access';
-	// 'admin' means the user is an admin of the whop, such as an owner or moderator
-	// 'customer' means the user is a common member in this whop
-	// 'no_access' means the user does not have access to the whop
-	const { accessLevel } = result;
+	// If user is an admin, redirect them to the dashboard
+	if (result.accessLevel === "admin" && companyId) {
+		redirect(`/dashboard/${companyId}`);
+	}
 
+	// Get user details for personalization
+	const user = await whopSdk.users.getUser({ userId });
+
+	// If user has no access, show access denied
+	if (!result.hasAccess) {
+		return (
+			<div className="min-h-screen bg-mint-50 flex flex-col">
+				<Header showNav={false} />
+				<div className="flex-1 flex items-center justify-center px-8">
+					<div className="text-center max-w-md">
+						<div className="text-6xl mb-6">🔒</div>
+						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+							Access Denied
+						</h1>
+						<p className="text-lg text-mint-700 mb-2">
+							Hi <strong>{user.name}</strong>,
+						</p>
+						<p className="text-mint-600">
+							You don't have access to this experience yet. Please purchase a
+							membership to continue.
+						</p>
+					</div>
+				</div>
+				<Footer />
+			</div>
+		);
+	}
+
+	// If user is a regular customer (not admin), show info message
 	return (
-		<div className="flex justify-center items-center h-screen px-8">
-			<h1 className="text-xl">
-				Hi <strong>{user.name}</strong>, you{" "}
-				<strong>{result.hasAccess ? "have" : "do not have"} access</strong> to
-				this experience. Your access level to this whop is:{" "}
-				<strong>{accessLevel}</strong>. <br />
-				<br />
-				Your user ID is <strong>{userId}</strong> and your username is{" "}
-				<strong>@{user.username}</strong>.<br />
-				<br />
-				You are viewing the experience: <strong>{experience.name}</strong>
-			</h1>
+		<div className="min-h-screen bg-mint-50 flex flex-col">
+			<Header showNav={false} />
+			<div className="flex-1 flex items-center justify-center px-8">
+				<div className="text-center max-w-2xl">
+					<div className="text-6xl mb-6">💳</div>
+					<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						Rebound Payment Recovery
+					</h1>
+					<p className="text-lg text-mint-700 mb-4">
+						Hi <strong>{user.name}</strong>! 👋
+					</p>
+					<div className="bg-white border border-mint-200 rounded-lg p-6 shadow-sm text-left">
+						<p className="text-mint-700 mb-4">
+							This app helps business owners automatically recover failed
+							payments by sending personalized recovery emails to customers.
+						</p>
+						<p className="text-mint-600 text-sm">
+							As a member, you don't need to interact with this app directly. If
+							you ever have a payment issue, you'll receive an automated email
+							with instructions to update your payment method.
+						</p>
+					</div>
+					<p className="text-sm text-mint-500 mt-6">
+						Questions? Contact your community administrator.
+					</p>
+				</div>
+			</div>
+			<Footer />
 		</div>
 	);
 }
