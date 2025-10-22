@@ -21,6 +21,8 @@ test-webhook-real.js
 test-webhook-simple.js
 test-with-real-company.js
 test-webhook.js
+test-new-setup.js
+test-webhook-local.js
 
 # next.js
 /.next/
