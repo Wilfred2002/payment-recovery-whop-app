@@ -8,10 +8,10 @@ import Footer from "@/app/components/Footer";
 export default async function DashboardPage({
 	params,
 }: {
-	params: { companyId: string };
+	params: Promise<{ companyId: string }>;
 }) {
 	const headersList = await headers();
-	const { companyId } = params;
+	const { companyId } = await params;
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
 	const result = await whopSdk.access.checkIfUserHasAccessToCompany({
