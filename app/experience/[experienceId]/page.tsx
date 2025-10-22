@@ -7,13 +7,13 @@ import Footer from "@/app/components/Footer";
 export default async function ExperiencePage({
 	params,
 }: {
-	params: Promise<{ experienceId: string }>;
+	params: { experienceId: string };
 }) {
 	// The headers contains the user token
 	const headersList = await headers();
 
 	// The experienceId is a path param
-	const { experienceId } = await params;
+	const { experienceId } = params;
 
 	// The user token is in the headers
 	const { userId } = await whopSdk.verifyUserToken(headersList);
