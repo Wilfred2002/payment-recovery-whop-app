@@ -14,6 +14,13 @@ export default async function ExperiencePage({
 	// The experienceId is a path param
 	const { experienceId } = await params;
 
+	// Debug: Log if x-whop-user-token header is present
+	const hasUserToken = headersList.has("x-whop-user-token");
+	console.log("[DEBUG] x-whop-user-token present:", hasUserToken);
+	if (!hasUserToken) {
+		console.log("[DEBUG] Available headers:", Array.from(headersList.keys()));
+	}
+
 	// The user token is in the headers
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 

@@ -9,8 +9,10 @@ export const whopSdk = WhopServerSdk({
 	// You can get this from the Whop dashboard after creating an app section.
 	appApiKey: process.env.WHOP_API_KEY ?? "fallback",
 
-	// REMOVED for multi-tenant support:
-	// - onBehalfOfUserId: Use .withUser() instead when needed
+	// Add agent user ID for API requests made on behalf of the app
+	onBehalfOfUserId: process.env.NEXT_PUBLIC_WHOP_AGENT_USER_ID,
+
+	// REMOVED companyId for multi-tenant support:
 	// - companyId: Use .withCompany() instead when needed
 	//
 	// This allows the app to work with multiple companies dynamically
