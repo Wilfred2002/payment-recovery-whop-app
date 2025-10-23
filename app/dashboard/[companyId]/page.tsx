@@ -16,8 +16,17 @@ export default async function DashboardPage({
 	// Debug: Log headers to help troubleshoot
 	const whopToken = headersList.get("x-whop-user-token");
 	console.log("🔍 Debug - Whop token present:", !!whopToken);
-	console.log("🔍 Debug - All headers:", Object.fromEntries(headersList.entries()));
-	
+
+	// Debug: Compare JWT aud claim vs environment variable
+	if (whopToken) {
+		const payload = JSON.parse(
+			Buffer.from(whopToken.split(".")[1], "base64").toString("utf8")
+		);
+		console.log("🔍 JWT aud claim:", payload.aud);
+		console.log("🔍 ENV NEXT_PUBLIC_WHOP_APP_ID:", process.env.NEXT_PUBLIC_WHOP_APP_ID);
+		console.log("🔍 Match:", payload.aud === process.env.NEXT_PUBLIC_WHOP_APP_ID);
+	}
+
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
 	const result = await whopSdk.access.checkIfUserHasAccessToCompany({

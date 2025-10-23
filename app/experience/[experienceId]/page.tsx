@@ -21,6 +21,17 @@ export default async function ExperiencePage({
 		console.log("[DEBUG] Available headers:", Array.from(headersList.keys()));
 	}
 
+	// Debug: Compare JWT aud claim vs environment variable
+	const token = headersList.get("x-whop-user-token");
+	if (token) {
+		const payload = JSON.parse(
+			Buffer.from(token.split(".")[1], "base64").toString("utf8")
+		);
+		console.log("🔍 JWT aud claim:", payload.aud);
+		console.log("🔍 ENV NEXT_PUBLIC_WHOP_APP_ID:", process.env.NEXT_PUBLIC_WHOP_APP_ID);
+		console.log("🔍 Match:", payload.aud === process.env.NEXT_PUBLIC_WHOP_APP_ID);
+	}
+
 	// The user token is in the headers
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
