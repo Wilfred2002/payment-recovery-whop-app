@@ -1,0 +1,18 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "x-whop-user-token, Content-Type, Authorization"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "app/api/webhooks/route.ts": {
+      "maxDuration": 30
+    }
+  }
+}

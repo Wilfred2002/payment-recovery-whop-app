@@ -12,6 +12,12 @@ export default async function DashboardPage({
 }) {
 	const headersList = await headers();
 	const { companyId } = await params;
+	
+	// Debug: Log headers to help troubleshoot
+	const whopToken = headersList.get("x-whop-user-token");
+	console.log("🔍 Debug - Whop token present:", !!whopToken);
+	console.log("🔍 Debug - All headers:", Object.fromEntries(headersList.entries()));
+	
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
 	const result = await whopSdk.access.checkIfUserHasAccessToCompany({
