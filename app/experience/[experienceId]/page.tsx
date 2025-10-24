@@ -8,31 +8,9 @@ export default async function ExperiencePage({
 }: {
 	params: Promise<{ experienceId: string }>;
 }) {
-	// The headers contains the user token
 	const headersList = await headers();
-
-	// The experienceId is a path param
 	const { experienceId } = await params;
 
-	// Debug: Log if x-whop-user-token header is present
-	const hasUserToken = headersList.has("x-whop-user-token");
-	console.log("[DEBUG] x-whop-user-token present:", hasUserToken);
-	if (!hasUserToken) {
-		console.log("[DEBUG] Available headers:", Array.from(headersList.keys()));
-	}
-
-	// Debug: Compare JWT aud claim vs environment variable
-	const token = headersList.get("x-whop-user-token");
-	if (token) {
-		const payload = JSON.parse(
-			Buffer.from(token.split(".")[1], "base64").toString("utf8")
-		);
-		console.log("🔍 JWT aud claim:", payload.aud);
-		console.log("🔍 ENV NEXT_PUBLIC_WHOP_APP_ID:", process.env.NEXT_PUBLIC_WHOP_APP_ID);
-		console.log("🔍 Match:", payload.aud === process.env.NEXT_PUBLIC_WHOP_APP_ID);
-	}
-
-	// The user token is in the headers
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
 	// Check if user has access to this experience

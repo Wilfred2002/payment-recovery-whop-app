@@ -75,6 +75,23 @@ async function handlePaymentFailure(
 			return;
 		}
 
+		// ✅ CRITICAL: Check if the company has an active subscription to YOUR app
+		// This prevents sending recovery emails for companies that haven't paid for your service
+		const companyAccess = await whopSdk.access.checkIfUserHasAccessToCompany({
+			userId,
+			companyId: resolvedCompanyId,
+		});
+
+		if (!companyAccess.hasAccess) {
+			console.log(
+				`⏸️  Company ${resolvedCompanyId} does not have active subscription to this app. Skipping recovery email.`,
+			);
+			return;
+		}
+
+		console.log(`✅ Company ${resolvedCompanyId} has active subscription - proceeding with recovery email`);
+
+
 		// ========================================
 		// 🔧 DEVELOPMENT MODE BYPASS
 		// ========================================

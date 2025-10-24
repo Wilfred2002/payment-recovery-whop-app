@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import type { FailedPayment } from "@/lib/supabase";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import SubscribeButton from "@/app/components/SubscribeButton";
 
 export default async function DashboardPage({
 	params,
@@ -12,20 +13,6 @@ export default async function DashboardPage({
 }) {
 	const headersList = await headers();
 	const { companyId } = await params;
-	
-	// Debug: Log headers to help troubleshoot
-	const whopToken = headersList.get("x-whop-user-token");
-	console.log("🔍 Debug - Whop token present:", !!whopToken);
-
-	// Debug: Compare JWT aud claim vs environment variable
-	if (whopToken) {
-		const payload = JSON.parse(
-			Buffer.from(whopToken.split(".")[1], "base64").toString("utf8")
-		);
-		console.log("🔍 JWT aud claim:", payload.aud);
-		console.log("🔍 ENV NEXT_PUBLIC_WHOP_APP_ID:", process.env.NEXT_PUBLIC_WHOP_APP_ID);
-		console.log("🔍 Match:", payload.aud === process.env.NEXT_PUBLIC_WHOP_APP_ID);
-	}
 
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
@@ -34,12 +21,64 @@ export default async function DashboardPage({
 		companyId,
 	});
 
+	// ✅ FIRST: Check if they have access (paid subscription)
+	if (!result.hasAccess) {
+		return (
+			<div className="min-h-screen bg-mint-50 flex flex-col">
+				<Header showNav={false} />
+				<div className="flex-1 flex items-center justify-center px-8">
+					<div className="text-center max-w-md">
+						<div className="text-6xl mb-6">🔒</div>
+						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+							Subscription Required
+						</h1>
+						<p className="text-lg text-mint-700 mb-4">
+							This app requires an active subscription to access the dashboard.
+						</p>
+						<div className="bg-white border border-mint-200 rounded-lg p-6 shadow-sm text-left mb-6">
+							<p className="text-mint-700 mb-4">
+								<strong>Payment Recovery Dashboard</strong> helps you automatically recover failed payments and increase revenue.
+							</p>
+							<ul className="text-sm text-mint-600 space-y-2 mb-4">
+								<li>✓ Automated recovery emails</li>
+								<li>✓ Real-time payment tracking</li>
+								<li>✓ Customizable email templates</li>
+								<li>✓ Recovery analytics</li>
+							</ul>
+						</div>
+						<SubscribeButton companyId={companyId}>
+							Subscribe Now →
+						</SubscribeButton>
+						<p className="text-xs text-mint-500 mt-4">
+							$30/month • Cancel anytime
+						</p>
+					</div>
+				</div>
+				<Footer />
+			</div>
+		);
+	}
+
+	// ✅ SECOND: Check if they're an admin
 	if (result.accessLevel !== "admin") {
 		return (
-			<div className="flex justify-center items-center h-screen px-8">
-				<h1 className="text-xl text-red-500">
-					Access Denied: You must be an admin to view this dashboard.
-				</h1>
+			<div className="min-h-screen bg-mint-50 flex flex-col">
+				<Header showNav={false} />
+				<div className="flex-1 flex items-center justify-center px-8">
+					<div className="text-center max-w-md">
+						<div className="text-6xl mb-6">👑</div>
+						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+							Admin Access Required
+						</h1>
+						<p className="text-lg text-mint-700 mb-2">
+							Hi there!
+						</p>
+						<p className="text-mint-600">
+							You must be an admin to view this dashboard. Please contact your company administrator.
+						</p>
+					</div>
+				</div>
+				<Footer />
 			</div>
 		);
 	}
