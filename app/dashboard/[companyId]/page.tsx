@@ -5,6 +5,7 @@ import type { FailedPayment } from "@/lib/supabase";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import SubscribeButton from "@/app/components/SubscribeButton";
+import { checkHasActiveSubscription, checkIsAdmin } from "@/lib/access-check";
 
 export default async function DashboardPage({
 	params,
@@ -16,13 +17,10 @@ export default async function DashboardPage({
 
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
-	const result = await whopSdk.access.checkIfUserHasAccessToCompany({
-		userId,
-		companyId,
-	});
+	// ✅ FIRST: Check if they have an active subscription to this app
+	const hasSubscription = await checkHasActiveSubscription(userId, companyId);
 
-	// ✅ FIRST: Check if they have access (paid subscription)
-	if (!result.hasAccess) {
+	if (!hasSubscription) {
 		return (
 			<div className="min-h-screen bg-mint-50 flex flex-col">
 				<Header showNav={false} />
@@ -60,7 +58,9 @@ export default async function DashboardPage({
 	}
 
 	// ✅ SECOND: Check if they're an admin
-	if (result.accessLevel !== "admin") {
+	const isAdmin = await checkIsAdmin(userId, companyId);
+
+	if (!isAdmin) {
 		return (
 			<div className="min-h-screen bg-mint-50 flex flex-col">
 				<Header showNav={false} />

@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { sendRecoveryEmail } from "@/lib/email";
 import { whopSdk } from "@/lib/whop-sdk";
+import { checkHasActiveSubscription } from "@/lib/access-check";
 
 const validateWebhook = makeWebhookValidator({
 	webhookSecret: process.env.WHOP_WEBHOOK_SECRET ?? "fallback",
@@ -77,19 +78,21 @@ async function handlePaymentFailure(
 
 		// ✅ CRITICAL: Check if the company has an active subscription to YOUR app
 		// This prevents sending recovery emails for companies that haven't paid for your service
-		const companyAccess = await whopSdk.access.checkIfUserHasAccessToCompany({
+		const hasSubscription = await checkHasActiveSubscription(
 			userId,
-			companyId: resolvedCompanyId,
-		});
+			resolvedCompanyId,
+		);
 
-		if (!companyAccess.hasAccess) {
+		if (!hasSubscription) {
 			console.log(
 				`⏸️  Company ${resolvedCompanyId} does not have active subscription to this app. Skipping recovery email.`,
 			);
 			return;
 		}
 
-		console.log(`✅ Company ${resolvedCompanyId} has active subscription - proceeding with recovery email`);
+		console.log(
+			`✅ Company ${resolvedCompanyId} has active subscription - proceeding with recovery email`,
+		);
 
 
 		// ========================================
@@ -176,6 +179,8 @@ async function handlePaymentFailure(
 			console.log("⏸️  Recovery emails are disabled. Skipping email.");
 			return;
 		}
+
+		console.log("✅ Sending recovery email for all products (no filtering).");
 
 		try {
 			await sendRecoveryEmail({

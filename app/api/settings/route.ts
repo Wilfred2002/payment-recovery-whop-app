@@ -89,7 +89,12 @@ The Team`,
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const { email_enabled, email_subject, email_body, company_id } = body;
+		const {
+			email_enabled,
+			email_subject,
+			email_body,
+			company_id,
+		} = body;
 
 		// Validate required fields
 		if (
