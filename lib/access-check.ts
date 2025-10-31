@@ -1,68 +1,81 @@
-import { whopSdk } from "./whop-sdk";
-
 /**
- * Checks if a user/company has an active subscription to this app
- * Returns true only if they have a valid membership to the premium plan
+ * Checks if a user has access to this app's product
+ * Uses Whop's check access REST API endpoint with product ID
  */
 export async function checkHasActiveSubscription(
 	userId: string,
 	companyId: string,
 ): Promise<boolean> {
 	try {
-		// First check basic company access
-		const accessResult = await whopSdk.access.checkIfUserHasAccessToCompany({
-			userId,
-			companyId,
-		});
+		// First check basic company access via REST API
+		const companyMemberId = `${userId}_${companyId}`;
+		const memberResponse = await fetch(
+			`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
+			{
+				headers: {
+					Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+				},
+			},
+		);
 
-		if (!accessResult.hasAccess) {
+		if (!memberResponse.ok) {
+			console.error(
+				`Failed to check company access: ${memberResponse.status} ${memberResponse.statusText}`,
+			);
 			return false;
 		}
 
-		// If NEXT_PUBLIC_PREMIUM_PLAN_ID is not set, app is in open beta mode
-		const requiredPlanId = process.env.NEXT_PUBLIC_PREMIUM_PLAN_ID;
-		if (!requiredPlanId) {
+		const memberData = await memberResponse.json();
+		if (!memberData.member) {
+			return false;
+		}
+
+		// If NEXT_PUBLIC_WHOP_PRODUCT_ID is not set, app is in open beta mode
+		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID;
+		if (!requiredProductId) {
 			console.warn(
-				"⚠️  NEXT_PUBLIC_PREMIUM_PLAN_ID not set - app is in OPEN ACCESS mode",
+				"⚠️  NEXT_PUBLIC_WHOP_PRODUCT_ID not set - app is in OPEN ACCESS mode",
 			);
 			console.warn(
-				"⚠️  Set this env var and create a paid product to enable subscription gating",
+				"⚠️  Set this env var to enable subscription gating",
 			);
-			// In development/testing without plan ID, allow access
+			// In development/testing without product ID, allow access
 			return true;
 		}
 
-		// Check if user has an active membership to the premium plan
+		// Check if user has access to the product using Whop's check access API
 		try {
-			const memberships = await whopSdk.companies.listMemberships({
-				companyId,
-				userId,
-			});
+			const response = await fetch(
+				`https://api.whop.com/api/v1/users/${userId}/access/${requiredProductId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+					},
+				},
+			);
 
-			// Check if any membership is for our premium plan and is valid
-			const hasActivePlan = memberships.data.some((membership) => {
-				const isCorrectPlan = membership.planId === requiredPlanId;
-				const isValid = membership.valid === true;
-				const isActive =
-					membership.status === "active" ||
-					membership.status === "trialing";
-
-				return isCorrectPlan && isValid && isActive;
-			});
-
-			if (!hasActivePlan) {
-				console.log(
-					`❌ User ${userId} in company ${companyId} does not have active subscription to plan ${requiredPlanId}`,
+			if (!response.ok) {
+				console.error(
+					`Failed to check access: ${response.status} ${response.statusText}`,
 				);
 				return false;
 			}
 
-			console.log(
-				`✅ User ${userId} in company ${companyId} has active subscription`,
-			);
-			return true;
+			const data = await response.json();
+
+			if (data.has_access) {
+				console.log(
+					`✅ User ${userId} has access to product ${requiredProductId}`,
+				);
+				return true;
+			} else {
+				console.log(
+					`❌ User ${userId} does not have access to product ${requiredProductId}`,
+				);
+				return false;
+			}
 		} catch (error) {
-			console.error("Error checking memberships:", error);
+			console.error("Error checking product access:", error);
 			// If we can't verify, deny access for security
 			return false;
 		}
@@ -79,10 +92,28 @@ export async function checkIsAdmin(
 	userId: string,
 	companyId: string,
 ): Promise<boolean> {
-	const result = await whopSdk.access.checkIfUserHasAccessToCompany({
-		userId,
-		companyId,
-	});
+	try {
+		const companyMemberId = `${userId}_${companyId}`;
+		const memberResponse = await fetch(
+			`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
+			{
+				headers: {
+					Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+				},
+			},
+		);
 
-	return result.accessLevel === "admin";
+		if (!memberResponse.ok) {
+			console.error(
+				`Failed to check admin status: ${memberResponse.status} ${memberResponse.statusText}`,
+			);
+			return false;
+		}
+
+		const memberData = await memberResponse.json();
+		return memberData.member?.access_level === "admin";
+	} catch (error) {
+		console.error("Error checking admin status:", error);
+		return false;
+	}
 }

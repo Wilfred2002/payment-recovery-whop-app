@@ -21,12 +21,27 @@ export async function GET(request: NextRequest) {
 		try {
 			const headersList = await headers();
 			const { userId } = await whopSdk.verifyUserToken(headersList);
-			const result = await whopSdk.access.checkIfUserHasAccessToCompany({
-				userId,
-				companyId,
-			});
 
-			if (result.accessLevel !== "admin") {
+			// Check admin access via REST API
+			const companyMemberId = `${userId}_${companyId}`;
+			const memberResponse = await fetch(
+				`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+					},
+				},
+			);
+
+			if (!memberResponse.ok) {
+				return NextResponse.json(
+					{ error: "Unauthorized: Admin access required" },
+					{ status: 403 },
+				);
+			}
+
+			const memberData = await memberResponse.json();
+			if (memberData.member?.access_level !== "admin") {
 				return NextResponse.json(
 					{ error: "Unauthorized: Admin access required" },
 					{ status: 403 },
@@ -113,12 +128,27 @@ export async function POST(request: NextRequest) {
 		try {
 			const headersList = await headers();
 			const { userId } = await whopSdk.verifyUserToken(headersList);
-			const result = await whopSdk.access.checkIfUserHasAccessToCompany({
-				userId,
-				companyId: company_id,
-			});
 
-			if (result.accessLevel !== "admin") {
+			// Check admin access via REST API
+			const companyMemberId = `${userId}_${company_id}`;
+			const memberResponse = await fetch(
+				`https://api.whop.com/api/v1/companies/${company_id}/members/${companyMemberId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+					},
+				},
+			);
+
+			if (!memberResponse.ok) {
+				return NextResponse.json(
+					{ error: "Unauthorized: Admin access required" },
+					{ status: 403 },
+				);
+			}
+
+			const memberData = await memberResponse.json();
+			if (memberData.member?.access_level !== "admin") {
 				return NextResponse.json(
 					{ error: "Unauthorized: Admin access required" },
 					{ status: 403 },

@@ -83,7 +83,23 @@ export default async function DashboardPage({
 		);
 	}
 
-	const company = await whopSdk.companies.getCompany({ companyId });
+	// Get company details via REST API
+	const companyResponse = await fetch(
+		`https://api.whop.com/api/v1/companies/${companyId}`,
+		{
+			headers: {
+				Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+			},
+		},
+	);
+
+	if (!companyResponse.ok) {
+		throw new Error(
+			`Failed to fetch company: ${companyResponse.status} ${companyResponse.statusText}`,
+		);
+	}
+
+	const company = await companyResponse.json();
 
 	const { data: allFailures } = await supabaseAdmin
 		.from("failed_payments")

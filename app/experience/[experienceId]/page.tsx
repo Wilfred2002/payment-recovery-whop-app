@@ -13,18 +13,75 @@ export default async function ExperiencePage({
 
 	const { userId } = await whopSdk.verifyUserToken(headersList);
 
-	// Check if user has access to this experience
-	const result = await whopSdk.access.checkIfUserHasAccessToExperience({
-		userId,
-		experienceId,
-	});
+	// Get experience details via REST API to find the company_id
+	const experienceResponse = await fetch(
+		`https://api.whop.com/api/v1/experiences/${experienceId}`,
+		{
+			headers: {
+				Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+			},
+		},
+	);
 
-	// Get experience details to find the company_id
-	const experience = await whopSdk.experiences.getExperience({ experienceId });
+	if (!experienceResponse.ok) {
+		return (
+			<div className="min-h-screen bg-mint-50 flex flex-col">
+				<Header showNav={false} />
+				<div className="flex-1 flex items-center justify-center px-8">
+					<div className="text-center max-w-md">
+						<div className="text-6xl mb-6">❌</div>
+						<h1 className="text-3xl font-bold text-mint-800 mb-4">
+							Experience Not Found
+						</h1>
+						<p className="text-mint-600">
+							The experience you're looking for doesn't exist.
+						</p>
+					</div>
+				</div>
+				<Footer />
+			</div>
+		);
+	}
+
+	const experience = await experienceResponse.json();
 	const companyId = experience.company.id;
 
+	// Check if user has access to this experience via REST API
+	const accessResponse = await fetch(
+		`https://api.whop.com/api/v1/users/${userId}/access/${experienceId}`,
+		{
+			headers: {
+				Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+			},
+		},
+	);
+
+	let result = { hasAccess: false, accessLevel: "no_access" as const };
+	if (accessResponse.ok) {
+		result = await accessResponse.json();
+	}
+
+	// Check if user is admin of the company
+	let isAdmin = false;
+	if (companyId && result.hasAccess) {
+		const companyMemberId = `${userId}_${companyId}`;
+		const memberResponse = await fetch(
+			`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
+			{
+				headers: {
+					Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+				},
+			},
+		);
+
+		if (memberResponse.ok) {
+			const memberData = await memberResponse.json();
+			isAdmin = memberData.member?.access_level === "admin";
+		}
+	}
+
 	// If user is an admin, show admin dashboard access page
-	if (result.accessLevel === "admin" && companyId) {
+	if (isAdmin && companyId) {
 		return (
 			<div className="min-h-screen bg-mint-50 flex flex-col">
 				<Header showNav={false} />

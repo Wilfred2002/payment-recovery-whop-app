@@ -3,8 +3,6 @@ import { makeWebhookValidator } from "@whop/api";
 import type { NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { sendRecoveryEmail } from "@/lib/email";
-import { whopSdk } from "@/lib/whop-sdk";
-import { checkHasActiveSubscription } from "@/lib/access-check";
 
 const validateWebhook = makeWebhookValidator({
 	webhookSecret: process.env.WHOP_WEBHOOK_SECRET ?? "fallback",
@@ -76,23 +74,48 @@ async function handlePaymentFailure(
 			return;
 		}
 
-		// ✅ CRITICAL: Check if the company has an active subscription to YOUR app
+		// ✅ CRITICAL: Check if the user has access to YOUR app's product
 		// This prevents sending recovery emails for companies that haven't paid for your service
-		const hasSubscription = await checkHasActiveSubscription(
-			userId,
-			resolvedCompanyId,
-		);
+		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID;
 
-		if (!hasSubscription) {
+		if (requiredProductId) {
+			try {
+				const accessResponse = await fetch(
+					`https://api.whop.com/api/v1/users/${userId}/access/${requiredProductId}`,
+					{
+						headers: {
+							Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+						},
+					},
+				);
+
+				if (accessResponse.ok) {
+					const accessData = await accessResponse.json();
+
+					if (!accessData.has_access) {
+						console.log(
+							`⏸️  User ${userId} does not have access to product ${requiredProductId}. Skipping recovery email.`,
+						);
+						return;
+					}
+
+					console.log(
+						`✅ User ${userId} has access to product ${requiredProductId} - proceeding with recovery email`,
+					);
+				} else {
+					console.warn(
+						`⚠️  Could not verify product access (${accessResponse.status}). Sending email anyway (fail-open).`,
+					);
+				}
+			} catch (error) {
+				console.error("Error checking product access:", error);
+				console.warn("⚠️  Access check failed. Sending email anyway (fail-open).");
+			}
+		} else {
 			console.log(
-				`⏸️  Company ${resolvedCompanyId} does not have active subscription to this app. Skipping recovery email.`,
+				"✅ No product ID set - app is in open access mode. Sending email.",
 			);
-			return;
 		}
-
-		console.log(
-			`✅ Company ${resolvedCompanyId} has active subscription - proceeding with recovery email`,
-		);
 
 
 		// ========================================
@@ -119,20 +142,34 @@ async function handlePaymentFailure(
 
 			console.log(`📧 Dev mode: Sending to ${userEmail}`);
 		} else {
-			// PRODUCTION MODE: Get real member data from Whop API
+			// PRODUCTION MODE: Get real member data from Whop REST API
 			// Requires: member:basic:read and member:email:read permissions
-			const memberResponse = await whopSdk.companies.getMember({
-				companyId: resolvedCompanyId,
-				companyMemberId: `${userId}_${resolvedCompanyId}`,
-			});
+			const companyMemberId = `${userId}_${resolvedCompanyId}`;
+			const memberResponse = await fetch(
+				`https://api.whop.com/api/v1/companies/${resolvedCompanyId}/members/${companyMemberId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+					},
+				},
+			);
+
+			if (!memberResponse.ok) {
+				console.error(
+					`❌ Unable to get member data: ${memberResponse.status} ${memberResponse.statusText}`,
+				);
+				return;
+			}
+
+			const memberData = await memberResponse.json();
 
 			// Handle the response structure - member data is nested
-			if (!memberResponse?.member) {
+			if (!memberData?.member) {
 				console.error("❌ Unable to get member data from API response");
 				return;
 			}
 
-			const member = memberResponse.member;
+			const member = memberData.member;
 			userEmail = member.user?.email || "";
 			userName = member.user?.name || member.user?.username || "there";
 

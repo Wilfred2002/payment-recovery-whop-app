@@ -35,12 +35,21 @@ export default async function Page() {
 		const headersList = await headers();
 		const { userId } = await whopSdk.verifyUserToken(headersList);
 
-		const result = await whopSdk.access.checkIfUserHasAccessToCompany({
-			userId,
-			companyId,
-		});
+		// Check admin access via REST API
+		const companyMemberId = `${userId}_${companyId}`;
+		const memberResponse = await fetch(
+			`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
+			{
+				headers: {
+					Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+				},
+			},
+		);
 
-		hasAccess = result.accessLevel === "admin";
+		if (memberResponse.ok) {
+			const memberData = await memberResponse.json();
+			hasAccess = memberData.member?.access_level === "admin";
+		}
 	} catch (error) {
 		// User not authenticated or no access
 		hasAccess = false;
