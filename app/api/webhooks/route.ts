@@ -86,8 +86,8 @@ async function handlePaymentFailure(
 
 		// ✅ CRITICAL: Check if the COMPANY has purchased YOUR app
 		// This prevents sending recovery emails for companies that haven't paid for your service
-		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID;
-		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
+		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID?.trim();
+		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID?.trim();
 
 		// Always allow app owner's company (for testing/own use)
 		if (appOwnerCompanyId && resolvedCompanyId === appOwnerCompanyId) {

@@ -53,7 +53,7 @@ export async function checkHasActiveSubscription(
 					console.log(`🔍 Company owner: ${ownerId}, Current user: ${userId}`);
 					console.log(`🔍 Checking company: ${companyId}, App owner company: ${process.env.NEXT_PUBLIC_WHOP_COMPANY_ID}`);
 
-					const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
+					const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID?.trim();
 					const isAppOwnerCompany = appOwnerCompanyId && companyId === appOwnerCompanyId;
 
 					console.log(`🔍 DEBUG isAppOwnerCompany:`, {
@@ -130,7 +130,7 @@ export async function checkHasActiveSubscription(
 		}
 
 		// If NEXT_PUBLIC_WHOP_PRODUCT_ID is not set, app is in open beta mode
-		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID;
+		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID?.trim();
 		if (!requiredProductId) {
 			console.warn(
 				"⚠️  NEXT_PUBLIC_WHOP_PRODUCT_ID not set - app is in OPEN ACCESS mode",
@@ -148,7 +148,7 @@ export async function checkHasActiveSubscription(
 				`https://api.whop.com/api/v1/users/${userId}/access/${requiredProductId}`,
 				{
 					headers: {
-						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+						Authorization: `Bearer ${process.env.WHOP_API_KEY?.trim()}`,
 					},
 				},
 			);
