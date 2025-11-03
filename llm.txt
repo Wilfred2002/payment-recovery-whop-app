@@ -1,0 +1,626 @@
+# Whop Docs
+
+## Docs
+
+- [Add apps](https://docs.whop.com/add-apps.md): Learn how to add apps to your whop
+- [Promote your business](https://docs.whop.com/affiliates/promote-your-business.md): Access 25,000+ Active Affiliates to Grow Your Revenue
+- [Set up custom affiliates](https://docs.whop.com/affiliates/setup-custom.md): Promote your product across Whop’s network of affiliates
+- [Set up global affiliates](https://docs.whop.com/affiliates/setup-global.md): Promote your product across Whop’s network of affiliates
+- [Set up revenue share](https://docs.whop.com/affiliates/setup-rev-share.md): Share revenue directly with partners per transaction using automatic Whop Payments payouts
+- [Create app build](https://docs.whop.com/api-reference/app-builds/create-app-build.md): Creates a new app build
+
+Required permissions:
+ - `developer:manage_builds`
+- [List app builds](https://docs.whop.com/api-reference/app-builds/list-app-builds.md): Lists app builds for an app
+
+Required permissions:
+ - `developer:manage_builds`
+- [Promote app build](https://docs.whop.com/api-reference/app-builds/promote-app-build.md): Promotes an app build to production
+
+Required permissions:
+ - `developer:manage_builds`
+- [Retrieve app build](https://docs.whop.com/api-reference/app-builds/retrieve-app-build.md): Retrieves an app build by ID
+
+Required permissions:
+ - `developer:manage_builds`
+- [Create app](https://docs.whop.com/api-reference/apps/create-app.md): Create a new App
+
+Required permissions:
+ - `developer:create_app`
+ - `developer:manage_api_key`
+- [List apps](https://docs.whop.com/api-reference/apps/list-apps.md): Fetches a list of apps
+- [Retrieve app](https://docs.whop.com/api-reference/apps/retrieve-app.md): Retrieves an app by ID
+
+Required permissions:
+ - `developer:manage_api_key`
+- [Update app](https://docs.whop.com/api-reference/apps/update-app.md): Update an existing App
+
+Required permissions:
+ - `developer:update_app`
+ - `developer:manage_api_key`
+- [List authorized users](https://docs.whop.com/api-reference/authorized-users/list-authorized-users.md): Lists authorized users
+
+Required permissions:
+ - `company:authorized_user:read`
+ - `member:email:read`
+- [Retrieve authorized user](https://docs.whop.com/api-reference/authorized-users/retrieve-authorized-user.md): Retrieves a authorized user by ID
+
+Required permissions:
+ - `company:authorized_user:read`
+ - `member:email:read`
+- [List chat channels](https://docs.whop.com/api-reference/chat-channels/list-chat-channels.md): Lists chat channels inside a company
+
+Required permissions:
+ - `chat:read`
+- [Retrieve chat channel](https://docs.whop.com/api-reference/chat-channels/retrieve-chat-channel.md): Retrieves a chat channel
+
+Required permissions:
+ - `chat:read`
+- [Update chat channel](https://docs.whop.com/api-reference/chat-channels/update-chat-channel.md): Updates a chat channel
+
+Required permissions:
+ - `chat:moderate`
+- [Create checkout configuration](https://docs.whop.com/api-reference/checkout-configurations/create-checkout-configuration.md): Creates a new checkout configuration
+
+Required permissions:
+ - `checkout_configuration:create`
+ - `plan:create`
+ - `access_pass:create`
+ - `access_pass:update`
+- [List checkout configurations](https://docs.whop.com/api-reference/checkout-configurations/list-checkout-configurations.md): Lists checkout configurations
+
+Required permissions:
+ - `checkout_configuration:basic:read`
+- [Retrieve checkout configuration](https://docs.whop.com/api-reference/checkout-configurations/retrieve-checkout-configuration.md): Retrieves a checkout configuration by ID
+
+Required permissions:
+ - `checkout_configuration:basic:read`
+- [Retrieve company](https://docs.whop.com/api-reference/companies/retrieve-company.md): Retrieves an company by ID or its url route
+
+Required permissions:
+ - `company:basic:read`
+- [Create course chapter](https://docs.whop.com/api-reference/course-chapters/create-course-chapter.md): Creates a new course chapter
+
+Required permissions:
+ - `courses:update`
+- [Delete course chapter](https://docs.whop.com/api-reference/course-chapters/delete-course-chapter.md): Deletes a course chapter
+
+Required permissions:
+ - `courses:update`
+- [List course chapters](https://docs.whop.com/api-reference/course-chapters/list-course-chapters.md): Lists chapters for a course
+
+Required permissions:
+ - `courses:read`
+- [Retrieve course chapter](https://docs.whop.com/api-reference/course-chapters/retrieve-course-chapter.md): Retrieves a course chapter by ID
+
+Required permissions:
+ - `courses:read`
+- [Update course chapter](https://docs.whop.com/api-reference/course-chapters/update-course-chapter.md): Updates a course chapter
+
+Required permissions:
+ - `courses:update`
+- [Courselessoninteraction completed](https://docs.whop.com/api-reference/course-lesson-interactions/courselessoninteraction-completed.md): Sent when a course lesson interaction is completed
+
+Required permissions:
+ - `courses:read`
+ - `course_analytics:read`
+- [List course lesson interactions](https://docs.whop.com/api-reference/course-lesson-interactions/list-course-lesson-interactions.md): Lists course lesson interactions
+
+Required permissions:
+ - `courses:read`
+ - `course_analytics:read`
+- [Retrieve course lesson interaction](https://docs.whop.com/api-reference/course-lesson-interactions/retrieve-course-lesson-interaction.md): Retrieves a course lesson interaction by ID
+
+Required permissions:
+ - `courses:read`
+ - `course_analytics:read`
+- [Create course lesson](https://docs.whop.com/api-reference/course-lessons/create-course-lesson.md): Creates a new course lesson
+
+Required permissions:
+ - `courses:update`
+- [Delete course lesson](https://docs.whop.com/api-reference/course-lessons/delete-course-lesson.md): Deletes a course lesson
+
+Required permissions:
+ - `courses:update`
+- [List course lessons](https://docs.whop.com/api-reference/course-lessons/list-course-lessons.md): Lists lessons for a course or chapter
+
+Required permissions:
+ - `courses:read`
+- [Retrieve course lesson](https://docs.whop.com/api-reference/course-lessons/retrieve-course-lesson.md): Retrieves a course lesson by ID
+
+Required permissions:
+ - `courses:read`
+- [Update course lesson](https://docs.whop.com/api-reference/course-lessons/update-course-lesson.md): Updates a course lesson
+
+Required permissions:
+ - `courses:update`
+- [List course students](https://docs.whop.com/api-reference/course-students/list-course-students.md): Lists students for a course
+
+Required permissions:
+ - `courses:read`
+ - `course_analytics:read`
+- [Retrieve course student](https://docs.whop.com/api-reference/course-students/retrieve-course-student.md): Retrieves a course student by interaction ID
+
+Required permissions:
+ - `courses:read`
+ - `course_analytics:read`
+- [Create course](https://docs.whop.com/api-reference/courses/create-course.md): Creates a new course module in an experience
+
+Required permissions:
+ - `courses:update`
+- [Delete course](https://docs.whop.com/api-reference/courses/delete-course.md): Deletes a course
+
+Required permissions:
+ - `courses:update`
+- [List courses](https://docs.whop.com/api-reference/courses/list-courses.md): Lists courses for an experience or company
+
+Required permissions:
+ - `courses:read`
+- [Retrieve course](https://docs.whop.com/api-reference/courses/retrieve-course.md): Retrieves a course by ID
+
+Required permissions:
+ - `courses:read`
+- [Update course](https://docs.whop.com/api-reference/courses/update-course.md): Updates a course
+
+Required permissions:
+ - `courses:update`
+- [Approve entry](https://docs.whop.com/api-reference/entries/approve-entry.md): Approve an entry
+
+Required permissions:
+ - `plan:waitlist:manage`
+- [Deny entry](https://docs.whop.com/api-reference/entries/deny-entry.md): Deny an entry
+
+Required permissions:
+ - `plan:waitlist:manage`
+ - `plan:basic:read`
+ - `member:email:read`
+- [Entry approved](https://docs.whop.com/api-reference/entries/entry-approved.md): Sent when a entry is approved
+
+Required permissions:
+ - `plan:waitlist:read`
+ - `member:email:read`
+- [Entry created](https://docs.whop.com/api-reference/entries/entry-created.md): Sent when a entry is created
+
+Required permissions:
+ - `plan:waitlist:read`
+ - `member:email:read`
+- [Entry deleted](https://docs.whop.com/api-reference/entries/entry-deleted.md): Sent when a entry is deleted
+
+Required permissions:
+ - `plan:waitlist:read`
+ - `member:email:read`
+- [Entry denied](https://docs.whop.com/api-reference/entries/entry-denied.md): Sent when a entry is denied
+
+Required permissions:
+ - `plan:waitlist:read`
+ - `member:email:read`
+- [List entries](https://docs.whop.com/api-reference/entries/list-entries.md): Lists entries for a company
+
+Required permissions:
+ - `plan:waitlist:read`
+ - `member:email:read`
+- [Retrieve entry](https://docs.whop.com/api-reference/entries/retrieve-entry.md): Retrieves an entry by ID
+
+Required permissions:
+ - `plan:waitlist:read`
+ - `member:email:read`
+- [Attach experience](https://docs.whop.com/api-reference/experiences/attach-experience.md): Adds an experience to an product, making it accessible to the product's customers.
+
+Required permissions:
+ - `experience:attach`
+- [Create experience](https://docs.whop.com/api-reference/experiences/create-experience.md): Required permissions:
+ - `experience:create`
+- [Delete experience](https://docs.whop.com/api-reference/experiences/delete-experience.md): Required permissions:
+ - `experience:delete`
+- [Detach experience](https://docs.whop.com/api-reference/experiences/detach-experience.md): Removes an experience from an product, making it inaccessible to the product's customers.
+
+Required permissions:
+ - `experience:detach`
+- [Duplicate experience](https://docs.whop.com/api-reference/experiences/duplicate-experience.md): Duplicates an existing experience. The name will be copied, unless provided. The new experience will be attached to the same products as the original experience.
+If duplicating a Forum or Chat experience, the new experience will have the same settings as the original experience, e.g. who can post, who can comment, etc.
+No content, e.g. posts, messages, lessons from within the original experience will be copied.
+
+
+Required permissions:
+ - `experience:create`
+- [List experiences](https://docs.whop.com/api-reference/experiences/list-experiences.md): Lists experiences for a company
+
+Required permissions:
+ - `experience:hidden_experience:read`
+- [Retrieve experience](https://docs.whop.com/api-reference/experiences/retrieve-experience.md): Retrieves an experience by ID
+- [Update experience](https://docs.whop.com/api-reference/experiences/update-experience.md): Required permissions:
+ - `experience:update`
+- [Create forum post](https://docs.whop.com/api-reference/forum-posts/create-forum-post.md): Create a new forum post
+
+Required permissions:
+ - `forum:post:create`
+- [List forum posts](https://docs.whop.com/api-reference/forum-posts/list-forum-posts.md): Lists forum posts
+
+Required permissions:
+ - `forum:read`
+- [Retrieve forum post](https://docs.whop.com/api-reference/forum-posts/retrieve-forum-post.md): Retrieves a forum post by ID
+
+Required permissions:
+ - `forum:read`
+- [Update forum post](https://docs.whop.com/api-reference/forum-posts/update-forum-post.md): Update an existing forum post
+- [List forums](https://docs.whop.com/api-reference/forums/list-forums.md): Lists forums inside a company
+
+Required permissions:
+ - `forum:read`
+- [Retrieve forum](https://docs.whop.com/api-reference/forums/retrieve-forum.md): Retrieves a forum
+
+Required permissions:
+ - `forum:read`
+- [Update forum](https://docs.whop.com/api-reference/forums/update-forum.md): Updates a forum
+
+Required permissions:
+ - `forum:moderate`
+- [Create invoice](https://docs.whop.com/api-reference/invoices/create-invoice.md): Creates an invoice
+
+Required permissions:
+ - `invoice:create`
+ - `plan:basic:read`
+- [Invoice created](https://docs.whop.com/api-reference/invoices/invoice-created.md): Sent when a invoice is created
+
+Required permissions:
+ - `invoice:basic:read`
+ - `plan:basic:read`
+- [Invoice paid](https://docs.whop.com/api-reference/invoices/invoice-paid.md): Sent when a invoice is paid
+
+Required permissions:
+ - `invoice:basic:read`
+ - `plan:basic:read`
+- [Invoice past due](https://docs.whop.com/api-reference/invoices/invoice-past-due.md): Sent when a invoice is past due
+
+Required permissions:
+ - `invoice:basic:read`
+ - `plan:basic:read`
+- [Invoice voided](https://docs.whop.com/api-reference/invoices/invoice-voided.md): Sent when a invoice is voided
+
+Required permissions:
+ - `invoice:basic:read`
+ - `plan:basic:read`
+- [List invoices](https://docs.whop.com/api-reference/invoices/list-invoices.md): Lists invoices
+
+Required permissions:
+ - `invoice:basic:read`
+ - `plan:basic:read`
+- [Retrieve invoice](https://docs.whop.com/api-reference/invoices/retrieve-invoice.md): Retrieves an invoice by ID or token
+
+Required permissions:
+ - `invoice:basic:read`
+ - `plan:basic:read`
+- [Void invoice](https://docs.whop.com/api-reference/invoices/void-invoice.md): Void an invoice
+
+Required permissions:
+ - `invoice:update`
+- [Retrieve ledger account](https://docs.whop.com/api-reference/ledger-accounts/retrieve-ledger-account.md): Retrieves a ledger account by ID
+
+Required permissions:
+ - `company:balance:read`
+- [List members](https://docs.whop.com/api-reference/members/list-members.md): List the members of a company
+
+Required permissions:
+ - `member:basic:read`
+ - `member:email:read`
+ - `member:phone:read`
+- [Retrieve member](https://docs.whop.com/api-reference/members/retrieve-member.md): Retrieves a member of a company by ID
+
+Required permissions:
+ - `member:basic:read`
+ - `member:email:read`
+ - `member:phone:read`
+- [Cancel membership](https://docs.whop.com/api-reference/memberships/cancel-membership.md): Cancels a membership either immediately or at the end of the current billing period
+
+Required permissions:
+ - `member:manage`
+ - `member:basic:read`
+- [List memberships](https://docs.whop.com/api-reference/memberships/list-memberships.md): Lists memberships
+
+Required permissions:
+ - `member:basic:read`
+- [Membership activated](https://docs.whop.com/api-reference/memberships/membership-activated.md): Sent when a membership is activated
+
+Required permissions:
+ - `member:basic:read`
+- [Membership deactivated](https://docs.whop.com/api-reference/memberships/membership-deactivated.md): Sent when a membership is deactivated
+
+Required permissions:
+ - `member:basic:read`
+- [Pause membership](https://docs.whop.com/api-reference/memberships/pause-membership.md): Pauses a membership's payments
+
+Required permissions:
+ - `member:manage`
+ - `member:basic:read`
+- [Resume membership](https://docs.whop.com/api-reference/memberships/resume-membership.md): Resumes a membership's payments
+
+Required permissions:
+ - `member:manage`
+ - `member:basic:read`
+- [Retrieve membership](https://docs.whop.com/api-reference/memberships/retrieve-membership.md): Retrieves a membership by ID or license key
+
+Required permissions:
+ - `member:basic:read`
+- [Update membership](https://docs.whop.com/api-reference/memberships/update-membership.md): Update a membership
+
+Required permissions:
+ - `member:manage`
+ - `member:basic:read`
+- [Create message](https://docs.whop.com/api-reference/messages/create-message.md): Creates a new message
+
+Required permissions:
+ - `chat:message:create`
+- [List messages](https://docs.whop.com/api-reference/messages/list-messages.md): Lists messages inside a channel
+
+Required permissions:
+ - `chat:read`
+- [Retrieve message](https://docs.whop.com/api-reference/messages/retrieve-message.md): Retrieves a message
+
+Required permissions:
+ - `chat:read`
+- [Update message](https://docs.whop.com/api-reference/messages/update-message.md): Updates an existing message
+- [List payments](https://docs.whop.com/api-reference/payments/list-payments.md): Lists payments
+
+Required permissions:
+ - `payment:basic:read`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Payment failed](https://docs.whop.com/api-reference/payments/payment-failed.md): Sent when a payment is failed
+
+Required permissions:
+ - `payment:basic:read`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Payment pending](https://docs.whop.com/api-reference/payments/payment-pending.md): Sent when a payment is pending
+
+Required permissions:
+ - `payment:basic:read`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Payment succeeded](https://docs.whop.com/api-reference/payments/payment-succeeded.md): Sent when a payment is succeeded
+
+Required permissions:
+ - `payment:basic:read`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Refund payment](https://docs.whop.com/api-reference/payments/refund-payment.md): Refunds a payment
+
+Required permissions:
+ - `payment:manage`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Retrieve payment](https://docs.whop.com/api-reference/payments/retrieve-payment.md): Retrieves a payment by ID
+
+Required permissions:
+ - `payment:basic:read`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Retry payment](https://docs.whop.com/api-reference/payments/retry-payment.md): Retries a payment
+
+Required permissions:
+ - `payment:manage`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Void payment](https://docs.whop.com/api-reference/payments/void-payment.md): Voids a payment
+
+Required permissions:
+ - `payment:manage`
+ - `plan:basic:read`
+ - `access_pass:basic:read`
+ - `member:email:read`
+ - `member:basic:read`
+ - `member:phone:read`
+ - `promo_code:basic:read`
+- [Create plan](https://docs.whop.com/api-reference/plans/create-plan.md): Create a new Plan
+
+Required permissions:
+ - `plan:create`
+ - `access_pass:basic:read`
+ - `plan:basic:read`
+- [Delete plan](https://docs.whop.com/api-reference/plans/delete-plan.md): Delete an existing Plan
+
+Required permissions:
+ - `plan:delete`
+- [List plans](https://docs.whop.com/api-reference/plans/list-plans.md): Lists plans for a company
+
+Required permissions:
+ - `plan:basic:read`
+- [Retrieve plan](https://docs.whop.com/api-reference/plans/retrieve-plan.md): Retrieves a plan by ID
+
+Required permissions:
+ - `plan:basic:read`
+- [Update plan](https://docs.whop.com/api-reference/plans/update-plan.md): Update an existing Plan
+
+Required permissions:
+ - `plan:update`
+ - `access_pass:basic:read`
+ - `plan:basic:read`
+- [Create product](https://docs.whop.com/api-reference/products/create-product.md): Creates a new Product
+
+Required permissions:
+ - `access_pass:create`
+ - `access_pass:basic:read`
+- [Delete product](https://docs.whop.com/api-reference/products/delete-product.md): Deletes an existing Product
+
+Required permissions:
+ - `access_pass:delete`
+- [List products](https://docs.whop.com/api-reference/products/list-products.md): Lists products for a company
+
+Required permissions:
+ - `access_pass:basic:read`
+- [Retrieve product](https://docs.whop.com/api-reference/products/retrieve-product.md): Retrieves a product by ID or route
+
+Required permissions:
+ - `access_pass:basic:read`
+- [Update product](https://docs.whop.com/api-reference/products/update-product.md): Updates an existing Product
+
+Required permissions:
+ - `access_pass:update`
+ - `access_pass:basic:read`
+- [Create promo code](https://docs.whop.com/api-reference/promo-codes/create-promo-code.md): Create a new promo code for a product or plan
+
+Required permissions:
+ - `promo_code:create`
+ - `access_pass:basic:read`
+- [Delete promo code](https://docs.whop.com/api-reference/promo-codes/delete-promo-code.md): Archive a promo code, preventing further use
+
+Required permissions:
+ - `promo_code:delete`
+- [List promo codes](https://docs.whop.com/api-reference/promo-codes/list-promo-codes.md): Lists promo codes for a company
+
+Required permissions:
+ - `promo_code:basic:read`
+ - `access_pass:basic:read`
+- [Retrieve promo code](https://docs.whop.com/api-reference/promo-codes/retrieve-promo-code.md): Retrieves a promo code by ID
+
+Required permissions:
+ - `promo_code:basic:read`
+ - `access_pass:basic:read`
+- [Create reaction](https://docs.whop.com/api-reference/reactions/create-reaction.md): Creates a new reaction
+
+Required permissions:
+ - `chat:read`
+- [List reactions](https://docs.whop.com/api-reference/reactions/list-reactions.md): Lists reactions for a post or a message
+
+Required permissions:
+ - `chat:read`
+- [Retrieve reaction](https://docs.whop.com/api-reference/reactions/retrieve-reaction.md): Retrieves a reaction
+
+Required permissions:
+ - `chat:read`
+- [List reviews](https://docs.whop.com/api-reference/reviews/list-reviews.md): List all reviews
+- [Retrieve review](https://docs.whop.com/api-reference/reviews/retrieve-review.md): Retrieve a review by its ID
+- [Create shipment](https://docs.whop.com/api-reference/shipments/create-shipment.md): Creates a new shipment
+
+Required permissions:
+ - `shipment:create`
+ - `payment:basic:read`
+- [List shipments](https://docs.whop.com/api-reference/shipments/list-shipments.md): Lists shipments for a payment
+
+Required permissions:
+ - `shipment:basic:read`
+ - `payment:basic:read`
+- [Retrieve shipment](https://docs.whop.com/api-reference/shipments/retrieve-shipment.md): Retrieves a shipment by ID
+
+Required permissions:
+ - `shipment:basic:read`
+ - `payment:basic:read`
+- [Create support channel](https://docs.whop.com/api-reference/support-channels/create-support-channel.md): Create a new support channel for a user in a company. If one already exists, it will return the existing one.
+
+Required permissions:
+ - `support_chat:create`
+- [List support channels](https://docs.whop.com/api-reference/support-channels/list-support-channels.md): Lists chat channels inside a company
+
+Required permissions:
+ - `support_chat:read`
+- [Retrieve support channel](https://docs.whop.com/api-reference/support-channels/retrieve-support-channel.md): Retrieves a support channel
+
+Required permissions:
+ - `support_chat:read`
+- [Create transfer](https://docs.whop.com/api-reference/transfers/create-transfer.md): Creates a new transfer between ledger accounts
+
+Required permissions:
+ - `payout:transfer_funds`
+- [List transfers](https://docs.whop.com/api-reference/transfers/list-transfers.md): Lists transfers
+
+Required permissions:
+ - `payout:transfer:read`
+- [Retrieve transfer](https://docs.whop.com/api-reference/transfers/retrieve-transfer.md): Retrieves a transfer by ID
+
+Required permissions:
+ - `payout:transfer:read`
+- [Check access](https://docs.whop.com/api-reference/users/check-access.md): Check if a user has access (and their access level) to a resource
+- [Retrieve user](https://docs.whop.com/api-reference/users/retrieve-user.md): Retrieves a user by ID or username
+- [Getting started](https://docs.whop.com/apps/api/getting-started.md): Create an app and get your API keys
+- [Getting started](https://docs.whop.com/apps/getting-started.md)
+- [App Views](https://docs.whop.com/apps/guides/app-views.md): Configure how and where your app appears on Whop
+- [Authentication](https://docs.whop.com/apps/guides/authentication.md): Authenticate and authorize the current user.
+- [Chat](https://docs.whop.com/apps/guides/chat.md): Send and read messages from whop chat
+- [Development Proxy](https://docs.whop.com/apps/guides/dev-proxy.md): How to use the Whop development proxy
+- [Forums](https://docs.whop.com/apps/guides/forums.md): Make forum posts and read existing posts
+- [Frosted UI](https://docs.whop.com/apps/guides/frosted_ui.md): Use our UI kit and tailwind design system.
+- [Iframe SDK](https://docs.whop.com/apps/guides/iframe.md): Interact with the whop website from within your app.
+- [Notifications](https://docs.whop.com/apps/guides/notifications.md): Send notifications to engage your users
+- [OAuth](https://docs.whop.com/apps/guides/oauth.md): Use oauth to let users sign in with whop on your website
+- [Payins](https://docs.whop.com/apps/guides/payins.md): Process payments with your app
+- [Payouts](https://docs.whop.com/apps/guides/payouts.md): Pay users and companies on whop
+- [Permissions](https://docs.whop.com/apps/guides/permissions.md): Configure the permissions that your app needs
+- [React Native](https://docs.whop.com/apps/guides/react-native.md): Build cross-platform mobile and web apps for Whop using React Native.
+- [Upload Media](https://docs.whop.com/apps/guides/upload-media.md): Upload images and files for use in the Whop API
+- [Webhooks](https://docs.whop.com/apps/guides/webhooks.md): Receive payment, membership and other events from whop programmatically
+- [Introduction](https://docs.whop.com/apps/introduction.md): Build your idea on Whop
+- [Fees](https://docs.whop.com/fees.md): We want to be the cheapest, most resilient place to accept pure payments.
+- [What is Whop?](https://docs.whop.com/get-started.md): Whop is a platform to launch and scale internet businesses.
+- [Launch your business](https://docs.whop.com/launch-your-business.md): Create an account on Whop and launch your business.
+- [Affiliate program](https://docs.whop.com/manage-your-business/growth-marketing/affiliate-program.md): Learn how to set up an affiliate program for your whop
+- [Automated messages](https://docs.whop.com/manage-your-business/growth-marketing/automated-messaging.md): Learn how to send automated marketing messages on Whop
+- [Content Rewards](https://docs.whop.com/manage-your-business/growth-marketing/content-rewards.md): Learn how to use Content Rewards to grow your social presence 
+- [Popup promotions](https://docs.whop.com/manage-your-business/growth-marketing/popup-promotions.md): Learn how to set up popup promotions on your store page
+- [Promo codes](https://docs.whop.com/manage-your-business/growth-marketing/promo-codes.md): Learn how to create and manage promo codes
+- [Tracking links](https://docs.whop.com/manage-your-business/growth-marketing/tracking-links.md): Set up tracking links to see where your users are coming from 
+- [Analytics](https://docs.whop.com/manage-your-business/manage-business/analytics.md): Understand Whop's built-in analytics
+- [Integrations](https://docs.whop.com/manage-your-business/manage-business/integrations.md): Set up external tracking integrations
+- [Upload legal documents](https://docs.whop.com/manage-your-business/manage-business/legal-documents.md): Learn how to upload legal documents and policies to your whop
+- [Create a waitlist](https://docs.whop.com/manage-your-business/products/create-waitlist.md): Have people join a waitlist before they can access your whop
+- [Free trials](https://docs.whop.com/manage-your-business/products/free-trials.md): Learn how to set up a free trial for your whop
+- [Locked content and upsells](https://docs.whop.com/manage-your-business/products/locked-premium-content.md): Learn how to set up locked content in your whop and use it to upsell members
+- [Manage products](https://docs.whop.com/manage-your-business/products/manage-products.md): Learn how to manage and update products in your whop
+- [Roles and permissions](https://docs.whop.com/manage-your-business/team-management/manage-team-roles.md): Learn how to manage your team, roles and permissions
+- [Pay your team](https://docs.whop.com/manage-your-business/team-management/pay-your-team.md): Learn how to pay your team members through Whop
+- [Billing portal](https://docs.whop.com/payments/billing-portal.md): A self-service portal for subscription management
+- [Embed checkout](https://docs.whop.com/payments/checkout-embed.md): Learn how to embed Whop's checkout flow on your website
+- [Create a product](https://docs.whop.com/payments/create-a-product.md): Learn how to set up products and pricing on Whop
+- [Create a whop](https://docs.whop.com/payments/create-a-whop.md): Learn how to create a whop for payment processing
+- [Create a checkout link](https://docs.whop.com/payments/create-checkout-link.md): Checkout links are the fastest way to accept payment.
+- [Credit card disputes](https://docs.whop.com/payments/credit-card-disputes.md): Learn how to manage credit card disputes on Whop 
+- [Dispute fighter](https://docs.whop.com/payments/dispute-fighter.md): Automatically fight disputes with customer logs
+- [Financing](https://docs.whop.com/payments/financing.md): Let customers split payments into monthly installments
+- [Overview](https://docs.whop.com/payments/overview.md): Start here if you want to use Whop to accept payments
+- [Payment declines](https://docs.whop.com/payments/payment-declines.md): Learn how payment declines work and how to manage them
+- [Refunds](https://docs.whop.com/payments/refund-customer.md): Learn how to refund your customers on Whop
+- [Resolution center](https://docs.whop.com/payments/resolution-center.md): Manage refund requests before they turn into disputes
+- [Send an invoice](https://docs.whop.com/payments/send-an-invoice.md): Learn how to create, send, and track invoices on Whop
+- [Setup payouts](https://docs.whop.com/payments/set-up-payouts.md): Learn how to set up payouts and withdraw your balance from Whop
+- [Refer businesses to Whop](https://docs.whop.com/refer-businesses-to-whop.md): If you refer a business to Whop, you'll earn a 30% commission on their revenue.
+- [Set up pricing](https://docs.whop.com/set-up-products-pricing.md): Choose your pricing model and what members get in your whop
+- [Set up your product page](https://docs.whop.com/set-up-store-page.md): Edit the details on your Whop product page: name, headline, description, media, pricing, features, FAQs, and more
+- [Agencies](https://docs.whop.com/supported-business-models/agency-services.md): Learn how to launch and run your agency on Whop
+- [Brick and mortar](https://docs.whop.com/supported-business-models/brick-and-mortar.md): Learn how to launch and run your brick-and-mortar business on Whop
+- [Coaches](https://docs.whop.com/supported-business-models/coaches.md): Learn how to launch your coaching business on Whop.
+- [DTC Ecommerce](https://docs.whop.com/supported-business-models/dtc-ecommerce.md): Learn how to launch and run your ecommerce store on Whop
+- [Educational programs](https://docs.whop.com/supported-business-models/educational-programs.md): Learn how to sell educational programs on Whop
+- [Events](https://docs.whop.com/supported-business-models/events.md): Learn how to launch and run your events on Whop
+- [Newsletters](https://docs.whop.com/supported-business-models/newsletters.md): Learn how to launch and run your newsletter on Whop
+- [Paid groups](https://docs.whop.com/supported-business-models/paid-groups.md): Learn how to offer a paid group on Whop.
+- [SaaS](https://docs.whop.com/supported-business-models/saas.md): Learn how to build and run your SaaS on Whop
+- [Apps for businesses](https://docs.whop.com/whop-apps/apps-for-businesses.md): Analytics tools, SaaS tools, and utilities that grow revenue or streamline operations.
+- [Apps for communities](https://docs.whop.com/whop-apps/apps-for-communities.md): Engage your audience with chat, courses, events, and social experiences
+- [What are Whop apps?](https://docs.whop.com/whop-apps/what-are-whop-apps.md): Apps are the building blocks for your business.
