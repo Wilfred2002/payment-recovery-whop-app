@@ -46,9 +46,10 @@ export default async function ExperiencePage({
 	const experience = await experienceResponse.json();
 	const companyId = experience.company.id;
 
-	// Check if user has access to this experience via REST API
-	const accessResponse = await fetch(
-		`https://api.whop.com/api/v1/users/${userId}/access/${experienceId}`,
+	// Check if user is a member of the company (more reliable than experience check)
+	const companyMemberId = `${userId}_${companyId}`;
+	const memberResponse = await fetch(
+		`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
 		{
 			headers: {
 				Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
@@ -56,27 +57,15 @@ export default async function ExperiencePage({
 		},
 	);
 
-	let result = { hasAccess: false, accessLevel: "no_access" as const };
-	if (accessResponse.ok) {
-		result = await accessResponse.json();
-	}
-
-	// Check if user is admin of the company
+	// Determine user's access level
+	let hasAccess = false;
 	let isAdmin = false;
-	if (companyId && result.hasAccess) {
-		const companyMemberId = `${userId}_${companyId}`;
-		const memberResponse = await fetch(
-			`https://api.whop.com/api/v1/companies/${companyId}/members/${companyMemberId}`,
-			{
-				headers: {
-					Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
-				},
-			},
-		);
 
-		if (memberResponse.ok) {
-			const memberData = await memberResponse.json();
-			isAdmin = memberData.member?.access_level === "admin";
+	if (memberResponse.ok) {
+		const memberData = await memberResponse.json();
+		if (memberData.member) {
+			hasAccess = true;
+			isAdmin = memberData.member.access_level === "admin";
 		}
 	}
 
@@ -121,7 +110,7 @@ export default async function ExperiencePage({
 	}
 
 	// If user has no access, show access denied
-	if (!result.hasAccess) {
+	if (!hasAccess) {
 		return (
 			<div className="min-h-screen bg-mint-50 flex flex-col">
 				<Header showNav={false} />
