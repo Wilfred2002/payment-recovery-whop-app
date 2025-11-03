@@ -48,14 +48,45 @@ export async function checkHasActiveSubscription(
 					const ownerId = companyData.owner_user?.id;
 
 					console.log(`🔍 Company owner: ${ownerId}, Current user: ${userId}`);
+					console.log(`🔍 Checking company: ${companyId}, App owner company: ${process.env.NEXT_PUBLIC_WHOP_COMPANY_ID}`);
+
+					const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
+					const isAppOwnerCompany = appOwnerCompanyId && companyId === appOwnerCompanyId;
 
 					if (ownerId === userId) {
-						console.log(`✅ User is company owner - granting access`);
+						console.log(`✅ User is company owner`);
 
-						// For app owner company, owner always has access
-						const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
-						if (appOwnerCompanyId && companyId === appOwnerCompanyId) {
+						// For app owner company, owner always has access without subscription
+						if (isAppOwnerCompany) {
+							console.log(`✅ App owner company - granting access without subscription check`);
 							return true;
+						}
+					}
+
+					// Also check if user is an admin by listing admins
+					if (isAppOwnerCompany) {
+						console.log(`🔍 Checking if user is an admin in app owner company...`);
+						try {
+							const adminsResponse = await fetch(
+								`https://api.whop.com/api/v1/members?company_id=${companyId}&access_level=admin`,
+								{
+									headers: {
+										Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+									},
+								},
+							);
+
+							if (adminsResponse.ok) {
+								const adminsData = await adminsResponse.json();
+								const isAdmin = adminsData.data?.some((member: any) => member.user?.id === userId);
+
+								if (isAdmin) {
+									console.log(`✅ User is an admin in app owner company - granting access`);
+									return true;
+								}
+							}
+						} catch (adminCheckError) {
+							console.error("Admin list check failed:", adminCheckError);
 						}
 					}
 				}
@@ -188,6 +219,31 @@ export async function checkIsAdmin(
 				if (ownerId === userId) {
 					console.log(`✅ User is company owner - granting admin access`);
 					return true;
+				}
+
+				// Also check if user is an admin by listing admins
+				console.log(`🔍 Checking if user is an admin by listing admins...`);
+				try {
+					const adminsResponse = await fetch(
+						`https://api.whop.com/api/v1/members?company_id=${companyId}&access_level=admin`,
+						{
+							headers: {
+								Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+							},
+						},
+					);
+
+					if (adminsResponse.ok) {
+						const adminsData = await adminsResponse.json();
+						const isAdmin = adminsData.data?.some((member: any) => member.user?.id === userId);
+
+						if (isAdmin) {
+							console.log(`✅ User found in admins list - granting admin access`);
+							return true;
+						}
+					}
+				} catch (adminCheckError) {
+					console.error("Admin list check failed:", adminCheckError);
 				}
 			}
 		} catch (fallbackError) {
