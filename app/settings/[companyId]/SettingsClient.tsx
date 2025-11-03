@@ -122,7 +122,7 @@ export default function SettingsClient({
 							{/* Enable/Disable Toggle */}
 							<div className="mb-6">
 								<label className="flex items-center justify-between cursor-pointer">
-									<span className="text-sm font-semibold text-mint-700">
+									<span className="text-sm font-semibold text-mint-900">
 										Recovery Emails
 									</span>
 									<div className="relative">
@@ -135,7 +135,7 @@ export default function SettingsClient({
 										<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
 									</div>
 								</label>
-								<p className="text-xs text-mint-700 mt-1">
+								<p className="text-xs text-gray-600 mt-1">
 									{emailEnabled
 										? "Emails will be sent when payments fail"
 										: "Emails are currently paused"}
@@ -144,7 +144,7 @@ export default function SettingsClient({
 
 							{/* Email Subject */}
 							<div className="mb-6">
-								<label className="block text-sm font-semibold text-mint-700 mb-2">
+								<label className="block text-sm font-semibold text-mint-900 mb-2">
 									Email Subject
 								</label>
 								<input
@@ -158,7 +158,7 @@ export default function SettingsClient({
 
 							{/* Email Body */}
 							<div className="mb-6">
-								<label className="block text-sm font-semibold text-mint-700 mb-2">
+								<label className="block text-sm font-semibold text-mint-900 mb-2">
 									Email Body
 								</label>
 								<textarea
@@ -168,9 +168,9 @@ export default function SettingsClient({
 									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono"
 									placeholder="Email body text"
 								/>
-								<p className="text-xs text-mint-700 mt-2">
-									Available variables: <code className="bg-mint-100 px-1 rounded">{`{name}`}</code>,{" "}
-									<code className="bg-mint-100 px-1 rounded">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded">{`{updateLink}`}</code>
+								<p className="text-xs text-gray-600 mt-2">
+									Available variables: <code className="bg-mint-100 px-1 rounded text-mint-900">{`{name}`}</code>,{" "}
+									<code className="bg-mint-100 px-1 rounded text-mint-900">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded text-mint-900">{`{updateLink}`}</code>
 								</p>
 							</div>
 
@@ -200,10 +200,10 @@ export default function SettingsClient({
 
 							<div className="border border-mint-200 rounded-md p-4 bg-mint-50">
 								<div className="mb-4 pb-4 border-b border-mint-200">
-									<p className="text-xs text-mint-700 font-semibold mb-1">Subject:</p>
+									<p className="text-xs text-gray-600 font-semibold mb-1">Subject:</p>
 									<p className="font-semibold text-mint-900">{previewSubject}</p>
 								</div>
-								<div className="whitespace-pre-wrap text-sm text-mint-800">
+								<div className="whitespace-pre-wrap text-sm text-gray-800">
 									{previewBody}
 								</div>
 							</div>
@@ -221,7 +221,7 @@ export default function SettingsClient({
 						<h3 className="text-lg font-bold text-mint-800 mb-3 font-[family-name:var(--font-space-mono)] uppercase">
 							Disable Recovery Emails?
 						</h3>
-						<p className="text-sm text-mint-700 mb-6">
+						<p className="text-sm text-gray-700 mb-6">
 							This will stop sending recovery emails when payments fail. You can
 							re-enable this anytime.
 						</p>
