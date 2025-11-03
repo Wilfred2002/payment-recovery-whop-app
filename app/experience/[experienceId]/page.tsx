@@ -80,36 +80,33 @@ export default async function ExperiencePage({
 	} else {
 		console.log(`❌ Member API call failed: ${memberResponse.status} ${memberResponse.statusText}`);
 
-		// ✅ TESTING BYPASS: If this is the app owner's company, allow admins through
-		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
-		if (appOwnerCompanyId && companyId === appOwnerCompanyId) {
-			console.log(`🔧 App owner company detected - checking if user is admin directly`);
+		// ✅ FALLBACK: Check if user is company owner
+		console.log(`🔧 Checking if user is company owner...`);
 
-			// Try to check all memberships to see if they're admin of this company
-			try {
-				const membershipsResponse = await fetch(
-					`https://api.whop.com/api/v1/memberships?user_ids=${userId}&company_id=${companyId}`,
-					{
-						headers: {
-							Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
-						},
+		try {
+			const companyResponse = await fetch(
+				`https://api.whop.com/api/v1/companies/${companyId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
 					},
-				);
+				},
+			);
 
-				if (membershipsResponse.ok) {
-					const membershipsData = await membershipsResponse.json();
-					console.log(`🔍 Memberships data:`, JSON.stringify(membershipsData, null, 2));
+			if (companyResponse.ok) {
+				const companyData = await companyResponse.json();
+				const ownerId = companyData.owner_user?.id;
 
-					// If user has any membership, grant access for testing
-					if (membershipsData.data && membershipsData.data.length > 0) {
-						hasAccess = true;
-						isAdmin = true; // Assume admin for app owner company
-						console.log(`✅ App owner company bypass - granting admin access`);
-					}
+				console.log(`🔍 Company owner: ${ownerId}, Current user: ${userId}`);
+
+				if (ownerId === userId) {
+					console.log(`✅ User is company owner - granting admin access`);
+					hasAccess = true;
+					isAdmin = true;
 				}
-			} catch (error) {
-				console.error(`❌ Error checking memberships:`, error);
 			}
+		} catch (error) {
+			console.error(`❌ Error checking company owner:`, error);
 		}
 	}
 

@@ -18,15 +18,55 @@ export async function checkHasActiveSubscription(
 			},
 		);
 
-		if (!memberResponse.ok) {
+		let memberData = null;
+
+		if (memberResponse.ok) {
+			memberData = await memberResponse.json();
+			if (!memberData.member) {
+				console.error("Member response OK but no member data");
+				return false;
+			}
+		} else {
+			// 404 means not found via member endpoint - check if user is company owner
+			console.warn(
+				`Member endpoint failed (${memberResponse.status}). Checking if user is company owner...`,
+			);
+
+			try {
+				// Check if user is the company owner via company endpoint
+				const companyResponse = await fetch(
+					`https://api.whop.com/api/v1/companies/${companyId}`,
+					{
+						headers: {
+							Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+						},
+					},
+				);
+
+				if (companyResponse.ok) {
+					const companyData = await companyResponse.json();
+					const ownerId = companyData.owner_user?.id;
+
+					console.log(`🔍 Company owner: ${ownerId}, Current user: ${userId}`);
+
+					if (ownerId === userId) {
+						console.log(`✅ User is company owner - granting access`);
+
+						// For app owner company, owner always has access
+						const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
+						if (appOwnerCompanyId && companyId === appOwnerCompanyId) {
+							return true;
+						}
+					}
+				}
+			} catch (fallbackError) {
+				console.error("Company owner check failed:", fallbackError);
+			}
+
+			// If not owner or checks fail, deny access
 			console.error(
 				`Failed to check company access: ${memberResponse.status} ${memberResponse.statusText}`,
 			);
-			return false;
-		}
-
-		const memberData = await memberResponse.json();
-		if (!memberData.member) {
 			return false;
 		}
 
@@ -117,16 +157,47 @@ export async function checkIsAdmin(
 			},
 		);
 
-		if (!memberResponse.ok) {
-			console.error(
-				`Failed to check admin status: ${memberResponse.status} ${memberResponse.statusText}`,
-			);
-			return false;
+		if (memberResponse.ok) {
+			const memberData = await memberResponse.json();
+			const accessLevel = memberData.member?.access_level;
+			return accessLevel === "admin" || accessLevel === "owner";
 		}
 
-		const memberData = await memberResponse.json();
-		const accessLevel = memberData.member?.access_level;
-		return accessLevel === "admin" || accessLevel === "owner";
+		// 404 fallback: Check if user is company owner
+		console.warn(
+			`Member endpoint failed (${memberResponse.status}). Checking if user is company owner...`,
+		);
+
+		try {
+			// Check if user is the company owner via company endpoint
+			const companyResponse = await fetch(
+				`https://api.whop.com/api/v1/companies/${companyId}`,
+				{
+					headers: {
+						Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+					},
+				},
+			);
+
+			if (companyResponse.ok) {
+				const companyData = await companyResponse.json();
+				const ownerId = companyData.owner_user?.id;
+
+				console.log(`🔍 Company owner: ${ownerId}, Current user: ${userId}`);
+
+				if (ownerId === userId) {
+					console.log(`✅ User is company owner - granting admin access`);
+					return true;
+				}
+			}
+		} catch (fallbackError) {
+			console.error("Company owner check failed:", fallbackError);
+		}
+
+		console.error(
+			`Failed to check admin status: ${memberResponse.status} ${memberResponse.statusText}`,
+		);
+		return false;
 	} catch (error) {
 		console.error("Error checking admin status:", error);
 		return false;
