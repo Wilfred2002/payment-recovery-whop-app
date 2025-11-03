@@ -206,26 +206,60 @@ async function handlePaymentFailure(
 				console.error(
 					`❌ Unable to get member data: ${memberResponse.status} ${memberResponse.statusText}`,
 				);
-				return;
-			}
 
-			const memberData = await memberResponse.json();
+				// ✅ FALLBACK: Try to get user data directly via user endpoint
+				// Member endpoint returns 404 for company owners, so we fetch user data directly
+				console.log(`🔧 Attempting fallback: Fetching user data directly for user ${userId}`);
 
-			// Handle the response structure - member data is nested
-			if (!memberData?.member) {
-				console.error("❌ Unable to get member data from API response");
-				return;
-			}
+				try {
+					const userResponse = await fetch(
+						`https://api.whop.com/api/v1/users/${userId}`,
+						{
+							headers: {
+								Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+							},
+						},
+					);
 
-			const member = memberData.member;
-			userEmail = member.user?.email || "";
-			userName = member.user?.name || member.user?.username || "there";
+					if (userResponse.ok) {
+						const userData = await userResponse.json();
+						userEmail = userData.email || "";
+						userName = userData.name || userData.username || "there";
 
-			if (!userEmail) {
-				console.error(
-					"❌ Unable to get user email - check app permissions (member:email:read required)",
-				);
-				return;
+						if (!userEmail) {
+							console.error("❌ Unable to get user email from fallback - check app permissions (user:email:read required)");
+							return;
+						}
+
+						console.log(`✅ Got user data via fallback for user ${userId}`);
+					} else {
+						console.error(`❌ Fallback user fetch failed: ${userResponse.status} ${userResponse.statusText}`);
+						return;
+					}
+				} catch (fallbackError) {
+					console.error("❌ Fallback user fetch error:", fallbackError);
+					return;
+				}
+			} else {
+				// Original path - get data from member response
+				const memberData = await memberResponse.json();
+
+				// Handle the response structure - member data is nested
+				if (!memberData?.member) {
+					console.error("❌ Unable to get member data from API response");
+					return;
+				}
+
+				const member = memberData.member;
+				userEmail = member.user?.email || "";
+				userName = member.user?.name || member.user?.username || "there";
+
+				if (!userEmail) {
+					console.error(
+						"❌ Unable to get user email - check app permissions (member:email:read required)",
+					);
+					return;
+				}
 			}
 		}
 
