@@ -30,14 +30,17 @@ export async function checkHasActiveSubscription(
 			return false;
 		}
 
-		// ✅ BYPASS: App owner company (biz_BtHV9ujFzzNw6H) for testing
-		// All members of the app owner's company get access without subscription
+		// ✅ BYPASS: App owner company (biz_BtHV9ujFzzNw6H) admins for testing
+		// Only admins of the app owner's company get access without subscription
+		// Regular customers still need to purchase the product
 		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
 		if (appOwnerCompanyId && companyId === appOwnerCompanyId) {
-			console.log(
-				`✅ App owner company ${companyId} - member ${userId} has full access (testing bypass)`,
-			);
-			return true;
+			if (memberData.member.access_level === "admin") {
+				console.log(
+					`✅ App owner company admin ${userId} has full access (testing bypass)`,
+				);
+				return true;
+			}
 		}
 
 		// If NEXT_PUBLIC_WHOP_PRODUCT_ID is not set, app is in open beta mode
