@@ -84,14 +84,22 @@ async function handlePaymentFailure(
 			return;
 		}
 
-		// ✅ CRITICAL: Check if the user has access to YOUR app's product
+		// ✅ CRITICAL: Check if the COMPANY has purchased YOUR app
 		// This prevents sending recovery emails for companies that haven't paid for your service
 		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID;
+		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
 
-		if (requiredProductId) {
+		// Always allow app owner's company (for testing/own use)
+		if (appOwnerCompanyId && resolvedCompanyId === appOwnerCompanyId) {
+			console.log(
+				`✅ App owner company ${resolvedCompanyId} - proceeding with recovery email`,
+			);
+		} else if (requiredProductId) {
+			// For other companies, check if any admin has purchased the app
 			try {
-				const accessResponse = await fetch(
-					`https://api.whop.com/api/v1/users/${userId}/access/${requiredProductId}`,
+				// Get admins of the company
+				const adminsResponse = await fetch(
+					`https://api.whop.com/api/v1/members?company_id=${resolvedCompanyId}&access_level=admin&first=5`,
 					{
 						headers: {
 							Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
@@ -99,27 +107,57 @@ async function handlePaymentFailure(
 					},
 				);
 
-				if (accessResponse.ok) {
-					const accessData = await accessResponse.json();
-
-					if (!accessData.has_access) {
-						console.log(
-							`⏸️  User ${userId} does not have access to product ${requiredProductId}. Skipping recovery email.`,
-						);
-						return;
-					}
-
-					console.log(
-						`✅ User ${userId} has access to product ${requiredProductId} - proceeding with recovery email`,
-					);
-				} else {
+				if (!adminsResponse.ok) {
 					console.warn(
-						`⚠️  Could not verify product access (${accessResponse.status}). Sending email anyway (fail-open).`,
+						`⚠️  Could not fetch company admins (${adminsResponse.status}). Skipping recovery email for safety.`,
 					);
+					return;
+				}
+
+				const adminsData = await adminsResponse.json();
+				const admins = adminsData.data || [];
+
+				if (admins.length === 0) {
+					console.log(
+						`⏸️  No admins found for company ${resolvedCompanyId}. Skipping recovery email.`,
+					);
+					return;
+				}
+
+				// Check if any admin has access to our product
+				let hasCompanyAccess = false;
+				for (const admin of admins) {
+					const accessResponse = await fetch(
+						`https://api.whop.com/api/v1/users/${admin.user.id}/access/${requiredProductId}`,
+						{
+							headers: {
+								Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+							},
+						},
+					);
+
+					if (accessResponse.ok) {
+						const accessData = await accessResponse.json();
+						if (accessData.has_access) {
+							hasCompanyAccess = true;
+							console.log(
+								`✅ Company ${resolvedCompanyId} admin ${admin.user.id} has access to product ${requiredProductId}`,
+							);
+							break;
+						}
+					}
+				}
+
+				if (!hasCompanyAccess) {
+					console.log(
+						`⏸️  Company ${resolvedCompanyId} does not have access to product ${requiredProductId}. Skipping recovery email.`,
+					);
+					return;
 				}
 			} catch (error) {
-				console.error("Error checking product access:", error);
-				console.warn("⚠️  Access check failed. Sending email anyway (fail-open).");
+				console.error("Error checking company product access:", error);
+				console.warn("⚠️  Access check failed. Skipping recovery email for safety.");
+				return;
 			}
 		} else {
 			console.log(
