@@ -26,25 +26,35 @@ export async function POST(request: NextRequest): Promise<Response> {
 	// Log full payload to see what's available
 	console.log("📦 Full webhook payload:", JSON.stringify(webhookData, null, 2));
 
-	if (webhookData.action === "payment.failed") {
-		const { id, final_amount, user_id, membership_id, company_id } = webhookData.data;
+	if (webhookData.type === "payment.failed") {
+		const { id, total, user, membership, company } = webhookData.data;
+
+		// Extract IDs from nested objects
+		const user_id = user?.id;
+		const membership_id = membership?.id;
+		const company_id = company?.id;
 
 		console.log(
-			`💥 Payment failed: ${id} for user ${user_id}, company: ${company_id}, amount: $${final_amount}`,
+			`💥 Payment failed: ${id} for user ${user_id}, company: ${company_id}, amount: $${total}`,
 		);
 
 		if (!company_id) {
-			console.error("❌ No company_id in webhook payload - will fetch from membership");
+			console.error("❌ No company_id in webhook payload");
 		}
 
-		waitUntil(handlePaymentFailure(id, final_amount, user_id, membership_id, company_id));
+		waitUntil(handlePaymentFailure(id, total, user_id, membership_id, company_id));
 	}
 
-	if (webhookData.action === "payment.succeeded") {
-		const { id, final_amount, user_id, membership_id, company_id } = webhookData.data;
+	if (webhookData.type === "payment.succeeded") {
+		const { id, total, user, membership, company } = webhookData.data;
+
+		// Extract IDs from nested objects
+		const user_id = user?.id;
+		const membership_id = membership?.id;
+		const company_id = company?.id;
 
 		console.log(
-			`✅ Payment succeeded: ${id} for user ${user_id}, company: ${company_id}, amount: $${final_amount}`,
+			`✅ Payment succeeded: ${id} for user ${user_id}, company: ${company_id}, amount: $${total}`,
 		);
 
 		waitUntil(handlePaymentSuccess(id, user_id, membership_id, company_id));
