@@ -23,10 +23,13 @@ export async function checkHasActiveSubscription(
 		if (memberResponse.ok) {
 			memberData = await memberResponse.json();
 			if (!memberData.member) {
-				console.error("Member response OK but no member data");
-				return false;
+				console.error("Member response OK but no member data - checking owner fallback");
+				// Don't return false yet - try owner check fallback
+				memberData = null;
 			}
-		} else {
+		}
+
+		if (!memberData) {
 			// 404 means not found via member endpoint - check if user is company owner
 			console.warn(
 				`Member endpoint failed (${memberResponse.status}). Checking if user is company owner...`,
@@ -53,6 +56,15 @@ export async function checkHasActiveSubscription(
 					const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
 					const isAppOwnerCompany = appOwnerCompanyId && companyId === appOwnerCompanyId;
 
+					console.log(`🔍 DEBUG isAppOwnerCompany:`, {
+						appOwnerCompanyId,
+						companyId,
+						match: companyId === appOwnerCompanyId,
+						isAppOwnerCompany,
+						companyIdType: typeof companyId,
+						appOwnerType: typeof appOwnerCompanyId,
+					});
+
 					if (ownerId === userId) {
 						console.log(`✅ User is company owner`);
 
@@ -60,6 +72,8 @@ export async function checkHasActiveSubscription(
 						if (isAppOwnerCompany) {
 							console.log(`✅ App owner company - granting access without subscription check`);
 							return true;
+						} else {
+							console.log(`❌ isAppOwnerCompany is false - not granting access`);
 						}
 					}
 
