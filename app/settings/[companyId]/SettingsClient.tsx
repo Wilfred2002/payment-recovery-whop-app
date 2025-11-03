@@ -44,6 +44,25 @@ export default function SettingsClient({
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 
 	const handleSave = async () => {
+		// Validate all required fields are present
+		const trimmedSubject = emailSubject.trim();
+		const trimmedBody = emailBody.trim();
+
+		if (!trimmedSubject) {
+			toast.error("Email subject is required");
+			return;
+		}
+
+		if (!trimmedBody) {
+			toast.error("Email body is required");
+			return;
+		}
+
+		if (!trimmedBody.includes("{updateLink}")) {
+			toast.error("Email body must include {updateLink} variable");
+			return;
+		}
+
 		setSaving(true);
 		try {
 			const response = await fetch("/api/settings", {
@@ -52,15 +71,16 @@ export default function SettingsClient({
 				body: JSON.stringify({
 					company_id: companyId,
 					email_enabled: emailEnabled,
-					email_subject: emailSubject,
-					email_body: emailBody,
+					email_subject: trimmedSubject,
+					email_body: trimmedBody,
 				}),
 			});
 
 			if (response.ok) {
 				toast.success("Settings saved successfully!");
 			} else {
-				throw new Error("Failed to save");
+				const errorData = await response.json();
+				toast.error(errorData.error || "Failed to save settings");
 			}
 		} catch (error) {
 			toast.error("Failed to save settings");
@@ -145,7 +165,7 @@ export default function SettingsClient({
 							{/* Email Subject */}
 							<div className="mb-6">
 								<label className="block text-sm font-semibold text-mint-900 mb-2">
-									Email Subject
+									Email Subject <span className="text-red-500">*</span>
 								</label>
 								<input
 									type="text"
@@ -153,13 +173,14 @@ export default function SettingsClient({
 									onChange={(e) => setEmailSubject(e.target.value)}
 									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm"
 									placeholder="Email subject line"
+									required
 								/>
 							</div>
 
 							{/* Email Body */}
 							<div className="mb-6">
 								<label className="block text-sm font-semibold text-mint-900 mb-2">
-									Email Body
+									Email Body <span className="text-red-500">*</span>
 								</label>
 								<textarea
 									value={emailBody}
@@ -167,10 +188,11 @@ export default function SettingsClient({
 									rows={12}
 									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono"
 									placeholder="Email body text"
+									required
 								/>
 								<p className="text-xs text-gray-600 mt-2">
 									Available variables: <code className="bg-mint-100 px-1 rounded text-mint-900">{`{name}`}</code>,{" "}
-									<code className="bg-mint-100 px-1 rounded text-mint-900">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded text-mint-900">{`{updateLink}`}</code>
+									<code className="bg-mint-100 px-1 rounded text-mint-900">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded text-mint-900">{`{updateLink}`}</code> (required)
 								</p>
 							</div>
 
