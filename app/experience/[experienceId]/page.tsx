@@ -71,8 +71,9 @@ export default async function ExperiencePage({
 
 		if (memberData.member) {
 			hasAccess = true;
-			isAdmin = memberData.member.access_level === "admin";
-			console.log(`✅ User has access - Admin: ${isAdmin}`);
+			// Check for admin OR owner access levels
+			isAdmin = memberData.member.access_level === "admin" || memberData.member.access_level === "owner";
+			console.log(`✅ User has access - Access Level: ${memberData.member.access_level}, Is Admin/Owner: ${isAdmin}`);
 		} else {
 			console.log(`❌ No member data in response`);
 		}

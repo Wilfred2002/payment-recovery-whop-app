@@ -30,14 +30,15 @@ export async function checkHasActiveSubscription(
 			return false;
 		}
 
-		// ✅ BYPASS: App owner company (biz_BtHV9ujFzzNw6H) admins for testing
-		// Only admins of the app owner's company get access without subscription
+		// ✅ BYPASS: App owner company (biz_BtHV9ujFzzNw6H) admins/owners for testing
+		// Only admins/owners of the app owner's company get access without subscription
 		// Regular customers still need to purchase the product
 		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID;
 		if (appOwnerCompanyId && companyId === appOwnerCompanyId) {
-			if (memberData.member.access_level === "admin") {
+			const accessLevel = memberData.member.access_level;
+			if (accessLevel === "admin" || accessLevel === "owner") {
 				console.log(
-					`✅ App owner company admin ${userId} has full access (testing bypass)`,
+					`✅ App owner company ${accessLevel} ${userId} has full access (testing bypass)`,
 				);
 				return true;
 			}
@@ -99,7 +100,7 @@ export async function checkHasActiveSubscription(
 }
 
 /**
- * Checks if a user is an admin of the company
+ * Checks if a user is an admin or owner of the company
  */
 export async function checkIsAdmin(
 	userId: string,
@@ -124,7 +125,8 @@ export async function checkIsAdmin(
 		}
 
 		const memberData = await memberResponse.json();
-		return memberData.member?.access_level === "admin";
+		const accessLevel = memberData.member?.access_level;
+		return accessLevel === "admin" || accessLevel === "owner";
 	} catch (error) {
 		console.error("Error checking admin status:", error);
 		return false;
