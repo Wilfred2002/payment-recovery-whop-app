@@ -83,7 +83,7 @@ export default function DiscoverSettingsPage() {
 						Settings
 					</h1>
 
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 						{/* Left: Form */}
 						<div className="bg-white rounded-lg border border-mint-200 p-6 shadow-sm">
 							<h2 className="text-sm font-bold text-mint-800 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
