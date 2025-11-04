@@ -2,7 +2,6 @@ import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import SettingsClient from "./SettingsClient";
 import SubscribeButton from "@/app/components/SubscribeButton";
 import { checkHasActiveSubscription, checkIsAdmin } from "@/lib/access-check";
@@ -52,7 +51,6 @@ export default async function SettingsPage({
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}
@@ -78,7 +76,6 @@ export default async function SettingsPage({
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}

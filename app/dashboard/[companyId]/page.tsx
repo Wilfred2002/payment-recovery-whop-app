@@ -51,7 +51,6 @@ export default async function DashboardPage({
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}
@@ -77,7 +76,6 @@ export default async function DashboardPage({
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}

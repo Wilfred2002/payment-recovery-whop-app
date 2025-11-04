@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 
 const DEFAULT_SUBJECT = "⚠️ Your payment failed - Update needed";
 const DEFAULT_BODY = `Hi {name},
@@ -191,8 +190,6 @@ export default function DiscoverSettingsPage() {
 					</div>
 				</div>
 			</div>
-
-			<Footer />
 
 			{/* Confirmation Modal */}
 			{showConfirmModal && (

@@ -1,5 +1,4 @@
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 
 export default function DiscoverPage() {
 	const appId = process.env.NEXT_PUBLIC_WHOP_APP_ID;
@@ -142,8 +141,6 @@ export default function DiscoverPage() {
 					</div>
 				</div>
 			</div>
-
-			<Footer />
 		</div>
 	);
 }
