@@ -26,7 +26,7 @@ export default async function DashboardPage({
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">🔒</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Subscription Required
 						</h1>
 						<p className="text-lg text-mint-700 mb-4">
@@ -65,7 +65,7 @@ export default async function DashboardPage({
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">👑</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Admin Access Required
 						</h1>
 						<p className="text-lg text-mint-700 mb-2">
@@ -137,7 +137,7 @@ export default async function DashboardPage({
 								title="Recovered"
 								value={totalRecovered.toString()}
 								bgColor="bg-mint-100"
-								textColor="text-mint-800"
+								textColor="text-mint-700"
 							/>
 							<StatCard
 								title="Recovery Rate"
@@ -149,7 +149,7 @@ export default async function DashboardPage({
 								title="Total Saved"
 								value={`$${totalSaved.toFixed(2)}`}
 								bgColor="bg-mint-100"
-								textColor="text-mint-800"
+								textColor="text-mint-700"
 							/>
 						</div>
 					</aside>
@@ -158,7 +158,7 @@ export default async function DashboardPage({
 					<main className="flex-1 min-w-0">
 						<div className="bg-white border border-mint-200 rounded-lg overflow-hidden shadow-sm">
 							<div className="px-4 py-3 border-b border-mint-200 bg-mint-50">
-								<h2 className="text-xs sm:text-sm font-bold text-mint-800 font-(family-name:--font-space-mono) uppercase tracking-wider">
+								<h2 className="text-xs sm:text-sm font-bold text-mint-700 font-(family-name:--font-space-mono) uppercase tracking-wider">
 									Recent Failed Payments
 								</h2>
 							</div>
@@ -211,7 +211,7 @@ export default async function DashboardPage({
 													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-700">
 														{failure.user_email}
 													</td>
-													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-mint-800">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-mint-700">
 														${Number(failure.amount).toFixed(2)}
 													</td>
 													<td className="px-3 py-3 whitespace-nowrap">
@@ -268,7 +268,7 @@ function StatusBadge({ status }: { status: string }) {
 	const styles = {
 		pending: "bg-yellow-50 text-yellow-800 border-yellow-300",
 		sent: "bg-blue-50 text-blue-800 border-blue-300",
-		recovered: "bg-mint-100 text-mint-800 border-mint-300",
+		recovered: "bg-mint-100 text-mint-700 border-mint-300",
 		lost: "bg-gray-100 text-gray-700 border-gray-300",
 	};
 

@@ -79,14 +79,14 @@ export default function DiscoverSettingsPage() {
 
 			<div className="flex-1 px-8 py-8">
 				<div className="max-w-6xl mx-auto">
-					<h1 className="text-3xl font-bold text-mint-800 mb-8 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
+					<h1 className="text-3xl font-bold text-mint-700 mb-8 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
 						Settings
 					</h1>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 						{/* Left: Form */}
 						<div className="bg-white rounded-lg border border-mint-200 p-6 shadow-sm">
-							<h2 className="text-sm font-bold text-mint-800 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+							<h2 className="text-sm font-bold text-mint-700 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Configuration
 							</h2>
 
@@ -173,7 +173,7 @@ export default function DiscoverSettingsPage() {
 
 						{/* Right: Preview */}
 						<div className="bg-white rounded-lg border border-mint-200 p-6 shadow-sm">
-							<h2 className="text-sm font-bold text-mint-800 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+							<h2 className="text-sm font-bold text-mint-700 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Preview
 							</h2>
 
@@ -195,7 +195,7 @@ export default function DiscoverSettingsPage() {
 			{showConfirmModal && (
 				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 					<div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
-						<h3 className="text-lg font-bold text-mint-800 mb-3 font-[family-name:var(--font-space-mono)] uppercase">
+						<h3 className="text-lg font-bold text-mint-700 mb-3 font-[family-name:var(--font-space-mono)] uppercase">
 							Disable Recovery Emails?
 						</h3>
 						<p className="text-sm text-mint-700 mb-6">
@@ -211,7 +211,7 @@ export default function DiscoverSettingsPage() {
 							</button>
 							<button
 								onClick={() => setShowConfirmModal(false)}
-								className="flex-1 bg-mint-100 hover:bg-mint-200 text-mint-800 font-semibold px-6 py-3 rounded-md border border-mint-300 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+								className="flex-1 bg-mint-100 hover:bg-mint-200 text-mint-700 font-semibold px-6 py-3 rounded-md border border-mint-300 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 							>
 								Cancel
 							</button>

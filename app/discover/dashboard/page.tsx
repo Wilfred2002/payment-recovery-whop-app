@@ -53,7 +53,7 @@ export default function DiscoverPage() {
 									<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-2 font-[family-name:var(--font-space-mono)]">
 										Recovered
 									</p>
-									<p className="text-2xl font-bold text-mint-800">{totalRecovered}</p>
+									<p className="text-2xl font-bold text-mint-700">{totalRecovered}</p>
 								</div>
 								<div className="bg-white rounded-lg p-5 border border-mint-200 shadow-sm">
 									<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-2 font-[family-name:var(--font-space-mono)]">
@@ -65,7 +65,7 @@ export default function DiscoverPage() {
 									<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-2 font-[family-name:var(--font-space-mono)]">
 										Total Saved
 									</p>
-									<p className="text-2xl font-bold text-mint-800">${totalSaved.toFixed(2)}</p>
+									<p className="text-2xl font-bold text-mint-700">${totalSaved.toFixed(2)}</p>
 								</div>
 							</div>
 						</aside>
@@ -74,7 +74,7 @@ export default function DiscoverPage() {
 						<main className="flex-1 min-w-0">
 							<div className="bg-white border border-mint-200 rounded-lg overflow-hidden shadow-sm">
 								<div className="px-6 py-4 border-b border-mint-200 bg-mint-50">
-									<h2 className="text-sm font-bold text-mint-800 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+									<h2 className="text-sm font-bold text-mint-700 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 										Recent Failed Payments
 									</h2>
 								</div>
@@ -111,12 +111,12 @@ export default function DiscoverPage() {
 													<td className="px-6 py-4 whitespace-nowrap text-sm text-mint-700">
 														{recovery.email}
 													</td>
-													<td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-mint-800">
+													<td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-mint-700">
 														${recovery.amount}.00
 													</td>
 													<td className="px-6 py-4 whitespace-nowrap">
 														{recovery.status === "recovered" ? (
-															<span className="px-2.5 py-0.5 inline-flex text-xs font-semibold rounded border bg-mint-100 text-mint-800 border-mint-300 font-[family-name:var(--font-space-mono)] uppercase">
+															<span className="px-2.5 py-0.5 inline-flex text-xs font-semibold rounded border bg-mint-100 text-mint-700 border-mint-300 font-[family-name:var(--font-space-mono)] uppercase">
 																recovered
 															</span>
 														) : (

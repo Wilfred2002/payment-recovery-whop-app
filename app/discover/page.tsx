@@ -26,7 +26,7 @@ export default function DiscoverPage() {
 
 					<p className="text-xl text-mint-600 mb-12 max-w-2xl">
 						Detect failed payments, send recovery emails, and reclaim{" "}
-						<span className="font-semibold text-mint-800">$500-2000/month</span>{" "}
+						<span className="font-semibold text-mint-700">$500-2000/month</span>{" "}
 						in lost revenue.
 					</p>
 

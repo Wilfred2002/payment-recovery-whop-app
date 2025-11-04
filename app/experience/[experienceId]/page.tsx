@@ -29,7 +29,7 @@ export default async function ExperiencePage({
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">❌</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4">
+						<h1 className="text-3xl font-bold text-mint-700 mb-4">
 							Experience Not Found
 						</h1>
 						<p className="text-mint-600">
@@ -116,7 +116,7 @@ export default async function ExperiencePage({
 				<div className="flex-1 flex items-center justify-center px-4 sm:px-8 py-8">
 					<div className="text-center max-w-xl">
 						<div className="text-4xl sm:text-6xl mb-4 sm:mb-6">👑</div>
-						<h1 className="text-2xl sm:text-3xl font-bold text-mint-800 mb-3 sm:mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-2xl sm:text-3xl font-bold text-mint-700 mb-3 sm:mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Admin Access
 						</h1>
 						<p className="text-base sm:text-lg text-mint-700 mb-4 sm:mb-6">
@@ -155,7 +155,7 @@ export default async function ExperiencePage({
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">🔒</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Access Denied
 						</h1>
 						<p className="text-lg text-mint-700 mb-2">
@@ -178,7 +178,7 @@ export default async function ExperiencePage({
 			<div className="flex-1 flex items-center justify-center px-8">
 				<div className="text-center max-w-2xl">
 					<div className="text-6xl mb-6">💳</div>
-					<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+					<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 						Rebound Payment Recovery
 					</h1>
 					<p className="text-lg text-mint-700 mb-4">

@@ -21,13 +21,13 @@ export default async function Page({
 
 					<p className="text-xl text-mint-600 mb-12 max-w-2xl mx-auto">
 						Detect failed payments, send recovery emails, and reclaim{" "}
-						<span className="font-semibold text-mint-800">$500-2000/month</span>{" "}
+						<span className="font-semibold text-mint-700">$500-2000/month</span>{" "}
 						in lost revenue.
 					</p>
 
 					{/* Information */}
 					<div className="bg-mint-50 border border-mint-200 rounded-lg p-8 max-w-2xl mx-auto text-left">
-						<h2 className="text-2xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h2 className="text-2xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							How to Access
 						</h2>
 						<div className="space-y-4 text-mint-700">
@@ -40,7 +40,7 @@ export default async function Page({
 								the Whop App Store.
 							</p>
 							<div className="mt-6 pt-6 border-t border-mint-200">
-								<h3 className="font-semibold text-mint-800 mb-2">Features:</h3>
+								<h3 className="font-semibold text-mint-700 mb-2">Features:</h3>
 								<ul className="space-y-2 text-sm">
 									<li>✓ Automated recovery emails</li>
 									<li>✓ Real-time payment tracking</li>

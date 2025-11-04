@@ -26,7 +26,7 @@ export default async function SettingsPage({
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">🔒</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Subscription Required
 						</h1>
 						<p className="text-lg text-mint-700 mb-4">
@@ -65,7 +65,7 @@ export default async function SettingsPage({
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">👑</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Admin Access Required
 						</h1>
 						<p className="text-lg text-mint-700 mb-2">
