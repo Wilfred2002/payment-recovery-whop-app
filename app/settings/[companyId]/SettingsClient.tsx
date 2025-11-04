@@ -154,7 +154,7 @@ export default function SettingsClient({
 										<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
 									</div>
 								</label>
-								<p className="text-xs text-gray-900 mt-1">
+								<p className="text-xs text-black mt-1">
 									{emailEnabled
 										? "Emails will be sent when payments fail"
 										: "Emails are currently paused"}
@@ -170,7 +170,7 @@ export default function SettingsClient({
 									type="text"
 									value={emailSubject}
 									onChange={(e) => setEmailSubject(e.target.value)}
-									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm text-gray-900"
+									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm text-black"
 									placeholder="Email subject line"
 									required
 								/>
@@ -185,13 +185,13 @@ export default function SettingsClient({
 									value={emailBody}
 									onChange={(e) => setEmailBody(e.target.value)}
 									rows={12}
-									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono text-gray-900"
+									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono text-black"
 									placeholder="Email body text"
 									required
 								/>
-								<p className="text-xs text-gray-900 mt-2">
-									Available variables: <code className="bg-mint-100 px-1 rounded text-mint-900">{`{name}`}</code>,{" "}
-									<code className="bg-mint-100 px-1 rounded text-mint-900">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded text-mint-900">{`{updateLink}`}</code> (required)
+								<p className="text-xs text-black mt-2">
+									Available variables: <code className="bg-mint-100 px-1 rounded text-black">{`{name}`}</code>,{" "}
+									<code className="bg-mint-100 px-1 rounded text-black">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded text-black">{`{updateLink}`}</code> (required)
 								</p>
 							</div>
 
@@ -219,12 +219,12 @@ export default function SettingsClient({
 								Email Preview
 							</h2>
 
-							<div className="border border-mint-200 rounded-md p-3 sm:p-4 bg-mint-50">
+							<div className="border border-mint-200 rounded-md p-3 sm:p-4 bg-white">
 								<div className="mb-3 pb-3 border-b border-mint-200">
-									<p className="text-xs text-gray-900 font-semibold mb-1">Subject:</p>
-									<p className="text-sm font-semibold text-mint-900">{previewSubject}</p>
+									<p className="text-xs text-black font-semibold mb-1">Subject:</p>
+									<p className="text-sm font-semibold text-black">{previewSubject}</p>
 								</div>
-								<div className="whitespace-pre-wrap text-xs sm:text-sm text-gray-900">
+								<div className="whitespace-pre-wrap text-xs sm:text-sm text-black">
 									{previewBody}
 								</div>
 							</div>
