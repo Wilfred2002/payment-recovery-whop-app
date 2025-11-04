@@ -123,10 +123,10 @@ export default async function DashboardPage({
 			{/* Main Content: Sidebar + Table */}
 			<div className="flex-1">
 				<div className="max-w-6xl mx-auto px-4 py-4">
-				<div className="flex flex-col lg:flex-row gap-4">
+				<div className="flex flex-col lg:flex-row gap-3">
 					{/* Sidebar - Stats */}
-					<aside className="lg:w-48 xl:w-56 shrink-0">
-						<div className="space-y-4">
+					<aside className="lg:w-40 xl:w-44 shrink-0">
+						<div className="space-y-2">
 							<StatCard
 								title="Failed Payments"
 								value={totalFailed.toString()}
@@ -255,11 +255,11 @@ function StatCard({
 	textColor: string;
 }) {
 	return (
-		<div className={`${bgColor} rounded-lg p-3 sm:p-4 border border-mint-200 shadow-sm`}>
-			<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-1 sm:mb-2 font-(family-name:--font-space-mono)">
+		<div className={`${bgColor} rounded-lg p-2 sm:p-3 border border-mint-200 shadow-sm`}>
+			<p className="text-[10px] sm:text-xs font-semibold text-mint-600 uppercase tracking-wide mb-1 font-(family-name:--font-space-mono)">
 				{title}
 			</p>
-			<p className={`text-xl sm:text-2xl font-bold ${textColor}`}>{value}</p>
+			<p className={`text-lg sm:text-xl font-bold ${textColor}`}>{value}</p>
 		</div>
 	);
 }
