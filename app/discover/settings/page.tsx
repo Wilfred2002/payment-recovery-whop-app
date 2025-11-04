@@ -122,7 +122,7 @@ export default function DiscoverSettingsPage() {
 									type="text"
 									value={emailSubject}
 									onChange={(e) => setEmailSubject(e.target.value)}
-									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm"
+									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm text-gray-900"
 									placeholder="Email subject line"
 								/>
 							</div>
@@ -136,7 +136,7 @@ export default function DiscoverSettingsPage() {
 									value={emailBody}
 									onChange={(e) => setEmailBody(e.target.value)}
 									rows={12}
-									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono"
+									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono text-gray-900"
 									placeholder="Email body text"
 								/>
 								<p className="text-xs text-mint-700 mt-2">
@@ -182,7 +182,7 @@ export default function DiscoverSettingsPage() {
 									<p className="text-xs text-mint-700 font-semibold mb-1">Subject:</p>
 									<p className="font-semibold text-mint-900">{previewSubject}</p>
 								</div>
-								<div className="whitespace-pre-wrap text-sm text-mint-800">
+								<div className="whitespace-pre-wrap text-sm text-gray-900">
 									{previewBody}
 								</div>
 							</div>
