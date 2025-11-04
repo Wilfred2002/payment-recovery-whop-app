@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Header from "@/app/components/Header";
+import TrialBanner from "@/app/components/TrialBanner";
 import toast, { Toaster } from "react-hot-toast";
 import type { CreatorSettings } from "@/lib/supabase";
 
@@ -127,6 +128,7 @@ export default function SettingsClient({
 
 			<div className="flex-1 px-4 py-4">
 				<div className="max-w-5xl mx-auto">
+					<TrialBanner trialEndsAt={initialSettings?.trial_ends_at || null} />
 					<h1 className="text-xl sm:text-2xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
 						Settings
 					</h1>

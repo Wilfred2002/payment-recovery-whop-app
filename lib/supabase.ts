@@ -32,6 +32,7 @@ export type CreatorSettings = {
 	email_enabled: boolean;
 	email_subject: string;
 	email_body: string;
+	trial_ends_at: string | null;
 	created_at: string;
 	updated_at: string;
 };

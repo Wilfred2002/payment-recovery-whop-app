@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import type { FailedPayment } from "@/lib/supabase";
 import Header from "@/app/components/Header";
 import SubscribeButton from "@/app/components/SubscribeButton";
+import TrialBanner from "@/app/components/TrialBanner";
 import { checkHasActiveSubscription, checkIsAdmin } from "@/lib/access-check";
 
 export default async function DashboardPage({
@@ -98,6 +99,13 @@ export default async function DashboardPage({
 
 	const company = await companyResponse.json();
 
+	// Fetch trial information
+	const { data: settings } = await supabaseAdmin
+		.from("creator_settings")
+		.select("trial_ends_at")
+		.eq("company_id", companyId)
+		.single();
+
 	const { data: allFailures } = await supabaseAdmin
 		.from("failed_payments")
 		.select("*")
@@ -123,6 +131,7 @@ export default async function DashboardPage({
 			{/* Main Content: Sidebar + Table */}
 			<div className="flex-1">
 				<div className="max-w-6xl mx-auto px-4 py-4">
+				<TrialBanner trialEndsAt={settings?.trial_ends_at || null} />
 				<div className="flex flex-col lg:flex-row gap-3">
 					{/* Sidebar - Stats */}
 					<aside className="lg:w-40 xl:w-44 shrink-0">

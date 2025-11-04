@@ -1,6 +1,54 @@
+import { supabaseAdmin } from "./supabase";
+
+/**
+ * Checks if a company has an active trial (30 days)
+ */
+async function checkHasActiveTrial(companyId: string): Promise<boolean> {
+	try {
+		const { data: settings } = await supabaseAdmin
+			.from("creator_settings")
+			.select("trial_ends_at")
+			.eq("company_id", companyId)
+			.single();
+
+		if (!settings?.trial_ends_at) {
+			// No trial set - initialize one for new users
+			const trialEndsAt = new Date();
+			trialEndsAt.setDate(trialEndsAt.getDate() + 30);
+
+			await supabaseAdmin
+				.from("creator_settings")
+				.upsert({
+					company_id: companyId,
+					trial_ends_at: trialEndsAt.toISOString(),
+				});
+
+			console.log(`✅ Initialized 30-day trial for company ${companyId}`);
+			return true;
+		}
+
+		const now = new Date();
+		const trialEnd = new Date(settings.trial_ends_at);
+		const isActive = trialEnd > now;
+
+		if (isActive) {
+			const daysLeft = Math.ceil((trialEnd.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+			console.log(`✅ Company ${companyId} has ${daysLeft} days left in trial`);
+		} else {
+			console.log(`❌ Trial expired for company ${companyId}`);
+		}
+
+		return isActive;
+	} catch (error) {
+		console.error("Error checking trial status:", error);
+		return false;
+	}
+}
+
 /**
  * Checks if a user has access to this app's product
  * Uses Whop's check access REST API endpoint with product ID
+ * Also checks for active 30-day trial period
  */
 export async function checkHasActiveSubscription(
 	userId: string,
@@ -139,6 +187,13 @@ export async function checkHasActiveSubscription(
 				"⚠️  Set this env var to enable subscription gating",
 			);
 			// In development/testing without product ID, allow access
+			return true;
+		}
+
+		// ✅ Check for active 30-day trial before checking subscription
+		const hasActiveTrial = await checkHasActiveTrial(companyId);
+		if (hasActiveTrial) {
+			console.log(`✅ Company ${companyId} has active trial - granting access`);
 			return true;
 		}
 
