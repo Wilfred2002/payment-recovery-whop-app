@@ -106,7 +106,7 @@ export default function DiscoverSettingsPage() {
 										<div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
 									</div>
 								</label>
-								<p className="text-xs text-mint-700 mt-1">
+								<p className="text-xs text-gray-900 mt-1">
 									{emailEnabled
 										? "Emails will be sent when payments fail"
 										: "Emails are currently paused"}
@@ -139,7 +139,7 @@ export default function DiscoverSettingsPage() {
 									className="w-full px-4 py-2 border border-mint-200 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 text-sm font-mono text-gray-900"
 									placeholder="Email body text"
 								/>
-								<p className="text-xs text-mint-700 mt-2">
+								<p className="text-xs text-gray-900 mt-2">
 									Available variables: <code className="bg-mint-100 px-1 rounded">{`{name}`}</code>,{" "}
 									<code className="bg-mint-100 px-1 rounded">{`{amount}`}</code>, <code className="bg-mint-100 px-1 rounded">{`{updateLink}`}</code>
 								</p>
@@ -179,7 +179,7 @@ export default function DiscoverSettingsPage() {
 
 							<div className="border border-mint-200 rounded-md p-4 bg-mint-50">
 								<div className="mb-4 pb-4 border-b border-mint-200">
-									<p className="text-xs text-mint-700 font-semibold mb-1">Subject:</p>
+									<p className="text-xs text-gray-900 font-semibold mb-1">Subject:</p>
 									<p className="font-semibold text-mint-900">{previewSubject}</p>
 								</div>
 								<div className="whitespace-pre-wrap text-sm text-gray-900">
