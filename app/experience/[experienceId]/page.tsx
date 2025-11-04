@@ -1,7 +1,6 @@
 import { whopSdk } from "@/lib/whop-sdk";
 import { headers } from "next/headers";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 
 export default async function ExperiencePage({
 	params,
@@ -38,7 +37,6 @@ export default async function ExperiencePage({
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}
@@ -114,38 +112,37 @@ export default async function ExperiencePage({
 	if (isAdmin && companyId) {
 		return (
 			<div className="min-h-screen bg-mint-50 flex flex-col">
-				<Header showNav={false} />
-				<div className="flex-1 flex items-center justify-center px-8">
-					<div className="text-center max-w-2xl">
-						<div className="text-6xl mb-6">👑</div>
-						<h1 className="text-3xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+				<Header showNav={true} companyId={companyId} />
+				<div className="flex-1 flex items-center justify-center px-4 sm:px-8 py-8">
+					<div className="text-center max-w-xl">
+						<div className="text-4xl sm:text-6xl mb-4 sm:mb-6">👑</div>
+						<h1 className="text-2xl sm:text-3xl font-bold text-mint-800 mb-3 sm:mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Admin Access
 						</h1>
-						<p className="text-lg text-mint-700 mb-6">
+						<p className="text-base sm:text-lg text-mint-700 mb-4 sm:mb-6">
 							Welcome, Admin! 👋
 						</p>
-						<div className="bg-white border border-mint-200 rounded-lg p-6 shadow-sm text-left mb-6">
-							<p className="text-mint-700 mb-4">
-								You have admin access to the Payment Recovery Dashboard. 
-								Click the button below to manage failed payments, view recovery 
+						<div className="bg-white border border-mint-200 rounded-lg p-4 sm:p-6 shadow-sm text-left mb-4 sm:mb-6">
+							<p className="text-sm sm:text-base text-mint-700 mb-4">
+								You have admin access to the Payment Recovery Dashboard.
+								Click the button below to manage failed payments, view recovery
 								statistics, and configure email settings.
 							</p>
 							<div className="flex justify-center">
 								<a
 									href={`/dashboard/${companyId}`}
-									className="inline-flex items-center px-6 py-3 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider"
+									className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-mint-600 text-white font-semibold rounded-lg hover:bg-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 								>
 									Go to Dashboard →
 								</a>
 							</div>
 						</div>
-						<p className="text-sm text-mint-500">
-							This app helps you automatically recover failed payments by sending 
+						<p className="text-xs sm:text-sm text-mint-500">
+							This app helps you automatically recover failed payments by sending
 							personalized recovery emails to customers.
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}
@@ -154,7 +151,7 @@ export default async function ExperiencePage({
 	if (!hasAccess) {
 		return (
 			<div className="min-h-screen bg-mint-50 flex flex-col">
-				<Header showNav={false} />
+				<Header showNav={false} companyId={companyId} />
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">🔒</div>
@@ -170,7 +167,6 @@ export default async function ExperiencePage({
 						</p>
 					</div>
 				</div>
-				<Footer />
 			</div>
 		);
 	}
@@ -178,7 +174,7 @@ export default async function ExperiencePage({
 	// If user is a regular customer (not admin), show info message
 	return (
 		<div className="min-h-screen bg-mint-50 flex flex-col">
-			<Header showNav={false} />
+			<Header showNav={false} companyId={companyId} />
 			<div className="flex-1 flex items-center justify-center px-8">
 				<div className="text-center max-w-2xl">
 					<div className="text-6xl mb-6">💳</div>

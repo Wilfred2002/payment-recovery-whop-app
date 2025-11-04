@@ -15,7 +15,7 @@ export default function DiscoverPage() {
 				</p>
 			</div>
 
-			<Header showNav={false} />
+			<Header showNav={true} companyId="demo" />
 
 			{/* Main Content */}
 			<div className="flex-1 flex items-center justify-center px-8">

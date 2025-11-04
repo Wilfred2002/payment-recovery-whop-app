@@ -19,18 +19,18 @@ export default function Header({ showNav = false, companyId }: HeaderProps) {
 		? "/discover/dashboard"
 		: `/dashboard/${companyId}`;
 	const settingsUrl = isDiscoverMode ? "/discover/settings" : `/settings/${companyId}`;
-	const homeUrl = isDiscoverMode ? "/discover" : "/";
+
+	// Always show navigation when we have a companyId (unless explicitly disabled)
+	const shouldShowNav = companyId && showNav !== false;
 
 	return (
-		<header className="px-8 py-6 border-b border-mint-100 bg-white">
+		<header className="px-4 sm:px-8 py-4 border-b border-mint-100 bg-white">
 			<div className="flex items-center justify-between">
-				<Link href={homeUrl}>
-					<h1 className="text-4xl font-bold text-mint-800 font-[family-name:var(--font-space-mono)] uppercase tracking-tight hover:text-mint-700 transition-colors cursor-pointer">
-						Rebound
-					</h1>
-				</Link>
+				<h1 className="text-2xl sm:text-4xl font-bold text-mint-800 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
+					Rebound
+				</h1>
 
-				{showNav && companyId && (
+				{shouldShowNav && (
 					<nav className="flex items-center gap-6">
 						<Link
 							href={dashboardUrl}

@@ -1,10 +1,16 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-export default async function Page() {
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Promise<{ companyId?: string }>;
+}) {
+	const { companyId } = await searchParams;
+
 	return (
 		<div className="min-h-screen bg-white flex flex-col">
-			<Header showNav={false} />
+			<Header showNav={!!companyId} companyId={companyId} />
 
 			{/* Main Content */}
 			<div className="flex-1 flex items-center justify-center px-8">

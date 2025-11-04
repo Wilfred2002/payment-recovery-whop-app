@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import toast, { Toaster } from "react-hot-toast";
 import type { CreatorSettings } from "@/lib/supabase";
 
@@ -126,16 +125,16 @@ export default function SettingsClient({
 			<Toaster position="top-right" />
 			<Header showNav={true} companyId={companyId} />
 
-			<div className="flex-1 px-8 py-8">
-				<div className="max-w-6xl mx-auto">
-					<h1 className="text-3xl font-bold text-mint-800 mb-8 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
+			<div className="flex-1 px-4 py-4">
+				<div className="max-w-5xl mx-auto">
+					<h1 className="text-xl sm:text-2xl font-bold text-mint-800 mb-4 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
 						Settings
 					</h1>
 
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 						{/* Left: Form */}
-						<div className="bg-white rounded-lg border border-mint-200 p-6 shadow-sm">
-							<h2 className="text-sm font-bold text-mint-800 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+						<div className="bg-white rounded-lg border border-mint-200 p-4 sm:p-6 shadow-sm">
+							<h2 className="text-xs sm:text-sm font-bold text-mint-800 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Configuration
 							</h2>
 
@@ -215,17 +214,17 @@ export default function SettingsClient({
 						</div>
 
 						{/* Right: Preview */}
-						<div className="bg-white rounded-lg border border-mint-200 p-6 shadow-sm">
-							<h2 className="text-sm font-bold text-mint-800 mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+						<div className="bg-white rounded-lg border border-mint-200 p-4 sm:p-6 shadow-sm">
+							<h2 className="text-xs sm:text-sm font-bold text-mint-800 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Preview
 							</h2>
 
-							<div className="border border-mint-200 rounded-md p-4 bg-mint-50">
-								<div className="mb-4 pb-4 border-b border-mint-200">
+							<div className="border border-mint-200 rounded-md p-3 sm:p-4 bg-mint-50">
+								<div className="mb-3 pb-3 border-b border-mint-200">
 									<p className="text-xs text-gray-600 font-semibold mb-1">Subject:</p>
-									<p className="font-semibold text-mint-900">{previewSubject}</p>
+									<p className="text-sm font-semibold text-mint-900">{previewSubject}</p>
 								</div>
-								<div className="whitespace-pre-wrap text-sm text-gray-800">
+								<div className="whitespace-pre-wrap text-xs sm:text-sm text-gray-800">
 									{previewBody}
 								</div>
 							</div>
@@ -233,8 +232,6 @@ export default function SettingsClient({
 					</div>
 				</div>
 			</div>
-
-			<Footer />
 
 			{/* Confirmation Modal */}
 			{showConfirmModal && (

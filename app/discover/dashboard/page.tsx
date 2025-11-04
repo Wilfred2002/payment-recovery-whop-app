@@ -39,8 +39,8 @@ export default function DiscoverPage() {
 
 			{/* Main Content: Exact Dashboard Layout */}
 			<div className="flex-1">
-				<div className="max-w-7xl mx-auto px-6 py-8">
-					<div className="flex flex-col lg:flex-row gap-8">
+				<div className="max-w-6xl mx-auto px-4 py-4">
+					<div className="flex flex-col lg:flex-row gap-4">
 						{/* Sidebar - Stats */}
 						<aside className="lg:w-64 flex-shrink-0">
 							<div className="space-y-4">

@@ -3,7 +3,6 @@ import { headers } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { FailedPayment } from "@/lib/supabase";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
 import SubscribeButton from "@/app/components/SubscribeButton";
 import { checkHasActiveSubscription, checkIsAdmin } from "@/lib/access-check";
 
@@ -125,10 +124,10 @@ export default async function DashboardPage({
 
 			{/* Main Content: Sidebar + Table */}
 			<div className="flex-1">
-				<div className="max-w-7xl mx-auto px-6 py-8">
-				<div className="flex flex-col lg:flex-row gap-8">
+				<div className="max-w-6xl mx-auto px-4 py-4">
+				<div className="flex flex-col lg:flex-row gap-4">
 					{/* Sidebar - Stats */}
-					<aside className="lg:w-64 shrink-0">
+					<aside className="lg:w-48 xl:w-56 shrink-0">
 						<div className="space-y-4">
 							<StatCard
 								title="Failed Payments"
@@ -160,8 +159,8 @@ export default async function DashboardPage({
 					{/* Main Table */}
 					<main className="flex-1 min-w-0">
 						<div className="bg-white border border-mint-200 rounded-lg overflow-hidden shadow-sm">
-							<div className="px-6 py-4 border-b border-mint-200 bg-mint-50">
-								<h2 className="text-sm font-bold text-mint-800 font-(family-name:--font-space-mono) uppercase tracking-wider">
+							<div className="px-4 py-3 border-b border-mint-200 bg-mint-50">
+								<h2 className="text-xs sm:text-sm font-bold text-mint-800 font-(family-name:--font-space-mono) uppercase tracking-wider">
 									Recent Failed Payments
 								</h2>
 							</div>
@@ -169,22 +168,22 @@ export default async function DashboardPage({
 								<table className="min-w-full">
 									<thead>
 										<tr className="border-b border-mint-100 bg-mint-50">
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Member
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Email
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Amount
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Status
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Failed At
 											</th>
-											<th className="px-6 py-3 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Recovery Time
 											</th>
 										</tr>
@@ -194,10 +193,10 @@ export default async function DashboardPage({
 											<tr>
 												<td
 													colSpan={6}
-													className="px-6 py-16 text-center text-mint-600"
+													className="px-3 py-12 text-center text-mint-600"
 												>
-													<div className="text-4xl mb-2">✓</div>
-													<div className="text-sm font-(family-name:--font-space-mono) uppercase tracking-wider">
+													<div className="text-3xl mb-2">✓</div>
+													<div className="text-xs sm:text-sm font-(family-name:--font-space-mono) uppercase tracking-wider">
 														No failed payments yet. This is good news!
 													</div>
 												</td>
@@ -208,22 +207,22 @@ export default async function DashboardPage({
 													key={failure.id}
 													className="hover:bg-mint-50 transition-colors"
 												>
-													<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-mint-900">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-mint-900">
 														{failure.user_name || "Unknown"}
 													</td>
-													<td className="px-6 py-4 whitespace-nowrap text-sm text-mint-700">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-700">
 														{failure.user_email}
 													</td>
-													<td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-mint-800">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-mint-800">
 														${Number(failure.amount).toFixed(2)}
 													</td>
-													<td className="px-6 py-4 whitespace-nowrap">
+													<td className="px-3 py-3 whitespace-nowrap">
 														<StatusBadge status={failure.status} />
 													</td>
-													<td className="px-6 py-4 whitespace-nowrap text-sm text-mint-600">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-600">
 														{formatDate(failure.failed_at)}
 													</td>
-													<td className="px-6 py-4 whitespace-nowrap text-sm text-mint-600">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-600">
 														{failure.recovered_at
 															? getTimeDiff(
 																	failure.failed_at,
@@ -242,8 +241,6 @@ export default async function DashboardPage({
 				</div>
 				</div>
 			</div>
-
-			<Footer />
 		</div>
 	);
 }
@@ -260,11 +257,11 @@ function StatCard({
 	textColor: string;
 }) {
 	return (
-		<div className={`${bgColor} rounded-lg p-5 border border-mint-200 shadow-sm`}>
-			<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-2 font-(family-name:--font-space-mono)">
+		<div className={`${bgColor} rounded-lg p-3 sm:p-4 border border-mint-200 shadow-sm`}>
+			<p className="text-xs font-semibold text-mint-600 uppercase tracking-wider mb-1 sm:mb-2 font-(family-name:--font-space-mono)">
 				{title}
 			</p>
-			<p className={`text-2xl font-bold ${textColor}`}>{value}</p>
+			<p className={`text-xl sm:text-2xl font-bold ${textColor}`}>{value}</p>
 		</div>
 	);
 }
