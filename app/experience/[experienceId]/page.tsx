@@ -200,7 +200,6 @@ export default async function ExperiencePage({
 					</p>
 				</div>
 			</div>
-			<Footer />
 		</div>
 	);
 }
