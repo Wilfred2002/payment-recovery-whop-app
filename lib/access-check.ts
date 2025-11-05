@@ -5,7 +5,7 @@ import { supabaseAdmin } from "./supabase";
  */
 async function checkHasActiveTrial(companyId: string): Promise<boolean> {
 	try {
-		const { data: settings } = await supabaseAdmin
+		const { data: settings, error } = await supabaseAdmin
 			.from("creator_settings")
 			.select("trial_ends_at")
 			.eq("company_id", companyId)
@@ -16,11 +16,32 @@ async function checkHasActiveTrial(companyId: string): Promise<boolean> {
 			const trialEndsAt = new Date();
 			trialEndsAt.setDate(trialEndsAt.getDate() + 30);
 
+			const DEFAULT_SUBJECT = "⚠️ Your payment failed - Update needed";
+			const DEFAULT_BODY = `Hi {name},
+
+We noticed your recent payment of {amount} failed. This can happen for a few reasons:
+
+• Your card has expired
+• You've reached your card limit
+• Your bank declined the charge
+
+To keep your access, please update your payment method within 24 hours.
+
+{updateLink}
+
+If you have any questions, feel free to reach out. We're here to help!
+
+Best,
+The Team`;
+
 			await supabaseAdmin
 				.from("creator_settings")
 				.upsert({
 					company_id: companyId,
 					trial_ends_at: trialEndsAt.toISOString(),
+					email_enabled: true,
+					email_subject: DEFAULT_SUBJECT,
+					email_body: DEFAULT_BODY,
 				});
 
 			console.log(`✅ Initialized 30-day trial for company ${companyId}`);
