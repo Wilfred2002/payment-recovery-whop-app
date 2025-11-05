@@ -9,10 +9,12 @@ async function checkHasActiveTrial(companyId: string): Promise<boolean> {
 			.from("creator_settings")
 			.select("trial_ends_at")
 			.eq("company_id", companyId)
-			.single();
+			.maybeSingle();
 
-		if (!settings?.trial_ends_at) {
-			// No trial set - initialize one for new users
+		// If no record exists OR trial_ends_at is null, initialize trial
+		if (!settings || !settings.trial_ends_at) {
+			console.log(`🔄 No trial found for company ${companyId}, initializing...`);
+
 			const trialEndsAt = new Date();
 			trialEndsAt.setDate(trialEndsAt.getDate() + 30);
 
@@ -34,7 +36,7 @@ If you have any questions, feel free to reach out. We're here to help!
 Best,
 The Team`;
 
-			await supabaseAdmin
+			const { error: upsertError } = await supabaseAdmin
 				.from("creator_settings")
 				.upsert({
 					company_id: companyId,
@@ -43,6 +45,11 @@ The Team`;
 					email_subject: DEFAULT_SUBJECT,
 					email_body: DEFAULT_BODY,
 				});
+
+			if (upsertError) {
+				console.error(`❌ Failed to initialize trial for company ${companyId}:`, upsertError);
+				return false;
+			}
 
 			console.log(`✅ Initialized 30-day trial for company ${companyId}`);
 			return true;
