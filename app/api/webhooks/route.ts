@@ -84,87 +84,6 @@ async function handlePaymentFailure(
 			return;
 		}
 
-		// ✅ CRITICAL: Check if the COMPANY has purchased YOUR app
-		// This prevents sending recovery emails for companies that haven't paid for your service
-		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID?.trim();
-		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID?.trim();
-
-		// Always allow app owner's company (for testing/own use)
-		if (appOwnerCompanyId && resolvedCompanyId === appOwnerCompanyId) {
-			console.log(
-				`✅ App owner company ${resolvedCompanyId} - proceeding with recovery email`,
-			);
-		} else if (requiredProductId) {
-			// For other companies, check if any admin has purchased the app
-			try {
-				// Get admins of the company
-				const adminsResponse = await fetch(
-					`https://api.whop.com/api/v1/members?company_id=${resolvedCompanyId}&access_level=admin&first=5`,
-					{
-						headers: {
-							Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
-						},
-					},
-				);
-
-				if (!adminsResponse.ok) {
-					console.warn(
-						`⚠️  Could not fetch company admins (${adminsResponse.status}). Skipping recovery email for safety.`,
-					);
-					return;
-				}
-
-				const adminsData = await adminsResponse.json();
-				const admins = adminsData.data || [];
-
-				if (admins.length === 0) {
-					console.log(
-						`⏸️  No admins found for company ${resolvedCompanyId}. Skipping recovery email.`,
-					);
-					return;
-				}
-
-				// Check if any admin has access to our product
-				let hasCompanyAccess = false;
-				for (const admin of admins) {
-					const accessResponse = await fetch(
-						`https://api.whop.com/api/v1/users/${admin.user.id}/access/${requiredProductId}`,
-						{
-							headers: {
-								Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
-							},
-						},
-					);
-
-					if (accessResponse.ok) {
-						const accessData = await accessResponse.json();
-						if (accessData.has_access) {
-							hasCompanyAccess = true;
-							console.log(
-								`✅ Company ${resolvedCompanyId} admin ${admin.user.id} has access to product ${requiredProductId}`,
-							);
-							break;
-						}
-					}
-				}
-
-				if (!hasCompanyAccess) {
-					console.log(
-						`⏸️  Company ${resolvedCompanyId} does not have access to product ${requiredProductId}. Skipping recovery email.`,
-					);
-					return;
-				}
-			} catch (error) {
-				console.error("Error checking company product access:", error);
-				console.warn("⚠️  Access check failed. Skipping recovery email for safety.");
-				return;
-			}
-		} else {
-			console.log(
-				"✅ No product ID set - app is in open access mode. Sending email.",
-			);
-		}
-
 
 		// ========================================
 		// 🔧 DEVELOPMENT MODE BYPASS
@@ -285,12 +204,100 @@ async function handlePaymentFailure(
 
 		console.log("💾 Failed payment saved to database:", data.id);
 
+		// ✅ Check if company has access (subscription OR trial) before sending email
+		// This check happens AFTER tracking the payment in the database
+		const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID?.trim();
+		const appOwnerCompanyId = process.env.NEXT_PUBLIC_WHOP_COMPANY_ID?.trim();
+		let hasAccess = false;
+
+		// Always allow app owner's company (for testing/own use)
+		if (appOwnerCompanyId && resolvedCompanyId === appOwnerCompanyId) {
+			console.log(
+				`✅ App owner company ${resolvedCompanyId} - has access for recovery email`,
+			);
+			hasAccess = true;
+		} else if (!requiredProductId) {
+			// No product ID set - open access mode
+			console.log(
+				"✅ No product ID set - app is in open access mode. Sending email.",
+			);
+			hasAccess = true;
+		} else {
+			// Check for trial first
+			const { data: trialSettings } = await supabaseAdmin
+				.from("creator_settings")
+				.select("trial_ends_at")
+				.eq("company_id", resolvedCompanyId)
+				.maybeSingle();
+
+			if (trialSettings?.trial_ends_at) {
+				const now = new Date();
+				const trialEnd = new Date(trialSettings.trial_ends_at);
+				if (trialEnd > now) {
+					console.log(`✅ Company ${resolvedCompanyId} has active trial - will send email`);
+					hasAccess = true;
+				}
+			}
+
+			// If no trial, check if company has purchased the app
+			if (!hasAccess) {
+				try {
+					// Get admins of the company
+					const adminsResponse = await fetch(
+						`https://api.whop.com/api/v1/members?company_id=${resolvedCompanyId}&access_level=admin&first=5`,
+						{
+							headers: {
+								Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+							},
+						},
+					);
+
+					if (adminsResponse.ok) {
+						const adminsData = await adminsResponse.json();
+						const admins = adminsData.data || [];
+
+						// Check if any admin has access to our product
+						for (const admin of admins) {
+							const accessResponse = await fetch(
+								`https://api.whop.com/api/v1/users/${admin.user.id}/access/${requiredProductId}`,
+								{
+									headers: {
+										Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+									},
+								},
+							);
+
+							if (accessResponse.ok) {
+								const accessData = await accessResponse.json();
+								if (accessData.has_access) {
+									hasAccess = true;
+									console.log(
+										`✅ Company ${resolvedCompanyId} admin ${admin.user.id} has access to product ${requiredProductId}`,
+									);
+									break;
+								}
+							}
+						}
+					}
+				} catch (error) {
+					console.error("Error checking company product access:", error);
+				}
+			}
+		}
+
+		if (!hasAccess) {
+			console.log(
+				`⏸️  Company ${resolvedCompanyId} does not have access (no trial or subscription). Payment tracked but email NOT sent.`,
+			);
+			return;
+		}
+
 		// Check if recovery emails are enabled
 		const { data: settings } = await supabaseAdmin
 			.from("creator_settings")
 			.select("*")
 			.eq("company_id", resolvedCompanyId)
-			.single();
+			.maybeSingle();
 
 		const emailEnabled = settings?.email_enabled ?? true; // Default to enabled if no settings
 
@@ -299,7 +306,7 @@ async function handlePaymentFailure(
 			return;
 		}
 
-		console.log("✅ Sending recovery email for all products (no filtering).");
+		console.log("✅ Company has access and emails enabled - sending recovery email.");
 
 		try {
 			await sendRecoveryEmail({
