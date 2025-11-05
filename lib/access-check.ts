@@ -184,7 +184,28 @@ export async function checkHasActiveSubscription(
 				console.error("Company owner check failed:", fallbackError);
 			}
 
-			// If not owner or checks fail, deny access
+			// If not owner or checks fail, try trial before denying access
+			console.warn(
+				`Member endpoint failed and owner check didn't grant access. Checking trial...`,
+			);
+
+			// Check if product gating is even enabled
+			const requiredProductId = process.env.NEXT_PUBLIC_WHOP_PRODUCT_ID?.trim();
+			if (!requiredProductId) {
+				console.warn(
+					"⚠️  NEXT_PUBLIC_WHOP_PRODUCT_ID not set - app is in OPEN ACCESS mode",
+				);
+				return true;
+			}
+
+			// Try trial check as last resort for member endpoint failures
+			const hasActiveTrial = await checkHasActiveTrial(companyId);
+			if (hasActiveTrial) {
+				console.log(`✅ Company ${companyId} has active trial - granting access despite member check failure`);
+				return true;
+			}
+
+			// If trial also fails, deny access
 			console.error(
 				`Failed to check company access: ${memberResponse.status} ${memberResponse.statusText}`,
 			);
