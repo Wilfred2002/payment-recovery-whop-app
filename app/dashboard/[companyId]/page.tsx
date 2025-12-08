@@ -22,22 +22,22 @@ export default async function DashboardPage({
 
 	if (!hasSubscription) {
 		return (
-			<div className="min-h-screen bg-mint-50 flex flex-col">
+			<div className="min-h-screen bg-mint-50 dark:bg-gray-950 flex flex-col">
 				<Header showNav={false} />
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">🔒</div>
-						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 dark:text-mint-300 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Subscription Required
 						</h1>
-						<p className="text-lg text-mint-700 mb-4">
+						<p className="text-lg text-mint-700 dark:text-mint-300 mb-4">
 							This app requires an active subscription to access the dashboard.
 						</p>
-						<div className="bg-white border border-mint-200 rounded-lg p-6 shadow-sm text-left mb-6">
-							<p className="text-mint-700 mb-4">
+						<div className="bg-white dark:bg-gray-900 border border-mint-200 dark:border-mint-800 dark:border-mint-800 rounded-lg p-6 shadow-sm text-left mb-6">
+							<p className="text-mint-700 dark:text-mint-300 mb-4">
 								<strong>Payment Recovery Dashboard</strong> helps you automatically recover failed payments and increase revenue.
 							</p>
-							<ul className="text-sm text-mint-600 space-y-2 mb-4">
+							<ul className="text-sm text-mint-600 dark:text-mint-400 space-y-2 mb-4">
 								<li>✓ Automated recovery emails</li>
 								<li>✓ Real-time payment tracking</li>
 								<li>✓ Customizable email templates</li>
@@ -47,7 +47,7 @@ export default async function DashboardPage({
 						<SubscribeButton companyId={companyId}>
 							Subscribe Now →
 						</SubscribeButton>
-						<p className="text-xs text-mint-500 mt-4">
+						<p className="text-xs text-mint-500 dark:text-mint-400 mt-4">
 							$30/month • Cancel anytime
 						</p>
 					</div>
@@ -61,18 +61,18 @@ export default async function DashboardPage({
 
 	if (!isAdmin) {
 		return (
-			<div className="min-h-screen bg-mint-50 flex flex-col">
+			<div className="min-h-screen bg-mint-50 dark:bg-gray-950 flex flex-col">
 				<Header showNav={false} />
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
 						<div className="text-6xl mb-6">👑</div>
-						<h1 className="text-3xl font-bold text-mint-700 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-3xl font-bold text-mint-700 dark:text-mint-300 mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Admin Access Required
 						</h1>
-						<p className="text-lg text-mint-700 mb-2">
+						<p className="text-lg text-mint-700 dark:text-mint-300 mb-2">
 							Hi there!
 						</p>
-						<p className="text-mint-600">
+						<p className="text-mint-600 dark:text-mint-400">
 							You must be an admin to view this dashboard. Please contact your company administrator.
 						</p>
 					</div>
@@ -125,7 +125,7 @@ export default async function DashboardPage({
 	const recentFailures = failures.slice(0, 20);
 
 	return (
-		<div className="min-h-screen bg-mint-50 flex flex-col">
+		<div className="min-h-screen bg-mint-50 dark:bg-gray-950 flex flex-col">
 			<Header showNav={true} companyId={companyId} />
 
 			{/* Main Content: Sidebar + Table */}
@@ -140,67 +140,67 @@ export default async function DashboardPage({
 								title="Failed Payments"
 								value={totalFailed.toString()}
 								bgColor="bg-white"
-								textColor="text-mint-700"
+								textColor="text-mint-700 dark:text-mint-300"
 							/>
 							<StatCard
 								title="Recovered"
 								value={totalRecovered.toString()}
 								bgColor="bg-mint-100"
-								textColor="text-mint-700"
+								textColor="text-mint-700 dark:text-mint-300"
 							/>
 							<StatCard
 								title="Recovery Rate"
 								value={`${recoveryRate}%`}
 								bgColor="bg-white"
-								textColor="text-mint-700"
+								textColor="text-mint-700 dark:text-mint-300"
 							/>
 							<StatCard
 								title="Total Saved"
 								value={`$${totalSaved.toFixed(2)}`}
 								bgColor="bg-mint-100"
-								textColor="text-mint-700"
+								textColor="text-mint-700 dark:text-mint-300"
 							/>
 						</div>
 					</aside>
 
 					{/* Main Table */}
 					<main className="flex-1 min-w-0">
-						<div className="bg-white border border-mint-200 rounded-lg overflow-hidden shadow-sm">
-							<div className="px-4 py-3 border-b border-mint-200 bg-mint-50">
-								<h2 className="text-xs sm:text-sm font-bold text-mint-700 font-(family-name:--font-space-mono) uppercase tracking-wider">
+						<div className="bg-white dark:bg-gray-900 border border-mint-200 dark:border-mint-800 dark:border-mint-800 rounded-lg overflow-hidden shadow-sm">
+							<div className="px-4 py-3 border-b border-mint-200 dark:border-mint-800 bg-mint-50 dark:bg-gray-800">
+								<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 font-(family-name:--font-space-mono) uppercase tracking-wider">
 									Recent Failed Payments
 								</h2>
 							</div>
 							<div className="overflow-x-auto">
 								<table className="min-w-full">
 									<thead>
-										<tr className="border-b border-mint-100 bg-mint-50">
-											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+										<tr className="border-b border-mint-100 dark:border-mint-700 bg-mint-50 dark:bg-gray-800">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Member
 											</th>
-											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Email
 											</th>
-											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Amount
 											</th>
-											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Status
 											</th>
-											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Failed At
 											</th>
-											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 uppercase tracking-wider font-(family-name:--font-space-mono)">
+											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Recovery Time
 											</th>
 										</tr>
 									</thead>
-									<tbody className="divide-y divide-mint-100">
+									<tbody className="divide-y divide-mint-100 dark:divide-mint-700">
 										{recentFailures.length === 0 ? (
 											<tr>
 												<td
 													colSpan={6}
-													className="px-3 py-12 text-center text-mint-600"
+													className="px-3 py-12 text-center text-mint-600 dark:text-mint-400"
 												>
 													<div className="text-3xl mb-2">✓</div>
 													<div className="text-xs sm:text-sm font-(family-name:--font-space-mono) uppercase tracking-wider">
@@ -212,24 +212,24 @@ export default async function DashboardPage({
 											recentFailures.map((failure) => (
 												<tr
 													key={failure.id}
-													className="hover:bg-mint-50 transition-colors"
+													className="hover:bg-mint-50 dark:hover:bg-gray-800 transition-colors"
 												>
-													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-mint-900">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-mint-900 dark:text-mint-100">
 														{failure.user_name || "Unknown"}
 													</td>
-													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-700">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-700 dark:text-mint-300">
 														{failure.user_email}
 													</td>
-													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-mint-700">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-mint-700 dark:text-mint-300">
 														${Number(failure.amount).toFixed(2)}
 													</td>
 													<td className="px-3 py-3 whitespace-nowrap">
 														<StatusBadge status={failure.status} />
 													</td>
-													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-600">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-600 dark:text-mint-400">
 														{formatDate(failure.failed_at)}
 													</td>
-													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-600">
+													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm text-mint-600 dark:text-mint-400">
 														{failure.recovered_at
 															? getTimeDiff(
 																	failure.failed_at,
@@ -264,8 +264,8 @@ function StatCard({
 	textColor: string;
 }) {
 	return (
-		<div className={`${bgColor} rounded-lg p-2 sm:p-3 border border-mint-200 shadow-sm`}>
-			<p className="text-[10px] sm:text-xs font-semibold text-mint-600 uppercase tracking-wide mb-1 font-(family-name:--font-space-mono)">
+		<div className={`${bgColor} dark:bg-gray-900 rounded-lg p-2 sm:p-3 border border-mint-200 dark:border-mint-800 shadow-sm`}>
+			<p className="text-[10px] sm:text-xs font-semibold text-mint-600 dark:text-mint-400 uppercase tracking-wide mb-1 font-(family-name:--font-space-mono)">
 				{title}
 			</p>
 			<p className={`text-lg sm:text-xl font-bold ${textColor}`}>{value}</p>
@@ -275,15 +275,15 @@ function StatCard({
 
 function StatusBadge({ status }: { status: string }) {
 	const styles = {
-		pending: "bg-yellow-50 text-yellow-800 border-yellow-300",
-		sent: "bg-blue-50 text-blue-800 border-blue-300",
-		recovered: "bg-mint-100 text-mint-700 border-mint-300",
-		lost: "bg-gray-100 text-gray-700 border-gray-300",
+		pending: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700",
+		sent: "bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700",
+		recovered: "bg-mint-100 text-mint-700 dark:text-mint-300 border-mint-300",
+		lost: "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600",
 	};
 
 	return (
 		<span
-			className={`px-2.5 py-0.5 inline-flex text-xs font-semibold rounded border font-(family-name:--font-space-mono) uppercase ${styles[status as keyof typeof styles] || "bg-gray-50 text-gray-700 border-gray-200"}`}
+			className={`px-2.5 py-0.5 inline-flex text-xs font-semibold rounded border font-(family-name:--font-space-mono) uppercase ${styles[status as keyof typeof styles] || "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600"}`}
 		>
 			{status}
 		</span>

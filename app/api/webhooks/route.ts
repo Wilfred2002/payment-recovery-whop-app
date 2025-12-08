@@ -8,6 +8,47 @@ const validateWebhook = makeWebhookValidator({
 	webhookSecret: process.env.WHOP_WEBHOOK_SECRET ?? "fallback",
 });
 
+// ✅ RETRY UTILITY: Retry transient API failures with exponential backoff
+async function fetchWithRetry(
+	url: string,
+	options: RequestInit,
+	maxRetries = 3,
+	initialDelay = 1000,
+): Promise<Response> {
+	let lastError: Error | null = null;
+
+	for (let attempt = 0; attempt < maxRetries; attempt++) {
+		try {
+			const response = await fetch(url, options);
+
+			// Retry on rate limit (429) or server errors (5xx)
+			if (response.status === 429 || response.status >= 500) {
+				throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+			}
+
+			return response;
+		} catch (error) {
+			lastError = error as Error;
+			const isLastAttempt = attempt === maxRetries - 1;
+
+			if (isLastAttempt) {
+				console.error(`❌ API request failed after ${maxRetries} attempts:`, url);
+				console.error("Error:", error);
+				break;
+			}
+
+			// Exponential backoff: 1s, 2s, 4s
+			const delay = initialDelay * Math.pow(2, attempt);
+			console.warn(
+				`⚠️  API request failed (attempt ${attempt + 1}/${maxRetries}), retrying in ${delay}ms...`,
+			);
+			await new Promise((resolve) => setTimeout(resolve, delay));
+		}
+	}
+
+	throw lastError || new Error("Unknown error during fetch with retry");
+}
+
 export async function POST(request: NextRequest): Promise<Response> {
 	let webhookData;
 
@@ -18,61 +59,148 @@ export async function POST(request: NextRequest): Promise<Response> {
 		try {
 			webhookData = await validateWebhook(request);
 		} catch (error) {
-			console.error("Webhook validation failed:", error);
+			console.error("=".repeat(80));
+			console.error("❌ WEBHOOK VALIDATION FAILED");
+			console.error("Error:", error);
+			console.error("=".repeat(80));
 			return new Response("Unauthorized", { status: 401 });
 		}
 	}
 
 	// Log full payload to see what's available
 	console.log("📦 Full webhook payload:", JSON.stringify(webhookData, null, 2));
+	console.log("📦 Webhook type:", webhookData.type);
 
 	if (webhookData.type === "payment.failed") {
-		const { id, total, user, membership, company } = webhookData.data;
+		const data = webhookData.data || {};
+		
+		// Try multiple possible payload structures
+		const paymentId = data.id || data.payment_id || webhookData.id;
+		const amount = data.total || data.amount || 0;
+		
+		// Extract user ID from various possible locations
+		const user_id = data.user?.id || data.user_id || data.userId;
+		
+		// Extract membership ID from various possible locations
+		const membership_id = data.membership?.id || data.membership_id || data.membershipId;
+		
+		// Extract company ID from various possible locations
+		const company_id = data.company?.id || data.company_id || data.companyId || data.membership?.company?.id;
 
-		// Extract IDs from nested objects
-		const user_id = user?.id;
-		const membership_id = membership?.id;
-		const company_id = company?.id;
+		// Enhanced logging for Vercel logs - easy to spot payment failures
+		console.log("=".repeat(80));
+		console.log("🚨 PAYMENT FAILED - WEBHOOK RECEIVED");
+		console.log("=".repeat(80));
+		console.log("Payment ID:", paymentId);
+		console.log("Amount: $", amount);
+		console.log("User ID:", user_id);
+		console.log("Membership ID:", membership_id);
+		console.log("Company ID:", company_id);
+		console.log("Timestamp:", new Date().toISOString());
+		console.log("=".repeat(80));
 
-		console.log(
-			`💥 Payment failed: ${id} for user ${user_id}, company: ${company_id}, amount: $${total}`,
-		);
-
-		if (!company_id) {
-			console.error("❌ No company_id in webhook payload");
+		if (!paymentId) {
+			console.error("❌ No payment ID in webhook payload");
+			return new Response("Missing payment ID", { status: 400 });
 		}
 
-		waitUntil(handlePaymentFailure(id, total, user_id, membership_id, company_id));
+		if (!user_id || !membership_id) {
+			console.error("❌ Missing userId or membershipId in payment.failed webhook", {
+				user_id,
+				membership_id,
+				payload: data,
+			});
+			// Still try to process if we have company_id, as we might be able to get user info
+		}
+
+		if (!company_id) {
+			console.error("❌ No company_id in webhook payload - attempting to extract from membership");
+			// Try to get company_id from membership if available
+			if (membership_id) {
+				try {
+					const membershipResponse = await fetchWithRetry(
+						`https://api.whop.com/api/v1/memberships/${membership_id}`,
+						{
+							headers: {
+								Authorization: `Bearer ${process.env.WHOP_API_KEY}`,
+							},
+						},
+					);
+					if (membershipResponse.ok) {
+						const membershipData = await membershipResponse.json();
+						const extractedCompanyId = membershipData.company?.id || membershipData.company_id;
+						if (extractedCompanyId) {
+							console.log(`✅ Extracted company_id from membership: ${extractedCompanyId}`);
+							waitUntil(handlePaymentFailure(paymentId, amount, user_id, membership_id, extractedCompanyId));
+							return new Response("OK", { status: 200 });
+						}
+					}
+				} catch (error) {
+					console.error("=".repeat(80));
+					console.error("❌ ERROR FETCHING MEMBERSHIP TO GET COMPANY_ID");
+					console.error("Error:", error);
+					console.error("=".repeat(80));
+				}
+			}
+			console.error("❌ Cannot process payment failure without company_id");
+			return new Response("Missing company_id", { status: 400 });
+		}
+
+		waitUntil(handlePaymentFailure(paymentId, amount, user_id, membership_id, company_id));
 	}
 
 	if (webhookData.type === "payment.succeeded") {
-		const { id, total, user, membership, company } = webhookData.data;
-
-		// Extract IDs from nested objects
-		const user_id = user?.id;
-		const membership_id = membership?.id;
-		const company_id = company?.id;
+		const data = webhookData.data || {};
+		
+		// Try multiple possible payload structures
+		const paymentId = data.id || data.payment_id || webhookData.id;
+		const user_id = data.user?.id || data.user_id || data.userId;
+		const membership_id = data.membership?.id || data.membership_id || data.membershipId;
+		const company_id = data.company?.id || data.company_id || data.companyId || data.membership?.company?.id;
 
 		console.log(
-			`✅ Payment succeeded: ${id} for user ${user_id}, company: ${company_id}, amount: $${total}`,
+			`✅ Payment succeeded: ${paymentId} for user ${user_id}, membership: ${membership_id}, company: ${company_id}`,
 		);
 
-		waitUntil(handlePaymentSuccess(id, user_id, membership_id, company_id));
+		if (paymentId && user_id && membership_id && company_id) {
+			waitUntil(handlePaymentSuccess(paymentId, user_id, membership_id, company_id));
+		} else {
+			console.warn("⚠️ Missing data in payment.succeeded webhook, skipping processing");
+		}
 	}
 
 	return new Response("OK", { status: 200 });
 }
 
-async function handlePaymentFailure(
+export async function handlePaymentFailure(
 	paymentId: string,
 	amount: number,
 	userId: string | null | undefined,
 	membershipId: string | null | undefined,
 	companyId: string | null | undefined,
 ) {
+	console.log("=".repeat(80));
+	console.log("🔍 PROCESSING PAYMENT FAILURE");
+	console.log("=".repeat(80));
+	console.log("Payment ID:", paymentId);
+	console.log("Amount: $", amount);
+	console.log("User ID:", userId);
+	console.log("Membership ID:", membershipId);
+	console.log("Company ID:", companyId);
+	console.log("=".repeat(80));
+
 	if (!userId || !membershipId) {
-		console.error("Missing userId or membershipId in payment.failed webhook");
-		return;
+		console.error("❌ Missing userId or membershipId in payment.failed webhook", {
+			paymentId,
+			userId,
+			membershipId,
+			companyId,
+		});
+		// Try to continue if we have paymentId and companyId - we might be able to get user info
+		if (!paymentId || !companyId) {
+			console.error("❌ Cannot proceed without paymentId and companyId");
+			return;
+		}
 	}
 
 	try {
@@ -112,7 +240,7 @@ async function handlePaymentFailure(
 			// PRODUCTION MODE: Get real member data from Whop REST API
 			// Requires: member:basic:read and member:email:read permissions
 			const companyMemberId = `${userId}_${resolvedCompanyId}`;
-			const memberResponse = await fetch(
+			const memberResponse = await fetchWithRetry(
 				`https://api.whop.com/api/v1/companies/${resolvedCompanyId}/members/${companyMemberId}`,
 				{
 					headers: {
@@ -131,7 +259,7 @@ async function handlePaymentFailure(
 				console.log(`🔧 Attempting fallback: Fetching user data directly for user ${userId}`);
 
 				try {
-					const userResponse = await fetch(
+					const userResponse = await fetchWithRetry(
 						`https://api.whop.com/api/v1/users/${userId}`,
 						{
 							headers: {
@@ -156,7 +284,11 @@ async function handlePaymentFailure(
 						return;
 					}
 				} catch (fallbackError) {
-					console.error("❌ Fallback user fetch error:", fallbackError);
+					console.error("=".repeat(80));
+					console.error("❌ FALLBACK USER FETCH ERROR");
+					console.error("Error:", fallbackError);
+					console.error("User ID:", userId);
+					console.error("=".repeat(80));
 					return;
 				}
 			} else {
@@ -182,6 +314,24 @@ async function handlePaymentFailure(
 			}
 		}
 
+		// ✅ IDEMPOTENCY CHECK: Prevent duplicate payment records
+		const { data: existingPayment } = await supabaseAdmin
+			.from("failed_payments")
+			.select("id, status, email_sent_at")
+			.eq("whop_payment_id", paymentId)
+			.maybeSingle();
+
+		if (existingPayment) {
+			console.log("=".repeat(80));
+			console.log("⚠️  DUPLICATE WEBHOOK DETECTED - SKIPPING");
+			console.log("Payment ID:", paymentId);
+			console.log("Existing Record ID:", existingPayment.id);
+			console.log("Status:", existingPayment.status);
+			console.log("Email Sent At:", existingPayment.email_sent_at || "Not sent");
+			console.log("=".repeat(80));
+			return;
+		}
+
 		const { data, error } = await supabaseAdmin
 			.from("failed_payments")
 			.insert({
@@ -198,11 +348,22 @@ async function handlePaymentFailure(
 			.single();
 
 		if (error) {
-			console.error("Failed to insert payment failure:", error);
+			console.error("=".repeat(80));
+			console.error("❌ FAILED TO INSERT PAYMENT FAILURE");
+			console.error("Error:", error);
+			console.error("Payment ID:", paymentId);
+			console.error("User Email:", userEmail);
+			console.error("=".repeat(80));
 			return;
 		}
 
-		console.log("💾 Failed payment saved to database:", data.id);
+		console.log("=".repeat(80));
+		console.log("💾 PAYMENT FAILURE SAVED TO DATABASE");
+		console.log("Database ID:", data.id);
+		console.log("Payment ID:", paymentId);
+		console.log("User Email:", userEmail);
+		console.log("Amount: $", amount);
+		console.log("=".repeat(80));
 
 		// ✅ Check if company has access (subscription OR trial) before sending email
 		// This check happens AFTER tracking the payment in the database
@@ -243,7 +404,7 @@ async function handlePaymentFailure(
 			if (!hasAccess) {
 				try {
 					// Get admins of the company
-					const adminsResponse = await fetch(
+					const adminsResponse = await fetchWithRetry(
 						`https://api.whop.com/api/v1/members?company_id=${resolvedCompanyId}&access_level=admin&first=5`,
 						{
 							headers: {
@@ -258,7 +419,7 @@ async function handlePaymentFailure(
 
 						// Check if any admin has access to our product
 						for (const admin of admins) {
-							const accessResponse = await fetch(
+							const accessResponse = await fetchWithRetry(
 								`https://api.whop.com/api/v1/users/${admin.user.id}/access/${requiredProductId}`,
 								{
 									headers: {
@@ -280,15 +441,22 @@ async function handlePaymentFailure(
 						}
 					}
 				} catch (error) {
-					console.error("Error checking company product access:", error);
+					console.error("=".repeat(80));
+					console.error("❌ ERROR CHECKING COMPANY PRODUCT ACCESS");
+					console.error("Error:", error);
+					console.error("Company ID:", resolvedCompanyId);
+					console.error("=".repeat(80));
 				}
 			}
 		}
 
 		if (!hasAccess) {
-			console.log(
-				`⏸️  Company ${resolvedCompanyId} does not have access (no trial or subscription). Payment tracked but email NOT sent.`,
-			);
+			console.log("=".repeat(80));
+			console.log("⏸️  PAYMENT TRACKED BUT EMAIL NOT SENT");
+			console.log("Reason: Company does not have access (no trial or subscription)");
+			console.log("Company ID:", resolvedCompanyId);
+			console.log("Payment ID:", paymentId);
+			console.log("=".repeat(80));
 			return;
 		}
 
@@ -302,11 +470,21 @@ async function handlePaymentFailure(
 		const emailEnabled = settings?.email_enabled ?? true; // Default to enabled if no settings
 
 		if (!emailEnabled) {
-			console.log("⏸️  Recovery emails are disabled. Skipping email.");
+			console.log("=".repeat(80));
+			console.log("⏸️  PAYMENT TRACKED BUT EMAIL NOT SENT");
+			console.log("Reason: Recovery emails are disabled in settings");
+			console.log("Company ID:", resolvedCompanyId);
+			console.log("Payment ID:", paymentId);
+			console.log("=".repeat(80));
 			return;
 		}
 
-		console.log("✅ Company has access and emails enabled - sending recovery email.");
+		console.log("=".repeat(80));
+		console.log("✅ SENDING RECOVERY EMAIL");
+		console.log("To:", userEmail);
+		console.log("Payment ID:", paymentId);
+		console.log("Amount: $", amount);
+		console.log("=".repeat(80));
 
 		try {
 			await sendRecoveryEmail({
@@ -326,12 +504,26 @@ async function handlePaymentFailure(
 				})
 				.eq("id", data.id);
 
-			console.log("📧 Recovery email sent to:", userEmail);
+			console.log("=".repeat(80));
+			console.log("📧 RECOVERY EMAIL SENT SUCCESSFULLY");
+			console.log("To:", userEmail);
+			console.log("Payment ID:", paymentId);
+			console.log("Database ID:", data.id);
+			console.log("=".repeat(80));
 		} catch (emailError) {
-			console.error("Failed to send recovery email:", emailError);
+			console.error("=".repeat(80));
+			console.error("❌ FAILED TO SEND RECOVERY EMAIL");
+			console.error("Error:", emailError);
+			console.error("Payment ID:", paymentId);
+			console.error("User Email:", userEmail);
+			console.error("=".repeat(80));
 		}
 	} catch (error) {
-		console.error("Error handling payment failure:", error);
+		console.error("=".repeat(80));
+		console.error("❌ ERROR HANDLING PAYMENT FAILURE");
+		console.error("Error:", error);
+		console.error("Payment ID:", paymentId);
+		console.error("=".repeat(80));
 	}
 }
 
@@ -365,7 +557,10 @@ async function handlePaymentSuccess(
 			.limit(1);
 
 		if (error) {
-			console.error("Error checking for failed payments:", error);
+			console.error("=".repeat(80));
+			console.error("❌ ERROR CHECKING FOR FAILED PAYMENTS");
+			console.error("Error:", error);
+			console.error("=".repeat(80));
 			return;
 		}
 
@@ -391,6 +586,9 @@ async function handlePaymentSuccess(
 			);
 		}
 	} catch (error) {
-		console.error("Error handling payment success:", error);
+		console.error("=".repeat(80));
+		console.error("❌ ERROR HANDLING PAYMENT SUCCESS");
+		console.error("Error:", error);
+		console.error("=".repeat(80));
 	}
 }
