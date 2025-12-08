@@ -172,7 +172,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 	return new Response("OK", { status: 200 });
 }
 
-export async function handlePaymentFailure(
+async function handlePaymentFailure(
 	paymentId: string,
 	amount: number,
 	userId: string | null | undefined,
