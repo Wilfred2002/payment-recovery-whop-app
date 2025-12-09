@@ -122,7 +122,7 @@ export default function SettingsClient({
 		.replace(/{updateLink}/g, "https://whop.com/hub/settings/billing");
 
 	return (
-		<div className="min-h-screen bg-mint-50 dark:bg-gray-900 flex flex-col">
+		<div className="min-h-screen bg-mint-50 dark:bg-black flex flex-col">
 			<Toaster position="top-right" />
 			<Header showNav={true} companyId={companyId} />
 
@@ -135,7 +135,7 @@ export default function SettingsClient({
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						{/* Left: Form */}
-						<div className="bg-white dark:bg-gray-900 rounded-lg border border-mint-200 dark:border-mint-700 p-4 sm:p-6 shadow-sm">
+						<div className="bg-white dark:bg-black rounded-lg border border-mint-200 dark:border-mint-800 p-4 sm:p-6 shadow-sm">
 							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Configuration
 							</h2>
@@ -172,7 +172,7 @@ export default function SettingsClient({
 									type="text"
 									value={emailSubject}
 									onChange={(e) => setEmailSubject(e.target.value)}
-									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-700 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm text-black dark:text-gray-300"
+									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-800 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm text-black dark:text-gray-300"
 									placeholder="Email subject line"
 									required
 								/>
@@ -187,7 +187,7 @@ export default function SettingsClient({
 									value={emailBody}
 									onChange={(e) => setEmailBody(e.target.value)}
 									rows={12}
-									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-700 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm font-mono text-black dark:text-gray-300"
+									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-800 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm font-mono text-black dark:text-gray-300"
 									placeholder="Email body text"
 									required
 								/>
@@ -202,13 +202,13 @@ export default function SettingsClient({
 								<button
 									onClick={handleSave}
 									disabled={saving}
-									className="flex-1 bg-mint-700 hover:bg-mint-800 dark:bg-mint-700 dark:hover:bg-mint-600 text-white dark:text-white font-semibold px-6 py-3 rounded-md transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm disabled:opacity-50"
+									className="flex-1 bg-mint-700 hover:bg-mint-800 dark:bg-mint-900 dark:hover:bg-mint-800 text-white dark:text-white font-semibold px-6 py-3 rounded-md transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm disabled:opacity-50"
 								>
 									{saving ? "Saving..." : "Save Changes"}
 								</button>
 								<button
 									onClick={handleReset}
-									className="bg-white hover:bg-gray-50 dark:bg-mint-900 dark:hover:bg-gray-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-200 dark:border-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+									className="bg-white hover:bg-gray-50 dark:bg-mint-900 dark:hover:bg-gray-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-200 dark:border-mint-800 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 								>
 									Reset
 								</button>
@@ -216,13 +216,13 @@ export default function SettingsClient({
 						</div>
 
 						{/* Right: Preview */}
-						<div className="bg-white dark:bg-gray-900 rounded-lg border border-mint-200 dark:border-mint-700 p-4 sm:p-6 shadow-sm">
+						<div className="bg-white dark:bg-black rounded-lg border border-mint-200 dark:border-mint-800 p-4 sm:p-6 shadow-sm">
 							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Preview
 							</h2>
 
-							<div className="border border-mint-200 dark:border-mint-700 rounded-md p-3 sm:p-4 bg-white dark:bg-gray-900">
-								<div className="mb-3 pb-3 border-b border-mint-200 dark:border-mint-700">
+							<div className="border border-mint-200 dark:border-mint-800 rounded-md p-3 sm:p-4 bg-white dark:bg-black">
+								<div className="mb-3 pb-3 border-b border-mint-200 dark:border-mint-800">
 									<p className="text-xs text-black dark:text-gray-300 font-semibold mb-1">Subject:</p>
 									<p className="text-sm font-semibold text-black dark:text-gray-300">{previewSubject}</p>
 								</div>
@@ -237,7 +237,7 @@ export default function SettingsClient({
 
 			{/* Confirmation Modal */}
 			{showConfirmModal && (
-				<div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50">
+				<div className="fixed inset-0 bg-black/50 dark:bg-black/80 flex items-center justify-center z-50">
 					<div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
 						<h3 className="text-lg font-bold text-mint-700 dark:text-mint-300 mb-3 font-[family-name:var(--font-space-mono)] uppercase">
 							Disable Recovery Emails?
@@ -255,7 +255,7 @@ export default function SettingsClient({
 							</button>
 							<button
 								onClick={() => setShowConfirmModal(false)}
-								className="flex-1 bg-mint-100 hover:bg-mint-200 dark:bg-mint-800 dark:hover:bg-mint-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-300 dark:border-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+								className="flex-1 bg-mint-100 hover:bg-mint-200 dark:bg-mint-900 dark:hover:bg-mint-800 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-300 dark:border-mint-800 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 							>
 								Cancel
 							</button>

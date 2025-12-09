@@ -16,7 +16,7 @@ export default function TrialBanner({ trialEndsAt }: TrialBannerProps) {
 
 	if (isExpired) {
 		return (
-			<div className="bg-red-50 dark:bg-red-900/40 border border-red-200 dark:border-red-700 rounded-lg p-3 sm:p-4 mb-4">
+			<div className="bg-red-50 dark:bg-red-900/40 border border-red-200 dark:border-red-800 rounded-lg p-3 sm:p-4 mb-4">
 				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
 					<div>
 						<p className="text-sm font-bold text-red-700 dark:text-red-300">
@@ -41,7 +41,7 @@ export default function TrialBanner({ trialEndsAt }: TrialBannerProps) {
 
 	const isUrgent = daysLeft <= 7;
 	const bgColor = isUrgent ? "bg-amber-50 dark:bg-amber-900/40" : "bg-mint-50 dark:bg-mint-900/40";
-	const borderColor = isUrgent ? "border-amber-200 dark:border-amber-700" : "border-mint-200 dark:border-mint-700";
+	const borderColor = isUrgent ? "border-amber-200 dark:border-amber-800" : "border-mint-200 dark:border-mint-800";
 	const textColor = isUrgent ? "text-amber-700 dark:text-amber-300" : "text-mint-700 dark:text-mint-300";
 	const buttonBg = isUrgent
 		? "bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-700"
