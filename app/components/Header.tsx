@@ -24,9 +24,9 @@ export default function Header({ showNav = false, companyId }: HeaderProps) {
 	const shouldShowNav = companyId && showNav !== false;
 
 	return (
-		<header className="px-4 sm:px-8 py-4 border-b border-mint-100 dark:border-mint-800 bg-white dark:bg-mint-950">
+		<header className="px-4 sm:px-8 py-4 border-b border-mint-100 dark:border-mint-800 bg-white dark:bg-gray-900">
 			<div className="flex items-center justify-between">
-				<h1 className="text-2xl sm:text-4xl font-bold text-mint-700 dark:text-mint-300 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
+				<h1 className="text-2xl sm:text-4xl font-bold text-mint-700 dark:text-mint-400 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
 					Rebound
 				</h1>
 
@@ -36,7 +36,7 @@ export default function Header({ showNav = false, companyId }: HeaderProps) {
 							href={dashboardUrl}
 							className={`text-sm font-semibold font-[family-name:var(--font-space-mono)] uppercase tracking-wider transition-colors ${
 								isActive("/dashboard") || isActive("/discover/dashboard")
-									? "text-mint-700 dark:text-mint-300 border-b-2 border-mint-700 dark:border-mint-300"
+									? "text-mint-700 dark:text-mint-400 border-b-2 border-mint-700 dark:border-mint-400"
 									: "text-mint-600 dark:text-mint-400 hover:text-mint-700 dark:hover:text-mint-300"
 							}`}
 						>
@@ -46,7 +46,7 @@ export default function Header({ showNav = false, companyId }: HeaderProps) {
 							href={settingsUrl}
 							className={`text-sm font-semibold font-[family-name:var(--font-space-mono)] uppercase tracking-wider transition-colors ${
 								isActive("/settings") || isActive("/discover/settings")
-									? "text-mint-700 dark:text-mint-300 border-b-2 border-mint-700 dark:border-mint-300"
+									? "text-mint-700 dark:text-mint-400 border-b-2 border-mint-700 dark:border-mint-400"
 									: "text-mint-600 dark:text-mint-400 hover:text-mint-700 dark:hover:text-mint-300"
 							}`}
 						>

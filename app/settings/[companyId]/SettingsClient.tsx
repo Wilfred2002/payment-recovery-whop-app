@@ -122,7 +122,7 @@ export default function SettingsClient({
 		.replace(/{updateLink}/g, "https://whop.com/hub/settings/billing");
 
 	return (
-		<div className="min-h-screen bg-mint-50 dark:bg-gray-950 flex flex-col">
+		<div className="min-h-screen bg-mint-50 dark:bg-gray-900 flex flex-col">
 			<Toaster position="top-right" />
 			<Header showNav={true} companyId={companyId} />
 
@@ -135,7 +135,7 @@ export default function SettingsClient({
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						{/* Left: Form */}
-						<div className="bg-white dark:bg-gray-900 rounded-lg border border-mint-200 dark:border-mint-800 p-4 sm:p-6 shadow-sm">
+						<div className="bg-white dark:bg-gray-900 rounded-lg border border-mint-200 dark:border-mint-700 p-4 sm:p-6 shadow-sm">
 							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Configuration
 							</h2>
@@ -143,7 +143,7 @@ export default function SettingsClient({
 							{/* Enable/Disable Toggle */}
 							<div className="mb-6">
 								<label className="flex items-center justify-between cursor-pointer">
-									<span className="text-sm font-semibold text-mint-900 dark:text-mint-100">
+									<span className="text-sm font-semibold text-mint-900 dark:text-mint-200">
 										Recovery Emails
 									</span>
 									<div className="relative">
@@ -153,10 +153,10 @@ export default function SettingsClient({
 											onChange={handleToggle}
 											className="sr-only peer"
 										/>
-										<div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 dark:focus:ring-mint-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-gray-300 after:border-gray-300 dark:after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
+										<div className="w-11 h-6 bg-gray-200 dark:bg-mint-800 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 dark:focus:ring-mint-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-gray-300 after:border-gray-300 dark:after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
 									</div>
 								</label>
-								<p className="text-xs text-black dark:text-gray-200 mt-1">
+								<p className="text-xs text-black dark:text-gray-300 mt-1">
 									{emailEnabled
 										? "Emails will be sent when payments fail"
 										: "Emails are currently paused"}
@@ -165,14 +165,14 @@ export default function SettingsClient({
 
 							{/* Email Subject */}
 							<div className="mb-6">
-								<label className="block text-sm font-semibold text-mint-900 dark:text-mint-100 mb-2">
+								<label className="block text-sm font-semibold text-mint-900 dark:text-mint-200 mb-2">
 									Email Subject <span className="text-red-500 dark:text-red-400">*</span>
 								</label>
 								<input
 									type="text"
 									value={emailSubject}
 									onChange={(e) => setEmailSubject(e.target.value)}
-									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-800 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-400 text-sm text-black dark:text-gray-200"
+									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-700 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm text-black dark:text-gray-300"
 									placeholder="Email subject line"
 									required
 								/>
@@ -180,20 +180,20 @@ export default function SettingsClient({
 
 							{/* Email Body */}
 							<div className="mb-6">
-								<label className="block text-sm font-semibold text-mint-900 dark:text-mint-100 mb-2">
+								<label className="block text-sm font-semibold text-mint-900 dark:text-mint-200 mb-2">
 									Email Body <span className="text-red-500 dark:text-red-400">*</span>
 								</label>
 								<textarea
 									value={emailBody}
 									onChange={(e) => setEmailBody(e.target.value)}
 									rows={12}
-									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-800 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-400 text-sm font-mono text-black dark:text-gray-200"
+									className="w-full px-4 py-2 border border-mint-200 dark:border-mint-700 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm font-mono text-black dark:text-gray-300"
 									placeholder="Email body text"
 									required
 								/>
-								<p className="text-xs text-black dark:text-gray-200 mt-2">
-									Available variables: <code className="bg-mint-100 dark:bg-mint-900/30 px-1 rounded text-black dark:text-gray-200">{`{name}`}</code>,{" "}
-									<code className="bg-mint-100 dark:bg-mint-900/30 px-1 rounded text-black dark:text-gray-200">{`{amount}`}</code>, <code className="bg-mint-100 dark:bg-mint-900/30 px-1 rounded text-black dark:text-gray-200">{`{updateLink}`}</code> (required)
+								<p className="text-xs text-black dark:text-gray-300 mt-2">
+									Available variables: <code className="bg-mint-100 dark:bg-mint-800 px-1 rounded text-black dark:text-gray-300">{`{name}`}</code>,{" "}
+									<code className="bg-mint-100 dark:bg-mint-800 px-1 rounded text-black dark:text-gray-300">{`{amount}`}</code>, <code className="bg-mint-100 dark:bg-mint-800 px-1 rounded text-black dark:text-gray-300">{`{updateLink}`}</code> (required)
 								</p>
 							</div>
 
@@ -202,13 +202,13 @@ export default function SettingsClient({
 								<button
 									onClick={handleSave}
 									disabled={saving}
-									className="flex-1 bg-mint-700 hover:bg-mint-800 dark:bg-mint-600 dark:hover:bg-mint-700 text-white dark:text-white font-semibold px-6 py-3 rounded-md transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm disabled:opacity-50"
+									className="flex-1 bg-mint-700 hover:bg-mint-800 dark:bg-mint-700 dark:hover:bg-mint-600 text-white dark:text-white font-semibold px-6 py-3 rounded-md transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm disabled:opacity-50"
 								>
 									{saving ? "Saving..." : "Save Changes"}
 								</button>
 								<button
 									onClick={handleReset}
-									className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-200 dark:border-mint-800 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+									className="bg-white hover:bg-gray-50 dark:bg-mint-900 dark:hover:bg-gray-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-200 dark:border-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 								>
 									Reset
 								</button>
@@ -216,17 +216,17 @@ export default function SettingsClient({
 						</div>
 
 						{/* Right: Preview */}
-						<div className="bg-white dark:bg-gray-900 rounded-lg border border-mint-200 dark:border-mint-800 p-4 sm:p-6 shadow-sm">
+						<div className="bg-white dark:bg-gray-900 rounded-lg border border-mint-200 dark:border-mint-700 p-4 sm:p-6 shadow-sm">
 							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Preview
 							</h2>
 
-							<div className="border border-mint-200 dark:border-mint-800 rounded-md p-3 sm:p-4 bg-white dark:bg-gray-900">
-								<div className="mb-3 pb-3 border-b border-mint-200 dark:border-mint-800">
-									<p className="text-xs text-black dark:text-gray-200 font-semibold mb-1">Subject:</p>
-									<p className="text-sm font-semibold text-black dark:text-gray-200">{previewSubject}</p>
+							<div className="border border-mint-200 dark:border-mint-700 rounded-md p-3 sm:p-4 bg-white dark:bg-gray-900">
+								<div className="mb-3 pb-3 border-b border-mint-200 dark:border-mint-700">
+									<p className="text-xs text-black dark:text-gray-300 font-semibold mb-1">Subject:</p>
+									<p className="text-sm font-semibold text-black dark:text-gray-300">{previewSubject}</p>
 								</div>
-								<div className="whitespace-pre-wrap text-xs sm:text-sm text-black dark:text-gray-200">
+								<div className="whitespace-pre-wrap text-xs sm:text-sm text-black dark:text-gray-300">
 									{previewBody}
 								</div>
 							</div>
@@ -255,7 +255,7 @@ export default function SettingsClient({
 							</button>
 							<button
 								onClick={() => setShowConfirmModal(false)}
-								className="flex-1 bg-mint-100 hover:bg-mint-200 dark:bg-mint-900/30 dark:hover:bg-mint-800/40 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-300 dark:border-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+								className="flex-1 bg-mint-100 hover:bg-mint-200 dark:bg-mint-800 dark:hover:bg-mint-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-300 dark:border-mint-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 							>
 								Cancel
 							</button>
