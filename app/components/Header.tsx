@@ -24,7 +24,7 @@ export default function Header({ showNav = false, companyId }: HeaderProps) {
 	const shouldShowNav = companyId && showNav !== false;
 
 	return (
-		<header className="px-4 sm:px-8 py-4 border-b border-mint-100 dark:border-neutral-800 bg-white dark:bg-black">
+		<header className="px-4 sm:px-8 py-4 border-b border-mint-100 dark:border-neutral-800 bg-white dark:bg-[oklch(21%_0.006_285.885)]">
 			<div className="flex items-center justify-between">
 				<h1 className="text-2xl sm:text-4xl font-bold text-mint-700 dark:text-neutral-400 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
 					Rebound

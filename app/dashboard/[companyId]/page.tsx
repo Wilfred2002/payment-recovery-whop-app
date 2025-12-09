@@ -22,7 +22,7 @@ export default async function DashboardPage({
 
 	if (!hasSubscription) {
 		return (
-			<div className="min-h-screen bg-mint-50 dark:bg-mint-800 flex flex-col">
+			<div className="min-h-screen bg-mint-50 dark:bg-[oklch(21%_0.006_285.885)] flex flex-col">
 				<Header showNav={false} />
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
