@@ -15,7 +15,7 @@
 		"@vercel/functions": "^2.0.3",
 		"@whop/api": "^0.0.50",
 		"@whop/react": "0.2.36",
-		"next": "15.3.2",
+		"next": "16.0.8",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-hot-toast": "^2.6.0",
