@@ -479,6 +479,16 @@ async function handlePaymentFailure(
 			return;
 		}
 
+		// Verify we have membershipId before sending email
+		if (!membershipId) {
+			console.error("=".repeat(80));
+			console.error("❌ CANNOT SEND RECOVERY EMAIL");
+			console.error("Reason: Missing membershipId");
+			console.error("Payment ID:", paymentId);
+			console.error("=".repeat(80));
+			return;
+		}
+
 		console.log("=".repeat(80));
 		console.log("✅ SENDING RECOVERY EMAIL");
 		console.log("To:", userEmail);
