@@ -61,7 +61,7 @@ export default async function DashboardPage({
 
 	if (!isAdmin) {
 		return (
-			<div className="min-h-screen bg-mint-50 dark:bg-neutral-800 flex flex-col">
+			<div className="min-h-screen bg-mint-50 dark:bg-[oklch(21%_0.006_285.885)] flex flex-col">
 				<Header showNav={false} />
 				<div className="flex-1 flex items-center justify-center px-8">
 					<div className="text-center max-w-md">
@@ -125,7 +125,7 @@ export default async function DashboardPage({
 	const recentFailures = failures.slice(0, 20);
 
 	return (
-		<div className="min-h-screen bg-mint-50 dark:bg-neutral-800 flex flex-col">
+		<div className="min-h-screen bg-mint-50 dark:bg-[oklch(21%_0.006_285.885)] flex flex-col">
 			<Header showNav={true} companyId={companyId} />
 
 			{/* Main Content: Sidebar + Table */}
@@ -166,7 +166,7 @@ export default async function DashboardPage({
 					{/* Main Table */}
 					<main className="flex-1 min-w-0">
 						<div className="bg-white dark:bg-neutral-800 border border-mint-200 dark:border-neutral-700 dark:border-neutral-700 rounded-lg overflow-hidden shadow-sm">
-							<div className="px-4 py-3 border-b border-mint-200 dark:border-neutral-700 bg-mint-50 dark:bg-neutral-800">
+							<div className="px-4 py-3 border-b border-mint-200 dark:border-neutral-700 bg-mint-50 dark:bg-[oklch(21%_0.006_285.885)]">
 								<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 font-(family-name:--font-space-mono) uppercase tracking-wider">
 									Recent Failed Payments
 								</h2>
@@ -174,7 +174,7 @@ export default async function DashboardPage({
 							<div className="overflow-x-auto">
 								<table className="min-w-full">
 									<thead>
-										<tr className="border-b border-mint-100 dark:border-neutral-700 bg-mint-50 dark:bg-neutral-800">
+										<tr className="border-b border-mint-100 dark:border-neutral-700 bg-mint-50 dark:bg-[oklch(21%_0.006_285.885)]">
 											<th className="px-3 py-2 text-left text-xs font-semibold text-mint-700 dark:text-mint-300 uppercase tracking-wider font-(family-name:--font-space-mono)">
 												Member
 											</th>
@@ -212,7 +212,7 @@ export default async function DashboardPage({
 											recentFailures.map((failure) => (
 												<tr
 													key={failure.id}
-													className="hover:bg-mint-50 dark:hover:bg-mint-800 transition-colors"
+													className="hover:bg-mint-50 dark:hover:bg-neutral-700 transition-colors"
 												>
 													<td className="px-3 py-3 whitespace-nowrap text-xs sm:text-sm font-medium text-mint-900 dark:text-mint-400">
 														{failure.user_name || "Unknown"}
@@ -277,7 +277,7 @@ function StatusBadge({ status }: { status: string }) {
 	const styles = {
 		pending: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700",
 		sent: "bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-300 dark:border-blue-700",
-		recovered: "bg-mint-100 text-mint-700 dark:text-mint-300 border-mint-300",
+		recovered: "bg-mint-100 dark:bg-mint-900/30 text-mint-700 dark:text-mint-300 border-mint-300 dark:border-mint-700",
 		lost: "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-neutral-700",
 	};
 
