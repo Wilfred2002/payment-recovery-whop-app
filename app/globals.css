@@ -19,6 +19,14 @@
 	--color-mint-800: #28593a;
 	--color-mint-900: #234a32;
 
+	/* Dark Mode Theme Colors - Edit these to change dark mode appearance */
+	--color-dark-bg: oklch(21% 0.006 285.885); /* Main background */
+	--color-dark-card: oklch(25% 0.008 285.885); /* Cards/containers */
+	--color-dark-elevated: oklch(28% 0.01 285.885); /* Hover/elevated states */
+	--color-dark-border: oklch(32% 0.012 285.885); /* Borders */
+	--color-dark-text: oklch(85% 0.005 285.885); /* Primary text */
+	--color-dark-text-muted: oklch(65% 0.005 285.885); /* Secondary text */
+
 	--font-sans: var(--font-geist-sans);
 	--font-mono: var(--font-geist-mono);
 	--font-space: var(--font-space-mono);
@@ -34,7 +42,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
 	body {
-		background: oklch(21% 0.006 285.885);
-		color: #d4d4d4;
+		background: var(--color-dark-bg);
+		color: var(--color-dark-text);
 	}
 }

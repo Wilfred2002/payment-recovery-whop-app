@@ -40,9 +40,9 @@ export default function TrialBanner({ trialEndsAt }: TrialBannerProps) {
 	}
 
 	const isUrgent = daysLeft <= 7;
-	const bgColor = isUrgent ? "bg-amber-50 dark:bg-amber-900/40" : "bg-mint-50 dark:bg-neutral-800";
-	const borderColor = isUrgent ? "border-amber-200 dark:border-amber-800" : "border-mint-200 dark:border-neutral-700";
-	const textColor = isUrgent ? "text-amber-700 dark:text-amber-300" : "text-mint-700 dark:text-mint-300";
+	const bgColor = isUrgent ? "bg-amber-50 dark:bg-amber-900/40" : "bg-mint-50 dark:bg-[var(--color-dark-card)]";
+	const borderColor = isUrgent ? "border-amber-200 dark:border-amber-800" : "border-mint-200 dark:border-[var(--color-dark-border)]";
+	const textColor = isUrgent ? "text-amber-700 dark:text-amber-300" : "text-mint-700 dark:text-[var(--color-dark-text)]";
 	const buttonBg = isUrgent
 		? "bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-700"
 		: "bg-mint-600 hover:bg-mint-700 dark:bg-mint-600 dark:hover:bg-mint-700";

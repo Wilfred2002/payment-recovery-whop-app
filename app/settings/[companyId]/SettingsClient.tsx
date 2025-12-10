@@ -122,28 +122,28 @@ export default function SettingsClient({
 		.replace(/{updateLink}/g, "https://whop.com/hub/settings/billing");
 
 	return (
-		<div className="min-h-screen bg-mint-50 dark:bg-[oklch(21%_0.006_285.885)] flex flex-col">
+		<div className="min-h-screen bg-mint-50 dark:bg-[var(--color-dark-bg)] flex flex-col">
 			<Toaster position="top-right" />
 			<Header showNav={true} companyId={companyId} />
 
 			<div className="flex-1 px-4 py-4">
 				<div className="max-w-5xl mx-auto">
 					<TrialBanner trialEndsAt={initialSettings?.trial_ends_at || null} />
-					<h1 className="text-xl sm:text-2xl font-bold text-mint-700 dark:text-mint-300 mb-4 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
+					<h1 className="text-xl sm:text-2xl font-bold text-mint-700 dark:text-[var(--color-dark-text)] mb-4 font-[family-name:var(--font-space-mono)] uppercase tracking-tight">
 						Settings
 					</h1>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						{/* Left: Form */}
-						<div className="bg-white dark:bg-[oklch(21%_0.006_285.885)] rounded-lg border border-mint-200 dark:border-neutral-700 p-4 sm:p-6 shadow-sm">
-							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+						<div className="bg-white dark:bg-[var(--color-dark-bg)] rounded-lg border border-mint-200 dark:border-[var(--color-dark-border)] p-4 sm:p-6 shadow-sm">
+							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-[var(--color-dark-text)] mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Configuration
 							</h2>
 
 							{/* Enable/Disable Toggle */}
 							<div className="mb-6">
 								<label className="flex items-center justify-between cursor-pointer">
-									<span className="text-sm font-semibold text-mint-900 dark:text-mint-200">
+									<span className="text-sm font-semibold text-mint-900 dark:text-[var(--color-dark-text)]">
 										Recovery Emails
 									</span>
 									<div className="relative">
@@ -153,7 +153,7 @@ export default function SettingsClient({
 											onChange={handleToggle}
 											className="sr-only peer"
 										/>
-										<div className="w-11 h-6 bg-gray-200 dark:bg-neutral-800 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 dark:focus:ring-mint-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-gray-300 after:border-gray-300 dark:after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
+										<div className="w-11 h-6 bg-gray-200 dark:bg-[var(--color-dark-card)] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-mint-500 dark:focus:ring-mint-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-gray-300 after:border-gray-300 dark:after:border-gray-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-mint-600"></div>
 									</div>
 								</label>
 								<p className="text-xs text-black dark:text-gray-300 mt-1">
@@ -165,14 +165,14 @@ export default function SettingsClient({
 
 							{/* Email Subject */}
 							<div className="mb-6">
-								<label className="block text-sm font-semibold text-mint-900 dark:text-mint-200 mb-2">
+								<label className="block text-sm font-semibold text-mint-900 dark:text-[var(--color-dark-text)] mb-2">
 									Email Subject <span className="text-red-500 dark:text-red-400">*</span>
 								</label>
 								<input
 									type="text"
 									value={emailSubject}
 									onChange={(e) => setEmailSubject(e.target.value)}
-									className="w-full px-4 py-2 border border-mint-200 dark:border-neutral-700 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm text-black dark:text-gray-300"
+									className="w-full px-4 py-2 border border-mint-200 dark:border-[var(--color-dark-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm text-black dark:text-gray-300"
 									placeholder="Email subject line"
 									required
 								/>
@@ -180,20 +180,20 @@ export default function SettingsClient({
 
 							{/* Email Body */}
 							<div className="mb-6">
-								<label className="block text-sm font-semibold text-mint-900 dark:text-mint-200 mb-2">
+								<label className="block text-sm font-semibold text-mint-900 dark:text-[var(--color-dark-text)] mb-2">
 									Email Body <span className="text-red-500 dark:text-red-400">*</span>
 								</label>
 								<textarea
 									value={emailBody}
 									onChange={(e) => setEmailBody(e.target.value)}
 									rows={12}
-									className="w-full px-4 py-2 border border-mint-200 dark:border-neutral-700 rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm font-mono text-black dark:text-gray-300"
+									className="w-full px-4 py-2 border border-mint-200 dark:border-[var(--color-dark-border)] rounded-md focus:outline-none focus:ring-2 focus:ring-mint-500 dark:focus:ring-mint-500 text-sm font-mono text-black dark:text-gray-300"
 									placeholder="Email body text"
 									required
 								/>
 								<p className="text-xs text-black dark:text-gray-300 mt-2">
-									Available variables: <code className="bg-mint-100 dark:bg-neutral-800 px-1 rounded text-black dark:text-gray-300">{`{name}`}</code>,{" "}
-									<code className="bg-mint-100 dark:bg-neutral-800 px-1 rounded text-black dark:text-gray-300">{`{amount}`}</code>, <code className="bg-mint-100 dark:bg-neutral-800 px-1 rounded text-black dark:text-gray-300">{`{updateLink}`}</code> (required)
+									Available variables: <code className="bg-mint-100 dark:bg-[var(--color-dark-card)] px-1 rounded text-black dark:text-gray-300">{`{name}`}</code>,{" "}
+									<code className="bg-mint-100 dark:bg-[var(--color-dark-card)] px-1 rounded text-black dark:text-gray-300">{`{amount}`}</code>, <code className="bg-mint-100 dark:bg-[var(--color-dark-card)] px-1 rounded text-black dark:text-gray-300">{`{updateLink}`}</code> (required)
 								</p>
 							</div>
 
@@ -202,13 +202,13 @@ export default function SettingsClient({
 								<button
 									onClick={handleSave}
 									disabled={saving}
-									className="flex-1 bg-mint-700 hover:bg-mint-800 dark:bg-neutral-800 dark:hover:bg-mint-800 text-white dark:text-white font-semibold px-6 py-3 rounded-md transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm disabled:opacity-50"
+									className="flex-1 bg-mint-700 hover:bg-mint-800 dark:bg-[var(--color-dark-card)] dark:hover:bg-mint-800 text-white dark:text-white font-semibold px-6 py-3 rounded-md transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm disabled:opacity-50"
 								>
 									{saving ? "Saving..." : "Save Changes"}
 								</button>
 								<button
 									onClick={handleReset}
-									className="bg-white hover:bg-gray-50 dark:bg-neutral-800 dark:hover:bg-gray-700 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-200 dark:border-neutral-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+									className="bg-white hover:bg-gray-50 dark:bg-[var(--color-dark-card)] dark:hover:bg-gray-700 text-mint-700 dark:text-[var(--color-dark-text)] dark:text-[var(--color-dark-text)] font-semibold px-6 py-3 rounded-md border border-mint-200 dark:border-[var(--color-dark-border)] transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 								>
 									Reset
 								</button>
@@ -216,13 +216,13 @@ export default function SettingsClient({
 						</div>
 
 						{/* Right: Preview */}
-						<div className="bg-white dark:bg-[oklch(21%_0.006_285.885)] rounded-lg border border-mint-200 dark:border-neutral-700 p-4 sm:p-6 shadow-sm">
-							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-mint-300 mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
+						<div className="bg-white dark:bg-[var(--color-dark-bg)] rounded-lg border border-mint-200 dark:border-[var(--color-dark-border)] p-4 sm:p-6 shadow-sm">
+							<h2 className="text-xs sm:text-sm font-bold text-mint-700 dark:text-[var(--color-dark-text)] mb-4 sm:mb-6 font-[family-name:var(--font-space-mono)] uppercase tracking-wider">
 								Email Preview
 							</h2>
 
-							<div className="border border-mint-200 dark:border-neutral-700 rounded-md p-3 sm:p-4 bg-white dark:bg-[oklch(21%_0.006_285.885)]">
-								<div className="mb-3 pb-3 border-b border-mint-200 dark:border-neutral-700">
+							<div className="border border-mint-200 dark:border-[var(--color-dark-border)] rounded-md p-3 sm:p-4 bg-white dark:bg-[var(--color-dark-bg)]">
+								<div className="mb-3 pb-3 border-b border-mint-200 dark:border-[var(--color-dark-border)]">
 									<p className="text-xs text-black dark:text-gray-300 font-semibold mb-1">Subject:</p>
 									<p className="text-sm font-semibold text-black dark:text-gray-300">{previewSubject}</p>
 								</div>
@@ -237,9 +237,9 @@ export default function SettingsClient({
 
 			{/* Confirmation Modal */}
 			{showConfirmModal && (
-				<div className="fixed inset-0 bg-black/50 dark:bg-[oklch(21%_0.006_285.885)]/80 flex items-center justify-center z-50">
+				<div className="fixed inset-0 bg-black/50 dark:bg-[var(--color-dark-bg)]/80 flex items-center justify-center z-50">
 					<div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
-						<h3 className="text-lg font-bold text-mint-700 dark:text-mint-300 mb-3 font-[family-name:var(--font-space-mono)] uppercase">
+						<h3 className="text-lg font-bold text-mint-700 dark:text-[var(--color-dark-text)] mb-3 font-[family-name:var(--font-space-mono)] uppercase">
 							Disable Recovery Emails?
 						</h3>
 						<p className="text-sm text-gray-700 dark:text-gray-300 mb-6">
@@ -255,7 +255,7 @@ export default function SettingsClient({
 							</button>
 							<button
 								onClick={() => setShowConfirmModal(false)}
-								className="flex-1 bg-mint-100 hover:bg-mint-200 dark:bg-neutral-800 dark:hover:bg-mint-800 text-mint-700 dark:text-mint-300 dark:text-mint-300 font-semibold px-6 py-3 rounded-md border border-mint-300 dark:border-neutral-700 transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
+								className="flex-1 bg-mint-100 hover:bg-mint-200 dark:bg-[var(--color-dark-card)] dark:hover:bg-mint-800 text-mint-700 dark:text-[var(--color-dark-text)] dark:text-[var(--color-dark-text)] font-semibold px-6 py-3 rounded-md border border-mint-300 dark:border-[var(--color-dark-border)] transition-colors font-[family-name:var(--font-space-mono)] uppercase tracking-wider text-sm"
 							>
 								Cancel
 							</button>
