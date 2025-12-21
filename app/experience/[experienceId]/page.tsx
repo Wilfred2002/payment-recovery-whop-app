@@ -111,19 +111,18 @@ export default async function ExperiencePage({
 	// If user is an admin, show admin dashboard access page
 	if (isAdmin && companyId) {
 		return (
-			<div className="min-h-screen bg-mint-50 flex flex-col">
+			<div className="min-h-screen bg-mint-50 dark:bg-[var(--color-dark-bg)] flex flex-col">
 				<Header showNav={true} companyId={companyId} />
 				<div className="flex-1 flex items-center justify-center px-4 sm:px-8 py-8">
 					<div className="text-center max-w-xl">
-						<div className="text-4xl sm:text-6xl mb-4 sm:mb-6">👑</div>
-						<h1 className="text-2xl sm:text-3xl font-bold text-mint-700 mb-3 sm:mb-4 font-[family-name:var(--font-space-mono)] uppercase">
+						<h1 className="text-2xl sm:text-3xl font-bold text-mint-700 dark:text-white mb-3 sm:mb-4 font-[family-name:var(--font-space-mono)] uppercase">
 							Admin Access
 						</h1>
-						<p className="text-base sm:text-lg text-mint-700 mb-4 sm:mb-6">
-							Welcome, Admin! 👋
+						<p className="text-base sm:text-lg text-mint-700 dark:text-white mb-4 sm:mb-6">
+							Welcome, Admin!
 						</p>
-						<div className="bg-white border border-mint-200 rounded-lg p-4 sm:p-6 shadow-sm text-left mb-4 sm:mb-6">
-							<p className="text-sm sm:text-base text-mint-700 mb-4">
+						<div className="bg-white dark:bg-[var(--color-dark-card)] border border-mint-200 dark:border-[var(--color-dark-border)] rounded-lg p-4 sm:p-6 shadow-sm text-left mb-4 sm:mb-6">
+							<p className="text-sm sm:text-base text-mint-700 dark:text-white mb-4">
 								You have admin access to the Payment Recovery Dashboard.
 								Click the button below to manage failed payments, view recovery
 								statistics, and configure email settings.
@@ -137,7 +136,7 @@ export default async function ExperiencePage({
 								</a>
 							</div>
 						</div>
-						<p className="text-xs sm:text-sm text-mint-500">
+						<p className="text-xs sm:text-sm text-mint-500 dark:text-white">
 							This app helps you automatically recover failed payments by sending
 							personalized recovery emails to customers.
 						</p>
